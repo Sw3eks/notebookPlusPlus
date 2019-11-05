@@ -5,4 +5,5 @@
     <string name="drawer_menu_calendar">Kalendar</string>
     <string name="drawer_menu_archive">Archiv</string>
     <string name="drawer_menu_deleted_notes">Gelöschte Notizen</string>
+    <string name="drawer_menu_settings">Einstellungen</string>
 </resources>
