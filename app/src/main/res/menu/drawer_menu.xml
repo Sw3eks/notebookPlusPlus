@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_notebooks"
+            android:icon="@drawable/ic_notebook"
+            android:title="@string/drawer_menu_notebooks" />
+        <item
+            android:id="@+id/nav_calendar"
+            android:icon="@drawable/ic_calendar"
+            android:title="@string/drawer_menu_calendar" />
+        <item
+            android:id="@+id/nav_archive"
+            android:icon="@drawable/ic_folder_archive"
+            android:title="@string/drawer_menu_archive" />
+        <item
+            android:id="@+id/nav_deleted"
+            android:icon="@drawable/ic_delete"
+            android:title="@string/drawer_menu_deleted_notes" />
+    </group>
+</menu>

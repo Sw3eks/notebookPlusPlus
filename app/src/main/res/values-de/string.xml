@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NotebookPlusPlus</string>
+    <string name="drawer_menu_notebooks">Notizbücher</string>
+    <string name="drawer_menu_calendar">Kalendar</string>
+    <string name="drawer_menu_archive">Archiv</string>
+    <string name="drawer_menu_deleted_notes">Gelöschte Notizen</string>
+</resources>

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">NotebookPlusPlus</string>
+    <string name="drawer_menu_notebooks">Notebooks</string>
+    <string name="drawer_menu_calendar">Calendar</string>
+    <string name="drawer_menu_archive">Archive</string>
+    <string name="drawer_menu_deleted_notes">Deleted Notes</string>
 </resources>
