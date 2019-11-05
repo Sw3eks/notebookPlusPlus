@@ -6,4 +6,6 @@
     <string name="drawer_menu_archive">Archiv</string>
     <string name="drawer_menu_deleted_notes">Gelöschte Notizen</string>
     <string name="drawer_menu_settings">Einstellungen</string>
+    <string name="navigation_drawer_open">Navigation öffnen</string>
+    <string name="navigation_drawer_close">Navigation schließen</string>
 </resources>
