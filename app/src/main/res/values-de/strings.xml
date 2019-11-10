@@ -11,4 +11,8 @@
     <string name="notebook_icon">Notebook Icon</string>
     <string name="search">Search</string>
     <string name="to_calendar">to Calendar</string>
+    <string name="notebooks_title">Notebooks</string>
+    <string name="create_a_new_notebook">Create a new Notebook</string>
+    <string name="new_notebook_name">Notebook name</string>
+    <string name="create_notebook_button">Create</string>
 </resources>

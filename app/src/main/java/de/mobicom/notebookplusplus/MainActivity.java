@@ -25,13 +25,15 @@ import com.google.android.material.navigation.NavigationView;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.notebooks_title);
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_notebooks:
+                toolbar.setTitle(R.string.notebooks_title);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotebooksFragment()).commit();
                 break;
             case R.id.nav_calendar:
