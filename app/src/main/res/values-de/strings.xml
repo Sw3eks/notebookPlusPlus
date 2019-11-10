@@ -9,4 +9,6 @@
     <string name="navigation_drawer_open">Navigation öffnen</string>
     <string name="navigation_drawer_close">Navigation schließen</string>
     <string name="notebook_icon">Notebook Icon</string>
+    <string name="search">Search</string>
+    <string name="to_calendar">to Calendar</string>
 </resources>

@@ -15,6 +15,9 @@ public class NotebooksFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notebooks, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_notebooks, container, false);
+        setHasOptionsMenu(true);
+        return view;
     }
 }
