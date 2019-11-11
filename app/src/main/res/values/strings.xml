@@ -18,4 +18,22 @@
     <string name="new_notebook_name">Notebook name</string>
     <string name="create_notebook_button">Create</string>
     <string name="cancel_notebook_button">Cancel</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="settings_calendar_header">Calendar Notification Settings</string>
+    <string name="settings_theme_header">Theme Setting</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <string name="calendar_notifications">Calendar Notifications</string>
+    <string name="change_theme">Dark Mode</string>
+    <string name="tomorrow_reminder">Tomorrow Reminder</string>
+    <string name="next_week_reminder">Next Week Reminder</string>
+    <string name="calendar_notification_summary">Enable Notifications for Calendar</string>
+    <string name="tomorrow_reminder_summary">Notifies when a calendar entry is present for the next day</string>
+    <string name="week_reminder_summary">Notifies when a calendar entry is present for the next week (only on Sundays)</string>
+    <string name="theme_summary">Change the look and feel</string>
 </resources>

@@ -11,9 +11,11 @@ import de.mobicom.notebookplusplus.calendar.CalendarFragment;
 import de.mobicom.notebookplusplus.notebooks.NotebooksFragment;
 import de.mobicom.notebookplusplus.notebooks.archive.ArchiveFragment;
 import de.mobicom.notebookplusplus.notebooks.deletedNotes.DeletedNotesFragment;
+import de.mobicom.notebookplusplus.settings.SettingsActivity;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -86,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DeletedNotesFragment()).commit();
                 break;
             case R.id.nav_settings:
-                Toast.makeText(this, "Settings", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(i);
                 break;
         }
 
