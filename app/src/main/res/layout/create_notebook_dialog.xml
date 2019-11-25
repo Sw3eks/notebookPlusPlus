@@ -4,6 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:background="@color/colorClouds"
     android:orientation="vertical">
 
     <EditText
@@ -13,6 +14,21 @@
         android:hint="@string/new_notebook_name"
         android:inputType="text"
         android:padding="35dp" />
+
+
+    <TextView
+        style="@style/TextView.InputLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_color_label" />
+
+    <Spinner
+        android:id="@+id/colorDropdown"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dropDownWidth="150dp"
+        android:spinnerMode="dropdown" />
 
 
 </FrameLayout>
