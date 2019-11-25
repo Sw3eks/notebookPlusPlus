@@ -7,16 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 
 import de.mobicom.notebookplusplus.R;
 
@@ -79,6 +77,12 @@ public class CreateNotebookDialogFragment extends DialogFragment {
                 );
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.create_notebook_dialog, null);
+
+        Spinner spinner = view.findViewById(R.id.colorDropdown);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.color_Array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
 
 
         b.setView(view);

@@ -36,4 +36,16 @@
     <string name="tomorrow_reminder_summary">Notifies when a calendar entry is present for the next day</string>
     <string name="week_reminder_summary">Notifies when a calendar entry is present for the next week (only on Sundays)</string>
     <string name="theme_summary">Change the look and feel</string>
+    <string name="dialog_color_label">Color</string>
+
+    <string-array name="color_Array">
+        <item>Blue</item>
+        <item>Red</item>
+        <item>Purple</item>
+        <item>Green</item>
+        <item>Black</item>
+        <item>Yellow</item>
+        <item>Orange</item>
+    </string-array>
+
 </resources>
