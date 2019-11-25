@@ -1,18 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Notebook++</string>
     <string name="drawer_menu_notebooks">Notizbücher</string>
     <string name="drawer_menu_calendar">Kalendar</string>
     <string name="drawer_menu_archive">Archiv</string>
     <string name="drawer_menu_deleted_notes">Gelöschte Notizen</string>
     <string name="drawer_menu_settings">Einstellungen</string>
-    <string name="navigation_drawer_open">Navigation öffnen</string>
-    <string name="navigation_drawer_close">Navigation schließen</string>
     <string name="notebook_icon">Notebook Icon</string>
-    <string name="search">Search</string>
-    <string name="to_calendar">to Calendar</string>
-    <string name="notebooks_title">Notebooks</string>
-    <string name="create_a_new_notebook">Create a new Notebook</string>
-    <string name="new_notebook_name">Notebook name</string>
-    <string name="create_notebook_button">Create</string>
+    <string name="search">Suchen</string>
+    <string name="to_calendar">zum Kalendar</string>
+    <string name="notebooks_title">Notizbücher</string>
+    <string name="create_a_new_notebook">Ein neues Notizbuch erstellen</string>
+
+    <string name="new_notebook_name">Notizbuch Name</string>
+    <string name="create_notebook_button">Erstellen</string>
+    <string name="cancel_notebook_button">Abbrechen</string>
+    <string name="title_activity_settings">Einstellungen</string>
+
+    <!-- Preference Titles -->
+    <string name="settings_calendar_header">Kalendar Benachrichtungseinstellungen</string>
+    <string name="settings_theme_header">Theme Setting</string>
+
+    <string name="calendar_notifications">Kalendar Benachrichtungen</string>
+    <string name="change_theme">Nachtmodus</string>
+    <string name="tomorrow_reminder">Morgen Erinnerung</string>
+    <string name="next_week_reminder">Nächste Woche Erinnerung</string>
+    <string name="calendar_notification_summary">Benachrichtigungen für Kalender aktivieren</string>
+    <string name="tomorrow_reminder_summary">Benachrichtigt, wenn ein Kalendereintrag für den nächsten Tag vorhanden ist.</string>
+    <string name="week_reminder_summary">Benachrichtigt, wenn ein Kalendereintrag für die nächste Woche vorhanden ist (nur an Sonntagen).</string>
+    <string name="theme_summary">Ändert das Aussehen</string>
+    <string name="dialog_color_label">Farbe</string>
+
+    <string-array name="color_Array">
+        <item>Blau</item>
+        <item>Rot</item>
+        <item>Lila</item>
+        <item>Grün</item>
+        <item>Schwarz</item>
+        <item>Gelb</item>
+        <item>Orange</item>
+    </string-array>
 </resources>
