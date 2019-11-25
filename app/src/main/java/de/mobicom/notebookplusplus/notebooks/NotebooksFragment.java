@@ -20,10 +20,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import de.mobicom.notebookplusplus.R;
 
 import java.io.OutputStreamWriter;
-
-import de.mobicom.notebookplusplus.R;
 
 public class NotebooksFragment extends Fragment {
 
@@ -42,7 +41,7 @@ public class NotebooksFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentManager manager = getFragmentManager();
-                CreateNotebookDialogFragment createNotebookDialogFragment = CreateNotebookDialogFragment.newInstance("Test");
+                CreateNotebookDialogFragment createNotebookDialogFragment = CreateNotebookDialogFragment.newInstance(getResources().getString(R.string.create_a_new_notebook));
                 createNotebookDialogFragment.show(manager, "CreateNotebookDialog");
             }
         });
@@ -82,6 +81,7 @@ public class NotebooksFragment extends Fragment {
 
                     return true;
                 }
+
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
@@ -92,7 +92,7 @@ public class NotebooksFragment extends Fragment {
             searchView.setOnQueryTextListener(queryTextListener);
         }
 
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     public void save(String fileName) {

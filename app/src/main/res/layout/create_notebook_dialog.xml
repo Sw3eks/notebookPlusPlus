@@ -6,13 +6,6 @@
     android:layout_gravity="center"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/notebookDialogTitle"
-        style="@style/TextAppearance.AppCompat.Title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/create_a_new_notebook" />
-
     <EditText
         android:id="@+id/edit_text_new_notebook"
         android:layout_width="match_parent"
