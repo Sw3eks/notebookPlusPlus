@@ -14,4 +14,11 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="ActionBarThemeOverlay">
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorNormal</item>
+        <item name="colorControlHighlight">@color/colorHigh</item>
+        <item name="android:textColorHint">@color/colorHint</item>
+    </style>
+
 </resources>
