@@ -1,11 +1,15 @@
 package de.mobicom.notebookplusplus.notebooks;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -13,16 +17,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
 import de.mobicom.notebookplusplus.R;
 
 public class NotebooksFragment extends Fragment {
 
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
     private EditText mEditTextNotebookName;
 
     @Nullable
@@ -40,8 +46,13 @@ public class NotebooksFragment extends Fragment {
                 createNotebookDialogFragment.show(manager, "CreateNotebookDialog");
             }
         });
-
         return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -49,6 +60,39 @@ public class NotebooksFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_notebooks, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+
+            queryTextListener = new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    Log.i("onQueryTextChange", newText);
+
+                    return true;
+                }
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    Log.i("onQueryTextSubmit", query);
+
+                    return true;
+                }
+            };
+            searchView.setOnQueryTextListener(queryTextListener);
+        }
+
+        super.onCreateOptionsMenu(menu,inflater);
     }
 
     public void save(String fileName) {
