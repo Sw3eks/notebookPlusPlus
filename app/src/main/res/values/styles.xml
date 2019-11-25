@@ -21,11 +21,8 @@
         <item name="android:textColorHint">@color/colorHint</item>
     </style>
 
-    <style name="TextView.InputLabel" parent="TextAppearance.AppCompat.Caption">
-        <item name="android:textColor">?android:textColorHint</item>
-        <item name="android:paddingBottom">8dp</item>
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:paddingRight">4dp</item>
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@color/colorClouds</item>
     </style>
 
 </resources>

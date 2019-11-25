@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/createNotebookDialog"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@color/colorClouds"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="15dp">
 
     <EditText
         android:id="@+id/edit_text_new_notebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/new_notebook_name"
-        android:inputType="text"
-        android:padding="35dp" />
+        android:layout_marginBottom="5dp"
+        android:inputType="text" />
 
 
-    <TextView
-        style="@style/TextView.InputLabel"
-        android:layout_width="match_parent"
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_color_label" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
 
-    <Spinner
-        android:id="@+id/colorDropdown"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:dropDownWidth="150dp"
-        android:spinnerMode="dropdown" />
+        <TextView android:layout_width="0dip"
+            android:layout_weight=".3"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_color_label"
+            />
 
-
-</FrameLayout>
+        <Spinner android:id="@+id/colorDropdown"
+            android:layout_width="wrap_content"
+            android:layout_weight=".7"
+            android:layout_height="wrap_content"
+            android:prompt="@string/dialog_color_label" />
+    </LinearLayout>
+</LinearLayout>

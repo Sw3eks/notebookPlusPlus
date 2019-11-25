@@ -57,7 +57,7 @@ public class CreateNotebookDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        AlertDialog.Builder b = new AlertDialog.Builder(getActivity())
+        AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
                 .setView(inflater.inflate(R.layout.create_notebook_dialog, null))
                 .setTitle(R.string.create_a_new_notebook)
                 .setPositiveButton(R.string.create_notebook_button,
