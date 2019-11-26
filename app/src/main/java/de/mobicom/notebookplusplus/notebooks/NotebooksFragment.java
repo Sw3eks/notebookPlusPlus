@@ -64,7 +64,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
         mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
 
-        String[] data = {"1", "2", "3"};
+        String[] data = {"Notebook 1", "Notebook 2", "Notebook 3"};
 
         // set up the RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.rvNotebooks);
