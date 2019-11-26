@@ -20,15 +20,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
+import de.mobicom.notebookplusplus.notebooks.adapter.NotebookRecyclerViewAdapter;
 
 import java.io.OutputStreamWriter;
 
-public class NotebooksFragment extends Fragment {
+public class NotebooksFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
     private EditText mEditTextNotebookName;
+    private NotebookRecyclerViewAdapter adapter;
 
     @Nullable
     @Override
@@ -59,6 +63,16 @@ public class NotebooksFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
+
+        String[] data = {"1", "2", "3"};
+
+        // set up the RecyclerView
+        RecyclerView recyclerView = view.findViewById(R.id.rvNotebooks);
+        int numberOfColumns = 2;
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
+        adapter = new NotebookRecyclerViewAdapter(getActivity(), data);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -105,6 +119,11 @@ public class NotebooksFragment extends Fragment {
         } catch (Throwable t) {
             Toast.makeText(getContext(), "Exception: " + t.toString(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
     }
 
 }
