@@ -1,8 +1,14 @@
-package de.mobicom.notebookplusplus.notebooks.deletedNotes;
+package de.mobicom.notebookplusplus.note;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,22 +17,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
 import de.mobicom.notebookplusplus.R;
 
-public class DeletedNotesFragment extends Fragment {
+public class NoteFragment extends Fragment {
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_deleted_notes, container, false);
+        return inflater.inflate(R.layout.fragment_note, container, false);
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class DeletedNotesFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_deleted_notes, menu);
+        inflater.inflate(R.menu.menu_note, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);

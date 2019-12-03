@@ -1,8 +1,8 @@
-package de.mobicom.notebookplusplus.notebooks.model;
+package de.mobicom.notebookplusplus.note.model;
 
 import java.util.Objects;
 
-class Note {
+public class Note {
 
     private int id;
     private String name;

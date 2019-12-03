@@ -1,7 +1,9 @@
-package de.mobicom.notebookplusplus.notebooks.model;
+package de.mobicom.notebookplusplus.notebook.model;
 
 import java.util.List;
 import java.util.Objects;
+
+import de.mobicom.notebookplusplus.note.model.Note;
 
 public class Notebook {
 

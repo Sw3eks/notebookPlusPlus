@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.notebooks;
+package de.mobicom.notebookplusplus.notebook;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -23,7 +23,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.notebooks.adapter.NotebookRecyclerViewAdapter;
+import de.mobicom.notebookplusplus.note.NoteFragment;
+import de.mobicom.notebookplusplus.notebook.adapter.NotebookRecyclerViewAdapter;
 
 import java.io.OutputStreamWriter;
 
@@ -124,6 +125,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     @Override
     public void onItemClick(View view, int position) {
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).commit();
     }
 
 }

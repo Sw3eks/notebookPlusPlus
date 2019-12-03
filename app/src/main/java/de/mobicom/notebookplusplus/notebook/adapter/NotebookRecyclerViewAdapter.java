@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.notebooks.adapter;
+package de.mobicom.notebookplusplus.notebook.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
