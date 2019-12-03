@@ -66,11 +66,6 @@ public class Notebook {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getColor(), getNotes());
-    }
-
-    @Override
     public String toString() {
         return "Notebook{" +
                 "id=" + id +

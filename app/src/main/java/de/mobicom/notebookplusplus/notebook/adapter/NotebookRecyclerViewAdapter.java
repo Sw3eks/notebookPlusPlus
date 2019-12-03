@@ -9,10 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
+import de.mobicom.notebookplusplus.notebook.model.Notebook;
 
 public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRecyclerViewAdapter.ViewHolder> {
 
     private String[] mData;
+    private Notebook[] mNotebook;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
