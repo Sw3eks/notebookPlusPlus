@@ -24,11 +24,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.note.NoteFragment;
-import de.mobicom.notebookplusplus.note.model.Note;
 import de.mobicom.notebookplusplus.notebook.adapter.NotebookRecyclerViewAdapter;
 import de.mobicom.notebookplusplus.notebook.model.Notebook;
 
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 public class NotebooksFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
 
@@ -67,16 +67,16 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
         mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
 
-        String[] data = {"Notebook 1", "Notebook 2", "Notebook 3"};
-        Notebook[] mNotebook = {new Notebook(1, "Notebook 1", "red", null),
-                new Notebook(2, "Notebook 2", "blue", null),
-                new Notebook(3, "Notebook 3", "green", null)};
+        ArrayList<Notebook> notebookList = new ArrayList<>();
+        notebookList.add(new Notebook(1, "Notebook 1", "red", null));
+        notebookList.add(new Notebook(2, "Notebook 2", "blue", null));
+        notebookList.add(new Notebook(3, "Notebook 3", "green", null));
 
         // set up the RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.rvNotebooks);
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
-        adapter = new NotebookRecyclerViewAdapter(getActivity(), data);
+        adapter = new NotebookRecyclerViewAdapter(getActivity(), notebookList);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }

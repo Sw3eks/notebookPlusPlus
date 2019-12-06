@@ -16,12 +16,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import java.util.ArrayList;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
+import de.mobicom.notebookplusplus.note.adapter.NoteRecyclerViewAdapter;
+import de.mobicom.notebookplusplus.note.model.Note;
+import de.mobicom.notebookplusplus.notebook.model.Notebook;
 
 public class NoteFragment extends Fragment {
+
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
+    private EditText mEditTextNoteName;
+    private NoteRecyclerViewAdapter adapter;
 
     @Nullable
     @Override
@@ -34,6 +45,27 @@ public class NoteFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mEditTextNoteName = view.findViewById(R.id.edit_text_new_notebook);
+
+        ArrayList<Note> noteList = new ArrayList<>();
+        noteList.add(new Note(1, "Note 1", "text", "das ist eine Notiz"));
+        noteList.add(new Note(2, "Note 2", "todo", "Das ist eine ToDo Liste"));
+        noteList.add(new Note(3, "Note 3", "sprache", "Das ist eine Audionotiz"));
+
+        // set up the RecyclerView
+        RecyclerView recyclerView = view.findViewById(R.id.rvNotebooks);
+        int numberOfColumns = 2;
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
+        adapter = new NoteRecyclerViewAdapter(getActivity(), notebookList);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
