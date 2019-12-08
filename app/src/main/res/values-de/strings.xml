@@ -30,6 +30,7 @@
     <string name="theme_summary">Ändert das Aussehen</string>
     <string name="dialog_color_label">Farbe</string>
     <string name="note_title">Notes</string>
+    <string name="title_activity_note">Notes</string>
 
     <string-array name="color_Array">
         <item>Blau</item>

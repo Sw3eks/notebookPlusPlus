@@ -11,43 +11,43 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.notebook.model.Notebook;
+import de.mobicom.notebookplusplus.note.model.Note;
 
 public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<Notebook> notebookList;
+    private ArrayList<Note> noteList;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    public NoteRecyclerViewAdapter(Context context, ArrayList<Notebook> notebookList) {
+    public NoteRecyclerViewAdapter(Context context, ArrayList<Note> noteList) {
         this.mInflater = LayoutInflater.from(context);
-        this.notebookList = notebookList;
+        this.noteList = noteList;
     }
 
     @Override
     @NonNull
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.recyclerview_notebook_item, parent, false);
+        View view = mInflater.inflate(R.layout.recyclerview_note_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Notebook notebook = notebookList.get(position);
-        holder.myTextView.setText(notebook.getName());
+        Note note = noteList.get(position);
+        holder.noteTitle.setText(note.getName());
     }
 
     @Override
     public int getItemCount() {
-        return notebookList.size();
+        return noteList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+        TextView noteTitle;
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.notebookTitle);
+            noteTitle = itemView.findViewById(R.id.noteTitle);
             itemView.setOnClickListener(this);
         }
 
@@ -57,8 +57,8 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         }
     }
 
-    public Notebook getItem(int id) {
-        return notebookList.get(id);
+    public Note getItem(int id) {
+        return noteList.get(id);
     }
 
     public void setClickListener(ItemClickListener itemClickListener) {

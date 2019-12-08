@@ -37,7 +37,7 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notebook notebook = notebookList.get(position);
-        holder.myTextView.setText(notebook.getName());
+        holder.notebookTitle.setText(notebook.getName());
     }
 
     // total number of cells
@@ -49,11 +49,11 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+        TextView notebookTitle;
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.notebookTitle);
+            notebookTitle = itemView.findViewById(R.id.notebookTitle);
             itemView.setOnClickListener(this);
         }
 

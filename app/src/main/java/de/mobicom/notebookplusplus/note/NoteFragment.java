@@ -61,8 +61,8 @@ public class NoteFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.rvNotebooks);
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
-        adapter = new NoteRecyclerViewAdapter(getActivity(), notebookList);
-        adapter.setClickListener(this);
+        adapter = new NoteRecyclerViewAdapter(getActivity(), noteList);
+
         recyclerView.setAdapter(adapter);
     }
 
