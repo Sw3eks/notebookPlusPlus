@@ -1,5 +1,6 @@
 package de.mobicom.notebookplusplus.note.model;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class Note {
@@ -8,15 +9,18 @@ public class Note {
     private String name;
     private String type;
     private String description;
+    private Date createdAt;
+    private Date lastModifiedAt;
 
     public Note() {
     }
 
-    public Note(int id, String name, String type, String description) {
+    public Note(int id, String name, String type, String description, Date createdAt) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.description = description;
+        this.createdAt = createdAt;
     }
 
     public int getId() {
@@ -51,6 +55,22 @@ public class Note {
         this.description = description;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getLastModifiedAt() {
+        return lastModifiedAt;
+    }
+
+    public void setLastModifiedAt(Date lastModifiedAt) {
+        this.lastModifiedAt = lastModifiedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,6 +94,8 @@ public class Note {
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", lastModifiedAt=" + lastModifiedAt +
                 '}';
     }
 }

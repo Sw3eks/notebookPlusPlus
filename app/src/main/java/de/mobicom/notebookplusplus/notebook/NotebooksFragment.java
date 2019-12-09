@@ -25,8 +25,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.note.NoteActivity;
+import de.mobicom.notebookplusplus.note.NoteFragment;
 import de.mobicom.notebookplusplus.notebook.adapter.NotebookRecyclerViewAdapter;
 import de.mobicom.notebookplusplus.notebook.model.Notebook;
+import de.mobicom.notebookplusplus.settings.SettingsActivity;
 
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
@@ -63,7 +65,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
@@ -131,8 +133,10 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     @Override
     public void onItemClick(View view, int position) {
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
-        Intent intent = new Intent(getContext(), NoteActivity.class);
-        getContext().startActivity(intent);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).commit();
+
+        //Intent intent = new Intent(getContext(), NoteActivity.class);
+        //getContext().startActivity(intent);
     }
 
 }

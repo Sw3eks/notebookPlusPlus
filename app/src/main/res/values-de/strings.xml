@@ -31,6 +31,9 @@
     <string name="dialog_color_label">Farbe</string>
     <string name="note_title">Notes</string>
     <string name="title_activity_note">Notes</string>
+    <string name="note_type">Note Type</string>
+    <string name="note_bookmark_icon">Bookmark</string>
+    <string name="note_context_menu_icon">Context Menu</string>
 
     <string-array name="color_Array">
         <item>Blau</item>

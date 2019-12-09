@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,9 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Note note = noteList.get(position);
         holder.noteTitle.setText(note.getName());
+        holder.noteContent.setText(note.getDescription());
+        //holder.noteTitle.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_note_type_text, 0, 0, 0);
+        holder.lastModifiedDate.setText("01.01.2019");
     }
 
     @Override
@@ -44,10 +48,14 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView noteTitle;
+        TextView noteContent;
+        TextView lastModifiedDate;
 
         ViewHolder(View itemView) {
             super(itemView);
             noteTitle = itemView.findViewById(R.id.noteTitle);
+            noteContent = itemView.findViewById(R.id.noteContent);
+            lastModifiedDate = itemView.findViewById(R.id.lastModifiedDate);
             itemView.setOnClickListener(this);
         }
 

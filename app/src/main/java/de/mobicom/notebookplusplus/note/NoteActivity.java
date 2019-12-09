@@ -29,14 +29,9 @@ public class NoteActivity extends AppCompatActivity  implements NoteRecyclerView
         toolbar.setTitle(R.string.notebooks_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ArrayList<Note> noteList = new ArrayList<>();
-        noteList.add(new Note(1, "Note 1", "text", "das ist eine Notiz"));
-        noteList.add(new Note(2, "Note 2", "todo", "Das ist eine ToDo Liste"));
-        noteList.add(new Note(3, "Note 3", "sprache", "Das ist eine Audionotiz"));
-
         RecyclerView recyclerView = findViewById(R.id.rvNotes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new NoteRecyclerViewAdapter(this, noteList);
+        adapter = new NoteRecyclerViewAdapter(this, null);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }
