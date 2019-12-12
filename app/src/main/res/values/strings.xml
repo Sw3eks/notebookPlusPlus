@@ -42,12 +42,12 @@
         <item>Orange</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="note_title">Notes</string>
     <string name="title_activity_note">Notes</string>
     <string name="note_type">Note Type</string>
     <string name="note_bookmark_icon">Bookmark</string>
     <string name="note_context_menu_icon">Context Menu</string>
+    <string name="reset_calendar_icon">Reset Calendar</string>
+    <string name="to_notebook_icon">To Notebooks</string>
 
 </resources>

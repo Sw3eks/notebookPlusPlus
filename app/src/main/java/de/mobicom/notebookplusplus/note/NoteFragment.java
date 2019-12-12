@@ -67,7 +67,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         note1.setLastModifiedAt(Date.valueOf("2019-01-01"));
         noteList.add(note1);
         noteList.add(new Note(2, "Note 2", "todo", "Das ist eine ToDo Liste", Date.valueOf("2019-07-15")));
-        noteList.add(new Note(3, "Note 3", "sprache", "Das ist eine Audionotiz", Date.valueOf("2019-12-31")));
+        noteList.add(new Note(3, "Note 3", "speech", "Das ist eine Audionotiz", Date.valueOf("2019-12-31")));
 
         RecyclerView recyclerView = view.findViewById(R.id.rvNotes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

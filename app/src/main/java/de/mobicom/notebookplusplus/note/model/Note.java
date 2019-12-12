@@ -77,14 +77,11 @@ public class Note {
         if (!(o instanceof Note)) return false;
         Note note = (Note) o;
         return getId() == note.getId() &&
-                getName().equals(note.getName()) &&
                 getType().equals(note.getType()) &&
-                getDescription().equals(note.getDescription());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getType(), getDescription());
+                getName().equals(note.getName()) &&
+                getDescription().equals(note.getDescription()) &&
+                getCreatedAt().equals(note.getCreatedAt()) &&
+                Objects.equals(getLastModifiedAt(), note.getLastModifiedAt());
     }
 
     @Override

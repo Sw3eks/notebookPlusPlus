@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.sql.Date;
@@ -39,6 +40,18 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         holder.noteContent.setText(note.getDescription());
         //holder.noteTitle.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_note_type_text, 0, 0, 0);
         holder.lastModifiedDate.setText("01.01.2019");
+
+        switch (note.getType()) {
+            case "todo":
+                holder.noteType.setBackgroundResource(R.drawable.ic_note_type_todo);
+                break;
+            case "speech":
+                holder.noteType.setBackgroundResource(R.drawable.ic_note_type_speech);
+                break;
+            default:
+                holder.noteType.setBackgroundResource(R.drawable.ic_note_type_text);
+        }
+
     }
 
     @Override
@@ -50,12 +63,14 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         TextView noteTitle;
         TextView noteContent;
         TextView lastModifiedDate;
+        ImageView noteType;
 
         ViewHolder(View itemView) {
             super(itemView);
             noteTitle = itemView.findViewById(R.id.noteTitle);
             noteContent = itemView.findViewById(R.id.noteContent);
-            lastModifiedDate = itemView.findViewById(R.id.lastModifiedDate);
+            lastModifiedDate = itemView.findViewById(R.id.noteModifiedDate);
+            noteType = itemView.findViewById(R.id.noteType);
             itemView.setOnClickListener(this);
         }
 

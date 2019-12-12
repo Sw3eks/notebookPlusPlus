@@ -34,6 +34,9 @@
     <string name="note_type">Note Type</string>
     <string name="note_bookmark_icon">Bookmark</string>
     <string name="note_context_menu_icon">Context Menu</string>
+    <string name="to_notebook">To Notebooks</string>
+    <string name="reset_calendar_icon">Reset Calendar</string>
+    <string name="to_notebook_icon">To Notebooks</string>
 
     <string-array name="color_Array">
         <item>Blau</item>
