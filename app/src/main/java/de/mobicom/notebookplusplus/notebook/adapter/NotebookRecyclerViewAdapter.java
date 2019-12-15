@@ -1,9 +1,13 @@
 package de.mobicom.notebookplusplus.notebook.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -12,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.notebook.model.Notebook;
+
+import static android.graphics.Color.parseColor;
 
 public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRecyclerViewAdapter.ViewHolder> {
 
@@ -38,6 +44,8 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notebook notebook = notebookList.get(position);
         holder.notebookTitle.setText(notebook.getName());
+
+        holder.notebookIcon.setColorFilter(parseColor(notebook.getColor()), PorterDuff.Mode.MULTIPLY);
     }
 
     // total number of cells
@@ -50,10 +58,12 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView notebookTitle;
+        ImageView notebookIcon;
 
         ViewHolder(View itemView) {
             super(itemView);
             notebookTitle = itemView.findViewById(R.id.notebookTitle);
+            notebookIcon = itemView.findViewById(R.id.notebookIcon);
             itemView.setOnClickListener(this);
         }
 
