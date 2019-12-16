@@ -6,7 +6,6 @@
         android:id="@+id/to_notebook"
         android:icon="@drawable/ic_notebook"
         android:title="@string/to_notebook_icon"
-
         app:showAsAction="ifRoom|collapseActionView" />
 
     <item
