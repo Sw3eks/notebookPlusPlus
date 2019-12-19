@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,15 +17,15 @@ import de.mobicom.notebookplusplus.note.model.Note;
 
 public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<Note> noteList;
-    private ArrayList<Note> noteListCopy = new ArrayList<>();
+    private List<Note> noteList;
+    private List<Note> noteListFiltered = new ArrayList<>();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    public NoteRecyclerViewAdapter(Context context, ArrayList<Note> noteList) {
+    public NoteRecyclerViewAdapter(Context context, List<Note> noteList) {
         this.mInflater = LayoutInflater.from(context);
         this.noteList = noteList;
-        this.noteListCopy.addAll(noteList);
+        this.noteListFiltered.addAll(noteList);
     }
 
     @Override
@@ -98,10 +98,10 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
     public void filter(String text) {
         noteList.clear();
         if(text.isEmpty()){
-            noteList.addAll(noteListCopy);
+            noteList.addAll(noteListFiltered);
         } else{
             text = text.toLowerCase();
-            for(Note item: noteListCopy){
+            for(Note item: noteListFiltered){
                 if(item.getName().toLowerCase().contains(text) || item.getDescription().toLowerCase().contains(text)){
                     noteList.add(item);
                 }
