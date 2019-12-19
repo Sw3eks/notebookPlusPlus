@@ -32,6 +32,7 @@ import de.mobicom.notebookplusplus.settings.SettingsActivity;
 
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NotebooksFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
 
@@ -70,7 +71,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
         mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
 
-        ArrayList<Notebook> notebookList = new ArrayList<>();
+        List<Notebook> notebookList = new ArrayList<>();
         notebookList.add(new Notebook(1, "Work", "#99182e", null));
         notebookList.add(new Notebook(2, "Personal\nStuff", "#447ac4", null));
         notebookList.add(new Notebook(3, "Good\nJokes", "#447825", null));
@@ -101,6 +102,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
+                    adapter.filter(newText);
 
                     return true;
                 }
@@ -108,6 +110,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
+                    adapter.filter(query);
 
                     return true;
                 }

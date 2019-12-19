@@ -94,15 +94,14 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         void onItemClick(View view, int position);
     }
 
-
     public void filter(String text) {
         noteList.clear();
-        if(text.isEmpty()){
+        if (text.isEmpty()) {
             noteList.addAll(noteListFiltered);
-        } else{
+        } else {
             text = text.toLowerCase();
-            for(Note item: noteListFiltered){
-                if(item.getName().toLowerCase().contains(text) || item.getDescription().toLowerCase().contains(text)){
+            for (Note item : noteListFiltered) {
+                if (item.getName().toLowerCase().contains(text) || item.getDescription().toLowerCase().contains(text)) {
                     noteList.add(item);
                 }
             }

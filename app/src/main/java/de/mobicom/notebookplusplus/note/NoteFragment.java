@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,7 +64,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
 
         // mEditTextNoteName = view.findViewById(R.id.edit_text_new_notebook);
 
-        ArrayList<Note> noteList = new ArrayList<>();
+        List<Note> noteList = new ArrayList<>();
         Note note1 = new Note(1, "Note 1", "text", "das ist eine Notiz", Date.valueOf("2019-05-31"));
         note1.setLastModifiedAt(Date.valueOf("2019-01-01"));
         noteList.add(note1);

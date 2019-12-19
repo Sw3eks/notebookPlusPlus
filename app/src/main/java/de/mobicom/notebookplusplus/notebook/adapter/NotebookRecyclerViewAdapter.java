@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,14 +22,16 @@ import static android.graphics.Color.parseColor;
 
 public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<Notebook> notebookList;
+    private List<Notebook> notebookList;
+    private List<Notebook> notebookListFiltered = new ArrayList<>();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    public NotebookRecyclerViewAdapter(Context context, ArrayList<Notebook> notebookList) {
+    public NotebookRecyclerViewAdapter(Context context, List<Notebook> notebookList) {
         this.mInflater = LayoutInflater.from(context);
         this.notebookList = notebookList;
+        this.notebookListFiltered.addAll(notebookList);
     }
 
     // inflates the cell layout from xml when needed
@@ -86,5 +89,20 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+    }
+
+    public void filter(String text) {
+        notebookList.clear();
+        if (text.isEmpty()) {
+            notebookList.addAll(notebookListFiltered);
+        } else {
+            text = text.toLowerCase();
+            for (Notebook item : notebookListFiltered) {
+                if (item.getName().toLowerCase().contains(text)) {
+                    notebookList.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }
