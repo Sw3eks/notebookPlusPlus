@@ -98,8 +98,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
-                    adapter.getFilter().filter(newText);
-                    return false;
+                    //adapter.getFilter().filter(newText);
                     return true;
                 }
 
