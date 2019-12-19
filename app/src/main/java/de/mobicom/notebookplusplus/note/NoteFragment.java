@@ -98,14 +98,14 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
-                    //adapter.getFilter().filter(newText);
+                    adapter.filter(newText);
                     return true;
                 }
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
-
+                    adapter.filter(query);
                     return true;
                 }
             };
@@ -117,12 +117,8 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                // Not implemented here
-                return false;
-            default:
-                break;
+        if (item.getItemId() == R.id.action_search) {
+            return true;
         }
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);

@@ -8,7 +8,7 @@
         android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:popupTheme="@style/ActionBarThemeOverlay"
-        app:showAsAction="always|collapseActionView"
+        app:showAsAction="always"
         app:theme="@style/ActionBarThemeOverlay" />
 
 </menu>

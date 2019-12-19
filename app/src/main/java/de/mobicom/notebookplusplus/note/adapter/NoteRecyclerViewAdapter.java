@@ -18,12 +18,14 @@ import de.mobicom.notebookplusplus.note.model.Note;
 public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<Note> noteList;
+    private ArrayList<Note> noteListCopy = new ArrayList<>();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     public NoteRecyclerViewAdapter(Context context, ArrayList<Note> noteList) {
         this.mInflater = LayoutInflater.from(context);
         this.noteList = noteList;
+        this.noteListCopy.addAll(noteList);
     }
 
     @Override
@@ -90,5 +92,21 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
 
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+    }
+
+
+    public void filter(String text) {
+        noteList.clear();
+        if(text.isEmpty()){
+            noteList.addAll(noteListCopy);
+        } else{
+            text = text.toLowerCase();
+            for(Note item: noteListCopy){
+                if(item.getName().toLowerCase().contains(text) || item.getDescription().toLowerCase().contains(text)){
+                    noteList.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }
