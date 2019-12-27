@@ -4,9 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,8 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
+import android.widget.ZoomControls;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -45,9 +43,10 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
-    private EditText mEditTextNoteTitle;
     private NoteRecyclerViewAdapter adapter;
     private FloatingActionButton fab;
+    private List<Note> noteList = new ArrayList<>();
+    private String notebook;
 
     @Nullable
     @Override
@@ -84,8 +83,6 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         super.onViewCreated(view, savedInstanceState);
 
         // mEditTextNoteName = view.findViewById(R.id.edit_text_new_notebook);
-
-        List<Note> noteList = new ArrayList<>();
         Note note1 = new Note(1, "Note 1", "text", "das ist eine Notiz mit einem sehr langen text lalalalaa der is sehr lang und soll nicht komplett angezeigrt werden, denn es ist nur eine Vorschau auf diese Notiz und deshalbg ist das jetzt solange huhuhuhu", Date.valueOf("2019-05-31"));
         note1.setLastModifiedAt(Date.valueOf("2019-01-01"));
         noteList.add(note1);
@@ -151,29 +148,29 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     @Override
     public void onItemClick(View view, int position) {
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteEditorFragment()).commit();
     }
 
     private void showDialog() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
-        builder.setView(inflater.inflate(R.layout.create_note_dialog, null));
-        builder.setTitle(R.string.create_new_note);
-        builder.setPositiveButton(R.string.create_button,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        // DO TASK
-                    }
-                });
-        builder.setNegativeButton(R.string.cancel_button,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        dialog.dismiss();
-                    }
-                });
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
+                .setView(inflater.inflate(R.layout.dialog_create_note, null))
+                .setTitle(R.string.create_new_note)
+                .setPositiveButton(R.string.create_button,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                // DO TASK
+                            }
+                        })
+                .setNegativeButton(R.string.cancel_button,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                dialog.dismiss();
+                            }
+                        });
 
-        mEditTextNoteTitle = getActivity().findViewById(R.id.edit_text_new_note);
-
-        View view = getActivity().getLayoutInflater().inflate(R.layout.create_notebook_dialog, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_note, null);
 
         Spinner spinner = view.findViewById(R.id.typeDropdown);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
@@ -186,34 +183,35 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         final AlertDialog dialog = builder.create();
         dialog.show();
 
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        //dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
-        mEditTextNoteTitle.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (TextUtils.isEmpty(s)) {
-
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-                } else {
-
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                }
-
-            }
-        });
+        EditText mEditTextNoteTitle = getActivity().findViewById(R.id.edit_text_new_note);
+//        mEditTextNoteTitle.addTextChangedListener(new TextWatcher() {
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before,
+//                                      int count) {
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count,
+//                                          int after) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//                if (TextUtils.isEmpty(s)) {
+//
+//                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+//
+//                } else {
+//
+//                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+//                }
+//
+//            }
+//        });
     }
 
 }

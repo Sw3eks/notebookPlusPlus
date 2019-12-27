@@ -2,6 +2,7 @@ package de.mobicom.notebookplusplus.notebook;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,7 @@ public class CreateNotebookDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.create_notebook_dialog, container);
+        return inflater.inflate(R.layout.dialog_create_notebook, container);
     }
 
 //    @Override
@@ -70,13 +71,14 @@ public class CreateNotebookDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
-                .setView(inflater.inflate(R.layout.create_notebook_dialog, null))
+                .setView(inflater.inflate(R.layout.dialog_create_notebook, null))
                 .setTitle(R.string.create_a_new_notebook)
                 .setPositiveButton(R.string.create_button,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                NotebooksFragment frag = (NotebooksFragment) getTargetFragment();
-                                frag.save(mEditTextNotebookName.toString());
+                                sendResult();
+                                //NotebooksFragment frag = (NotebooksFragment) getTargetFragment();
+                                //frag.save(mEditTextNotebookName.toString());
                             }
                         }
                 )
@@ -88,7 +90,7 @@ public class CreateNotebookDialogFragment extends DialogFragment {
                         }
                 );
 
-        View view = getActivity().getLayoutInflater().inflate(R.layout.create_notebook_dialog, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_notebook, null);
 
         Spinner spinner = view.findViewById(R.id.colorDropdown);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
@@ -98,6 +100,13 @@ public class CreateNotebookDialogFragment extends DialogFragment {
 
         b.setView(view);
         return b.create();
+    }
+
+    private void sendResult() {
+        Intent intent = new Intent();
+        intent.putExtra("RESULT_KEY", mEditTextNotebookName.getText().toString());
+        getTargetFragment().onActivityResult(
+                getTargetRequestCode(), 101, intent);
     }
 
 }

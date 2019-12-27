@@ -1,7 +1,9 @@
 package de.mobicom.notebookplusplus.notebook;
 
+
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,24 +13,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.note.NoteActivity;
 import de.mobicom.notebookplusplus.note.NoteFragment;
 import de.mobicom.notebookplusplus.notebook.adapter.NotebookRecyclerViewAdapter;
 import de.mobicom.notebookplusplus.notebook.model.Notebook;
-import de.mobicom.notebookplusplus.settings.SettingsActivity;
 
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
@@ -36,10 +38,16 @@ import java.util.List;
 
 public class NotebooksFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
 
+    private static final int DIALOG_FRAGMENT = 1;
+    private static final int RESULT_OK = 101;
+    private static final String RESULT_KEY = "RESULT_KEY";
+
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
     private EditText mEditTextNotebookName;
     private NotebookRecyclerViewAdapter adapter;
+    private List<Notebook> notebookList = new ArrayList<>();
+
 
     @Nullable
     @Override
@@ -51,9 +59,12 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager manager = getFragmentManager();
+                //showDialog();
                 CreateNotebookDialogFragment createNotebookDialogFragment = CreateNotebookDialogFragment.newInstance(getResources().getString(R.string.create_a_new_notebook));
-                createNotebookDialogFragment.show(manager, "CreateNotebookDialog");
+                createNotebookDialogFragment.setTargetFragment(NotebooksFragment.this, DIALOG_FRAGMENT);
+                if (getFragmentManager() != null) {
+                    createNotebookDialogFragment.show(getFragmentManager(), "CreateNotebookDialog");
+                }
             }
         });
         return view;
@@ -63,6 +74,8 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        //notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
     }
 
     @Override
@@ -71,10 +84,9 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
         mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
 
-        List<Notebook> notebookList = new ArrayList<>();
-        notebookList.add(new Notebook(1, "Work", "#99182e", null));
-        notebookList.add(new Notebook(2, "Personal\nStuff", "#447ac4", null));
-        notebookList.add(new Notebook(3, "Good\nJokes", "#447825", null));
+        notebookList.add(new Notebook(1, "Work", "#3498db", null));
+        notebookList.add(new Notebook(2, "Personal\nStuff", "#f39c12", null));
+        notebookList.add(new Notebook(3, "Good\nJokes", "#e74c3c", null));
 
         // set up the RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.rvNotebooks);
@@ -121,7 +133,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    void save(String fileName) {
+    private void save(String fileName) {
         try {
             OutputStreamWriter out =
                     new OutputStreamWriter(getActivity().openFileOutput(fileName, Context.MODE_PRIVATE));
@@ -136,10 +148,56 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     @Override
     public void onItemClick(View view, int position) {
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).commit();
+
+        getFragmentManager().beginTransaction().add(R.id.fragment_container, new NoteFragment()).commit();
 
         //Intent intent = new Intent(getContext(), NoteActivity.class);
         //getContext().startActivity(intent);
     }
 
+    private void showDialog() {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
+                .setView(inflater.inflate(R.layout.dialog_create_notebook, null))
+                .setTitle(R.string.create_a_new_notebook)
+                .setPositiveButton(R.string.create_button,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                NotebooksFragment frag = (NotebooksFragment) getTargetFragment();
+                                frag.save(mEditTextNotebookName.toString());
+                            }
+                        }
+                )
+                .setNegativeButton(R.string.cancel_button,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.dismiss();
+                            }
+                        }
+                );
+
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_notebook, null);
+
+        Spinner spinner = view.findViewById(R.id.colorDropdown);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.color_Array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        b.setView(view);
+
+        final AlertDialog dialog = b.create();
+        dialog.show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == RESULT_OK) {
+            String mEditTextNotebookName = data.getStringExtra(
+                    RESULT_KEY);
+            save(mEditTextNotebookName);
+        }
+
+    }
 }
