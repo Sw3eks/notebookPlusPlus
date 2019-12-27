@@ -1,22 +1,28 @@
 package de.mobicom.notebookplusplus;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import de.mobicom.notebookplusplus.notebook.model.Notebook;
 
 public class NotebookViewModel extends ViewModel {
-    /**
-     * Live Data Instance
-     */
-    private MutableLiveData<String> mName = new MutableLiveData<>();
 
-    public void setName(String name) {
-        mName.setValue(name);
+    private MutableLiveData<Notebook> selectedNotebook = new MutableLiveData<>();
+    private int noteId;
+
+    public int getNoteId() {
+        return noteId;
     }
 
-    public LiveData<String> getName() {
-        return mName;
+    public void setNoteId(int noteId) {
+        this.noteId = noteId;
     }
 
+    public MutableLiveData<Notebook> getNotebook() {
+        return selectedNotebook;
+    }
+
+    public void setNotebook(Notebook notebook) {
+        selectedNotebook.setValue(notebook);
+    }
 
 }

@@ -39,6 +39,7 @@
     <string name="to_notebook_icon">To Notebooks</string>
     <string name="new_note_name">Note name</string>
     <string name="dialog_type_label">Type</string>
+    <string name="no_data_available">No Notebooks available, start creating one...</string>
 
     <string-array name="color_Array">
         <item>Blau</item>

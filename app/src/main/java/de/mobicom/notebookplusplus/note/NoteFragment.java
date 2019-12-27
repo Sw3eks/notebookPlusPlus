@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
@@ -30,13 +31,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import de.mobicom.notebookplusplus.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.note.adapter.NoteRecyclerViewAdapter;
 import de.mobicom.notebookplusplus.note.model.Note;
+import de.mobicom.notebookplusplus.notebook.model.Notebook;
 
 
 public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
@@ -46,7 +52,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     private NoteRecyclerViewAdapter adapter;
     private FloatingActionButton fab;
     private List<Note> noteList = new ArrayList<>();
-    private String notebook;
+    private NotebookViewModel notebookViewModel;
 
     @Nullable
     @Override
@@ -76,6 +82,19 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
+
+        final Observer<Notebook> notebookObserver = new Observer<Notebook>() {
+            @Override
+            public void onChanged(@Nullable final Notebook notebook) {
+                if (notebook != null) {
+                    noteList.addAll(notebook.getNotes());
+                }
+            }
+        };
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        notebookViewModel.getNotebook().observe(this, notebookObserver);
     }
 
     @Override
@@ -83,11 +102,6 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         super.onViewCreated(view, savedInstanceState);
 
         // mEditTextNoteName = view.findViewById(R.id.edit_text_new_notebook);
-        Note note1 = new Note(1, "Note 1", "text", "das ist eine Notiz mit einem sehr langen text lalalalaa der is sehr lang und soll nicht komplett angezeigrt werden, denn es ist nur eine Vorschau auf diese Notiz und deshalbg ist das jetzt solange huhuhuhu", Date.valueOf("2019-05-31"));
-        note1.setLastModifiedAt(Date.valueOf("2019-01-01"));
-        noteList.add(note1);
-        noteList.add(new Note(2, "Note 2", "todo", "Das ist eine ToDo Liste", Date.valueOf("2019-07-15")));
-        noteList.add(new Note(3, "Note 3", "speech", "Das ist eine Audionotiz", Date.valueOf("2019-12-31")));
 
         RecyclerView recyclerView = view.findViewById(R.id.rvNotes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -148,6 +162,8 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     @Override
     public void onItemClick(View view, int position) {
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
+
+        notebookViewModel.setNoteId(position);
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteEditorFragment()).commit();
     }

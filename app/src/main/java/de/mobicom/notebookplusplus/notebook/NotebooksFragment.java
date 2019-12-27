@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,10 +34,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.note.NoteFragment;
+import de.mobicom.notebookplusplus.note.model.Note;
 import de.mobicom.notebookplusplus.notebook.adapter.NotebookRecyclerViewAdapter;
 import de.mobicom.notebookplusplus.notebook.model.Notebook;
 
 import java.io.OutputStreamWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,24 +91,24 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         super.onViewCreated(view, savedInstanceState);
 
         mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
-        mEditTextNotebookName.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        //TextView testTextView = view.findViewById(R.id.testTextView);
+        //notebookViewModel.setName(testTextView.getText().toString());
 
-            }
+        List<Note> noteList = new ArrayList<>();
+        List<Note> noteList2 = new ArrayList<>();
+        Note note1 = new Note(1, "Note 1", "text", "das ist eine Notiz mit einem sehr langen text lalalalaa der is sehr lang und soll nicht komplett angezeigrt werden, denn es ist nur eine Vorschau auf diese Notiz und deshalbg ist das jetzt solange huhuhuhu", Date.valueOf("2019-05-31"));
+        note1.setLastModifiedAt(Date.valueOf("2019-01-01"));
+        noteList.add(note1);
+        noteList.add(new Note(2, "Note 2", "todo", "Das ist eine ToDo Liste", Date.valueOf("2019-07-15")));
+        noteList.add(new Note(3, "Note 3", "speech", "Das ist eine Audionotiz", Date.valueOf("2019-12-31")));
 
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                notebookViewModel.setName(charSequence.toString());
-            }
+        noteList2.add(note1);
+        noteList2.add(new Note(2, "Notelist2 note 2", "todo", "Notelist 2 todo liste", Date.valueOf("2019-07-15")));
+        noteList2.add(new Note(3, "Note 3", "speech", "Audio von notelist 2", Date.valueOf("2019-12-31")));
 
-            @Override public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-
-        notebookList.add(new Notebook(1, "Work", "#3498db", null));
-        notebookList.add(new Notebook(2, "Personal\nStuff", "#f39c12", null));
-        notebookList.add(new Notebook(3, "Good\nJokes", "#e74c3c", null));
+        notebookList.add(new Notebook(1, "Work", "#3498db", noteList));
+        notebookList.add(new Notebook(2, "Personal\nStuff", "#f39c12", noteList2));
+        notebookList.add(new Notebook(3, "Good\nJokes", "#e74c3c", noteList));
 
         // set up the RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.rvNotebooks);
@@ -168,10 +171,9 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     public void onItemClick(View view, int position) {
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
 
-        getFragmentManager().beginTransaction().add(R.id.fragment_container, new NoteFragment()).commit();
+        notebookViewModel.setNotebook(adapter.getItem(position));
 
-        //Intent intent = new Intent(getContext(), NoteActivity.class);
-        //getContext().startActivity(intent);
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).commit();
     }
 
     private void showDialog() {
