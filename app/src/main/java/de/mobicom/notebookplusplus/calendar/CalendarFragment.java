@@ -17,7 +17,7 @@ public class CalendarFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_note, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         setHasOptionsMenu(true);
         return rootView;

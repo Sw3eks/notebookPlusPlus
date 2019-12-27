@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -21,11 +22,12 @@ import de.mobicom.notebookplusplus.R;
 public class CreateNotebookDialogFragment extends DialogFragment {
 
     private EditText mEditTextNotebookName;
+    Button positiveButton;
 
     public CreateNotebookDialogFragment() {
     }
 
-    public static CreateNotebookDialogFragment newInstance(String title) {
+    static CreateNotebookDialogFragment newInstance(String title) {
         CreateNotebookDialogFragment frag = new CreateNotebookDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
@@ -39,11 +41,21 @@ public class CreateNotebookDialogFragment extends DialogFragment {
         return inflater.inflate(R.layout.create_notebook_dialog, container);
     }
 
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        AlertDialog d = (AlertDialog) getDialog();
+//        if (d != null) {
+//            positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
+//            positiveButton.setEnabled(false);
+//        }
+//    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Get field from view
-        mEditTextNotebookName = (EditText) view.findViewById(R.id.edit_text_new_notebook);
+        mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
         // Fetch arguments from bundle and set title
         String title = getArguments().getString("title", "Enter Name");
         getDialog().setTitle(title);
@@ -60,7 +72,7 @@ public class CreateNotebookDialogFragment extends DialogFragment {
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
                 .setView(inflater.inflate(R.layout.create_notebook_dialog, null))
                 .setTitle(R.string.create_a_new_notebook)
-                .setPositiveButton(R.string.create_notebook_button,
+                .setPositiveButton(R.string.create_button,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 NotebooksFragment frag = (NotebooksFragment) getTargetFragment();
@@ -68,7 +80,7 @@ public class CreateNotebookDialogFragment extends DialogFragment {
                             }
                         }
                 )
-                .setNegativeButton(R.string.cancel_notebook_button,
+                .setNegativeButton(R.string.cancel_button,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.dismiss();
@@ -83,7 +95,6 @@ public class CreateNotebookDialogFragment extends DialogFragment {
                 R.array.color_Array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
 
         b.setView(view);
         return b.create();

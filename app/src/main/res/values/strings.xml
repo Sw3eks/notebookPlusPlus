@@ -12,10 +12,11 @@
     <string name="to_calendar">to Calendar</string>
     <string name="notebooks_title">Notebooks</string>
     <string name="create_a_new_notebook">Create a new Notebook</string>
+    <string name="create_new_note">Create a new Note</string>
 
     <string name="new_notebook_name">Notebook name</string>
-    <string name="create_notebook_button">Create</string>
-    <string name="cancel_notebook_button">Cancel</string>
+    <string name="create_button">Create</string>
+    <string name="cancel_button">Cancel</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Preference Titles -->
@@ -42,6 +43,12 @@
         <item>Orange</item>
     </string-array>
 
+    <string-array name="note_type_array">
+        <item>Text</item>
+        <item>List</item>
+        <item>Speech</item>
+    </string-array>
+
     <string name="note_title">Notes</string>
     <string name="title_activity_note">Notes</string>
     <string name="note_type">Note Type</string>
@@ -49,5 +56,7 @@
     <string name="note_context_menu_icon">Context Menu</string>
     <string name="reset_calendar_icon">Reset Calendar</string>
     <string name="to_notebook_icon">To Notebooks</string>
+    <string name="new_note_name">Title</string>
+    <string name="dialog_type_label">Type</string>
 
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/createNotebookDialog"
+    android:id="@+id/createNoteDialog"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -8,10 +8,10 @@
     android:padding="15dp">
 
     <EditText
-        android:id="@+id/edit_text_new_notebook"
+        android:id="@+id/edit_text_new_note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/new_notebook_name"
+        android:hint="@string/new_note_name"
         android:layout_marginBottom="10dp"
         android:inputType="text"
         android:importantForAutofill="no"/>
@@ -25,15 +25,15 @@
         <TextView android:layout_width="0dp"
             android:layout_weight=".7"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_color_label"
+            android:text="@string/dialog_type_label"
             android:textSize="18sp"
             android:layout_marginStart="4dp"
             />
 
-        <Spinner android:id="@+id/colorDropdown"
+        <Spinner android:id="@+id/typeDropdown"
             android:layout_width="wrap_content"
             android:layout_weight=".3"
             android:layout_height="wrap_content"
-            android:prompt="@string/dialog_color_label" />
+            android:prompt="@string/dialog_type_label" />
     </LinearLayout>
 </LinearLayout>

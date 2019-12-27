@@ -121,7 +121,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void save(String fileName) {
+    void save(String fileName) {
         try {
             OutputStreamWriter out =
                     new OutputStreamWriter(getActivity().openFileOutput(fileName, Context.MODE_PRIVATE));

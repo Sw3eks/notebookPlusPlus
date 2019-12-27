@@ -8,8 +8,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import de.mobicom.notebookplusplus.calendar.CalendarFragment;
 import de.mobicom.notebookplusplus.notebook.NotebooksFragment;
-import de.mobicom.notebookplusplus.notebook.archive.ArchiveFragment;
-import de.mobicom.notebookplusplus.notebook.deletedNotes.DeletedNotesFragment;
+import de.mobicom.notebookplusplus.archive.ArchiveFragment;
+import de.mobicom.notebookplusplus.deletedNotes.DeletedNotesFragment;
 import de.mobicom.notebookplusplus.settings.SettingsActivity;
 
 import android.os.Bundle;
