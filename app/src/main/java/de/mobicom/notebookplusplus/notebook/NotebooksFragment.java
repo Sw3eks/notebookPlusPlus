@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,8 +27,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import de.mobicom.notebookplusplus.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.note.NoteFragment;
 import de.mobicom.notebookplusplus.notebook.adapter.NotebookRecyclerViewAdapter;
@@ -47,6 +51,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     private EditText mEditTextNotebookName;
     private NotebookRecyclerViewAdapter adapter;
     private List<Notebook> notebookList = new ArrayList<>();
+    private NotebookViewModel notebookViewModel;
 
 
     @Nullable
@@ -75,7 +80,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        //notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
+        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
     }
 
     @Override
@@ -83,6 +88,20 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         super.onViewCreated(view, savedInstanceState);
 
         mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
+        mEditTextNotebookName.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                notebookViewModel.setName(charSequence.toString());
+            }
+
+            @Override public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
 
         notebookList.add(new Notebook(1, "Work", "#3498db", null));
         notebookList.add(new Notebook(2, "Personal\nStuff", "#f39c12", null));
