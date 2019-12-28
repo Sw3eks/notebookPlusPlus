@@ -4,7 +4,12 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.lifecycle.MutableLiveData;
+
 public class NotebookRepository {
+
+    private List<Notebook> notebookList = new ArrayList<>();
+    private MutableLiveData<List<Notebook>> mutableLiveData = new MutableLiveData<>();
 
     public NotebookRepository() {
 
@@ -12,6 +17,11 @@ public class NotebookRepository {
 
     public List<Notebook> getNotebookList() {
         return testData();
+    }
+
+    public MutableLiveData<List<Notebook>> getMutableLiveData() {
+        mutableLiveData.setValue(testData());
+        return mutableLiveData;
     }
 
     private List<Notebook> testData() {
@@ -32,6 +42,7 @@ public class NotebookRepository {
         notebookList.add(new Notebook(1, "Work", "#3498db", noteList));
         notebookList.add(new Notebook(2, "Personal\nStuff", "#f39c12", noteList2));
         notebookList.add(new Notebook(3, "Good\nJokes", "#e74c3c", noteList));
+
         return notebookList;
     }
 }

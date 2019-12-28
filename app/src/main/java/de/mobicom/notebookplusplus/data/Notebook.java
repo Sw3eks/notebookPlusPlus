@@ -13,7 +13,7 @@ public class Notebook {
     public Notebook() {
     }
 
-    public Notebook(int id, String name, String color, List<Note> notes) {
+    Notebook(int id, String name, String color, List<Note> notes) {
         this.id = id;
         this.name = name;
         this.color = color;

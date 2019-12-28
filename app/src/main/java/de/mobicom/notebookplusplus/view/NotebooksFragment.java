@@ -24,12 +24,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import de.mobicom.notebookplusplus.databinding.FragmentNotebooksBinding;
 import de.mobicom.notebookplusplus.utils.SimpleItemTouchHelperCallback;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
@@ -50,48 +52,60 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
-    private EditText mEditTextNotebookName;
     private NotebookRecyclerViewAdapter adapter;
     private List<Notebook> notebookList = new ArrayList<>();
     private NotebookViewModel notebookViewModel;
-    private ItemTouchHelper mItemTouchHelper;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        FragmentNotebooksBinding fragmentNotebooksBinding = FragmentNotebooksBinding.inflate(inflater, container, false);
+        //View view = inflater.inflate(R.layout.fragment_notebooks, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_notebooks, container, false);
+//        FloatingActionButton fab = view.findViewById(R.id.addNewNotebook);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //showDialog();
+//                CreateNotebookDialogFragment createNotebookDialogFragment = CreateNotebookDialogFragment.newInstance(getResources().getString(R.string.create_a_new_notebook));
+//                createNotebookDialogFragment.setTargetFragment(NotebooksFragment.this, DIALOG_FRAGMENT);
+//                if (getFragmentManager() != null) {
+//                    createNotebookDialogFragment.show(getFragmentManager(), "CreateNotebookDialog");
+//                }
+//            }
+//        });
 
-        FloatingActionButton fab = view.findViewById(R.id.addNewNotebook);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //showDialog();
-                CreateNotebookDialogFragment createNotebookDialogFragment = CreateNotebookDialogFragment.newInstance(getResources().getString(R.string.create_a_new_notebook));
-                createNotebookDialogFragment.setTargetFragment(NotebooksFragment.this, DIALOG_FRAGMENT);
-                if (getFragmentManager() != null) {
-                    createNotebookDialogFragment.show(getFragmentManager(), "CreateNotebookDialog");
-                }
-            }
-        });
+        //RecyclerView recyclerView = view.findViewById(R.id.rvNotebooks);
+        RecyclerView recyclerView = fragmentNotebooksBinding.rvNotebooks;
+        int numberOfColumns = 2;
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
+        adapter = new NotebookRecyclerViewAdapter(getActivity(), notebookList);
+        adapter.setClickListener(this);
+        adapter.setLongClickListener(this);
+        recyclerView.setAdapter(adapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
 
         final Observer<List<Notebook>> notebookListObserver = new Observer<List<Notebook>>() {
             @Override
             public void onChanged(@Nullable final List<Notebook> notebooks) {
-                if (notebooks != null) {
-                    notebookList.addAll(notebooks);
-                    adapter.notifyDataSetChanged();
-                }
+                adapter.setNotebookList(notebooks);
+//                if (notebooks != null) {
+//                    notebookList.addAll(notebooks);
+//                    adapter.notifyDataSetChanged();
+//                }
             }
         };
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         notebookViewModel.getNotebookList().observe(getViewLifecycleOwner(), notebookListObserver);
 
-        return view;
+        return fragmentNotebooksBinding.getRoot();
     }
 
     @Override
@@ -103,24 +117,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
-        //TextView testTextView = view.findViewById(R.id.testTextView);
-        //notebookViewModel.setName(testTextView.getText().toString());
-
-        // set up the RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.rvNotebooks);
-        int numberOfColumns = 2;
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
-        adapter = new NotebookRecyclerViewAdapter(getActivity(), notebookList);
-        adapter.setClickListener(this);
-        adapter.setLongClickListener(this);
-        recyclerView.setAdapter(adapter);
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
-
     }
 
     @Override
@@ -163,7 +159,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         try {
             OutputStreamWriter out =
                     new OutputStreamWriter(getActivity().openFileOutput(fileName, Context.MODE_PRIVATE));
-            out.write(mEditTextNotebookName.getText().toString());
+            //out.write(mEditTextNotebookName.getText().toString());
             out.close();
             Toast.makeText(getContext(), "Note saved!", Toast.LENGTH_SHORT).show();
         } catch (Throwable t) {
@@ -195,7 +191,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 NotebooksFragment frag = (NotebooksFragment) getTargetFragment();
-                                frag.save(mEditTextNotebookName.toString());
+                                //frag.save(mEditTextNotebookName.toString());
                             }
                         }
                 )

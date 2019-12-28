@@ -13,7 +13,6 @@ public class NotebookViewModel extends ViewModel {
 
     private NotebookRepository notebookRepository;
 
-    private MutableLiveData<List<Notebook>> notebookList = new MutableLiveData<>();
     private MutableLiveData<List<Note>> noteList = new MutableLiveData<>();
 
     private MutableLiveData<Notebook> selectedNotebook = new MutableLiveData<>();
@@ -21,19 +20,10 @@ public class NotebookViewModel extends ViewModel {
 
     public NotebookViewModel() {
         notebookRepository = new NotebookRepository();
-        loadNotebooks();
-    }
-
-    private void loadNotebooks() {
-        notebookList.setValue(notebookRepository.getNotebookList());
     }
 
     public LiveData<List<Notebook>> getNotebookList() {
-        return notebookList;
-    }
-
-    public void setNotebookList(List<Notebook> notebookList) {
-        this.notebookList.setValue(notebookList);
+        return notebookRepository.getMutableLiveData();
     }
 
     public LiveData<List<Note>> getNoteList() {
