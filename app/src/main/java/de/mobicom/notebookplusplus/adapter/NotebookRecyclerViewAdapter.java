@@ -1,7 +1,6 @@
 package de.mobicom.notebookplusplus.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,12 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
+import de.mobicom.notebookplusplus.data.Note;
 import de.mobicom.notebookplusplus.data.Notebook;
+import de.mobicom.notebookplusplus.databinding.RecyclerviewNotebookItemBinding;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 
@@ -41,17 +43,20 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     @Override
     @NonNull
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.recyclerview_notebook_item, parent, false);
-        return new ViewHolder(view);
+        RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding =
+                DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.recyclerview_notebook_item, parent, false);
+        //View view = mInflater.inflate(R.layout.recyclerview_notebook_item, parent, false);
+        return new ViewHolder(recyclerviewNotebookItemBinding);
     }
 
     // binds the data to the TextView in each cell
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notebook notebook = notebookList.get(position);
-        holder.notebookTitle.setText(notebook.getName());
+        holder.recyclerviewNotebookItemBinding.setNotebook(notebook);
+        //holder.notebookTitle.setText(notebook.getName());
 
-        holder.notebookIcon.setColorFilter(parseColor(notebook.getColor()), PorterDuff.Mode.MULTIPLY);
+        //holder.notebookIcon.setColorFilter(parseColor(notebook.getColor()), PorterDuff.Mode.MULTIPLY);
     }
 
     // total number of cells
@@ -75,15 +80,22 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
         return true;
     }
 
+    public void setNotebookList(List<Notebook> notebookList) {
+        this.notebookList = notebookList;
+        notifyDataSetChanged();
+    }
+
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ItemTouchHelperViewHolder {
-        TextView notebookTitle;
-        ImageView notebookIcon;
+        private RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding;
+        //TextView notebookTitle;
+        //ImageView notebookIcon;
 
-        ViewHolder(View itemView) {
-            super(itemView);
-            notebookTitle = itemView.findViewById(R.id.notebookTitle);
-            notebookIcon = itemView.findViewById(R.id.notebookIcon);
+        ViewHolder(RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding) {
+            super(recyclerviewNotebookItemBinding.getRoot());
+            this.recyclerviewNotebookItemBinding = recyclerviewNotebookItemBinding;
+            //notebookTitle = itemView.findViewById(R.id.notebookTitle);
+            //notebookIcon = itemView.findViewById(R.id.notebookIcon);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
