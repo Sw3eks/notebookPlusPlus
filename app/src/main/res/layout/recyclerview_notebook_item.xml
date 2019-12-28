@@ -15,25 +15,25 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="188dp"
-        android:layout_marginTop="15dp"
-        android:clipToPadding="false">
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/notebookIcon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/notebook_icon"
-            android:outlineProvider="bounds"
-            android:src="@drawable/notebook_icon" />
+            android:src="@drawable/notebook_icon"
+            android:tintMode="multiply"
+            android:tint="@{notebook.color}"/>
 
         <TextView
             android:id="@+id/notebookTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:text="@{notebook.name}"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="@{notebook.name"/>
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

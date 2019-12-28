@@ -103,7 +103,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         };
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        notebookViewModel.getNotebookList().observe(getViewLifecycleOwner(), notebookListObserver);
+        notebookViewModel.getNotebookList().observe(getActivity(), notebookListObserver);
 
         return fragmentNotebooksBinding.getRoot();
     }
