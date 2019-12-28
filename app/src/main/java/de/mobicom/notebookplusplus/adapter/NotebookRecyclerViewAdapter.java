@@ -1,6 +1,7 @@
 package de.mobicom.notebookplusplus.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,21 +10,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.data.Notebook;
+import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
+import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 
 import static android.graphics.Color.parseColor;
 
-public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRecyclerViewAdapter.ViewHolder> {
+public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRecyclerViewAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     private List<Notebook> notebookList;
     private List<Notebook> notebookListFiltered = new ArrayList<>();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private ItemClickListener mLongClickListener;
 
     // data is passed into the constructor
     public NotebookRecyclerViewAdapter(Context context, List<Notebook> notebookList) {
@@ -55,9 +60,23 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
         return notebookList.size();
     }
 
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(notebookList, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(notebookList, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ItemTouchHelperViewHolder {
         TextView notebookTitle;
         ImageView notebookIcon;
 
@@ -66,11 +85,24 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
             notebookTitle = itemView.findViewById(R.id.notebookTitle);
             notebookIcon = itemView.findViewById(R.id.notebookIcon);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            if (mLongClickListener != null)
+                mLongClickListener.onLongItemClick(view, getAdapterPosition());
+            return true;
+        }
+
+        @Override
+        public void onItemSelected() {
+            itemView.setElevation(5);
         }
     }
 
@@ -84,9 +116,15 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
         this.mClickListener = itemClickListener;
     }
 
+    public void setLongClickListener(ItemClickListener itemClickListener) {
+        this.mLongClickListener = itemClickListener;
+    }
+
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+
+        void onLongItemClick(View view, int position);
     }
 
     public void filter(String text) {

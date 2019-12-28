@@ -28,7 +28,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import de.mobicom.notebookplusplus.utils.SimpleItemTouchHelperCallback;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.data.Note;
@@ -52,6 +54,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     private NotebookRecyclerViewAdapter adapter;
     private List<Notebook> notebookList = new ArrayList<>();
     private NotebookViewModel notebookViewModel;
+    private ItemTouchHelper mItemTouchHelper;
 
 
     @Nullable
@@ -111,7 +114,13 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
         adapter = new NotebookRecyclerViewAdapter(getActivity(), notebookList);
         adapter.setClickListener(this);
+        adapter.setLongClickListener(this);
         recyclerView.setAdapter(adapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
+
     }
 
     @Override
@@ -170,6 +179,11 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         notebookViewModel.setNoteList(adapter.getItem(position).getNotes());
 
         getFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).commit();
+    }
+
+    @Override
+    public void onLongItemClick(View view, int position) {
+        Toast.makeText(getContext(), "Click at: " + position, Toast.LENGTH_LONG).show();
     }
 
     private void showDialog() {
