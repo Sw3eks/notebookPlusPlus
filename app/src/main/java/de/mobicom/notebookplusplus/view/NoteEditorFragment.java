@@ -42,8 +42,9 @@ public class NoteEditorFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                selectedNote.setDescription(s.toString());
-                notebookViewModel.getNote().setValue(selectedNote);
+                //TODO: Save changes of notes in the correct note/notebook
+                //selectedNote.setDescription(s.toString());
+                //notebookViewModel.getNote().setValue(selectedNote);
             }
 
             @Override
@@ -58,7 +59,6 @@ public class NoteEditorFragment extends Fragment {
             @Override
             public void onChanged(@Nullable final Note note) {
                 if (note != null) {
-                    selectedNote = note;
                     mEditTextEditNote.setText(note.getDescription());
                     //mTitle = note.getName();
                 }
@@ -67,7 +67,6 @@ public class NoteEditorFragment extends Fragment {
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         notebookViewModel.getNote().observe(getViewLifecycleOwner(), noteObserver);
-        mEditTextEditNote.setText(selectedNote.getDescription());
 
         return view;
     }

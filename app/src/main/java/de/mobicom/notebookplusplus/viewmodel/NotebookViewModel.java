@@ -2,6 +2,7 @@ package de.mobicom.notebookplusplus.viewmodel;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import de.mobicom.notebookplusplus.data.Note;
@@ -11,10 +12,12 @@ import de.mobicom.notebookplusplus.data.NotebookRepository;
 public class NotebookViewModel extends ViewModel {
 
     private NotebookRepository notebookRepository;
+
     private MutableLiveData<List<Notebook>> notebookList = new MutableLiveData<>();
+    private MutableLiveData<List<Note>> noteList = new MutableLiveData<>();
+
     private MutableLiveData<Notebook> selectedNotebook = new MutableLiveData<>();
     private MutableLiveData<Note> selectedNote = new MutableLiveData<>();
-    private int noteId;
 
     public NotebookViewModel() {
         notebookRepository = new NotebookRepository();
@@ -25,7 +28,7 @@ public class NotebookViewModel extends ViewModel {
         notebookList.setValue(notebookRepository.getNotebookList());
     }
 
-    public MutableLiveData<List<Notebook>> getNotebookList() {
+    public LiveData<List<Notebook>> getNotebookList() {
         return notebookList;
     }
 
@@ -33,15 +36,15 @@ public class NotebookViewModel extends ViewModel {
         this.notebookList.setValue(notebookList);
     }
 
-    public int getNoteId() {
-        return noteId;
+    public LiveData<List<Note>> getNoteList() {
+        return noteList;
     }
 
-    public void setNoteId(int noteId) {
-        this.noteId = noteId;
+    public void setNoteList(List<Note> noteList) {
+        this.noteList.setValue(noteList);
     }
 
-    public MutableLiveData<Notebook> getNotebook() {
+    public LiveData<Notebook> getNotebook() {
         return selectedNotebook;
     }
 
@@ -49,7 +52,7 @@ public class NotebookViewModel extends ViewModel {
         selectedNotebook.setValue(notebook);
     }
 
-    public MutableLiveData<Note> getNote() {
+    public LiveData<Note> getNote() {
         return selectedNote;
     }
 

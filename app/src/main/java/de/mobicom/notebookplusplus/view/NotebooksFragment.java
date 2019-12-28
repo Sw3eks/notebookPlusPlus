@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,6 +72,22 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
                 }
             }
         });
+
+        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
+
+        final Observer<List<Notebook>> notebookListObserver = new Observer<List<Notebook>>() {
+            @Override
+            public void onChanged(@Nullable final List<Notebook> notebooks) {
+                if (notebooks != null) {
+                    notebookList.addAll(notebooks);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        };
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        notebookViewModel.getNotebookList().observe(getViewLifecycleOwner(), notebookListObserver);
+
         return view;
     }
 
@@ -78,8 +95,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
     }
 
     @Override
@@ -89,22 +104,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
         //TextView testTextView = view.findViewById(R.id.testTextView);
         //notebookViewModel.setName(testTextView.getText().toString());
-
-        List<Note> noteList = new ArrayList<>();
-        List<Note> noteList2 = new ArrayList<>();
-        Note note1 = new Note(1, "Note 1", "text", "das ist eine Notiz mit einem sehr langen text lalalalaa der is sehr lang und soll nicht komplett angezeigrt werden, denn es ist nur eine Vorschau auf diese Notiz und deshalbg ist das jetzt solange huhuhuhu", Date.valueOf("2019-05-31"));
-        note1.setLastModifiedAt(Date.valueOf("2019-01-01"));
-        noteList.add(note1);
-        noteList.add(new Note(2, "Note 2", "todo", "Das ist eine ToDo Liste", Date.valueOf("2019-07-15")));
-        noteList.add(new Note(3, "Note 3", "speech", "Das ist eine Audionotiz", Date.valueOf("2019-12-31")));
-
-        noteList2.add(note1);
-        noteList2.add(new Note(2, "Notelist2 note 2", "todo", "Notelist 2 todo liste", Date.valueOf("2019-07-15")));
-        noteList2.add(new Note(3, "Note 3", "speech", "Audio von notelist 2", Date.valueOf("2019-12-31")));
-
-        notebookList.add(new Notebook(1, "Work", "#3498db", noteList));
-        notebookList.add(new Notebook(2, "Personal\nStuff", "#f39c12", noteList2));
-        notebookList.add(new Notebook(3, "Good\nJokes", "#e74c3c", noteList));
 
         // set up the RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.rvNotebooks);
@@ -168,6 +167,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
 
         notebookViewModel.setNotebook(adapter.getItem(position));
+        notebookViewModel.setNoteList(adapter.getItem(position).getNotes());
 
         getFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).commit();
     }

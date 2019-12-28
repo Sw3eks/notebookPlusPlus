@@ -159,7 +159,6 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     public void onItemClick(View view, int position) {
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
 
-        notebookViewModel.setNoteId(position);
         notebookViewModel.setNote(adapter.getItem(position));
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteEditorFragment()).commit();
