@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.archive;
+package de.mobicom.notebookplusplus.view;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -17,15 +17,16 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import de.mobicom.notebookplusplus.R;
 
-public class ArchiveFragment extends Fragment {
+public class DeletedNotesFragment extends Fragment {
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_archive, container, false);
+        return inflater.inflate(R.layout.fragment_deleted_notes, container, false);
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class ArchiveFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_archive, menu);
+        inflater.inflate(R.menu.menu_deleted_notes, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);

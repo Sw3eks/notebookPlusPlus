@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.notebook;
+package de.mobicom.notebookplusplus.view;
 
 
 import android.app.SearchManager;
@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,12 +28,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import de.mobicom.notebookplusplus.NotebookViewModel;
+import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.note.NoteFragment;
-import de.mobicom.notebookplusplus.note.model.Note;
-import de.mobicom.notebookplusplus.notebook.adapter.NotebookRecyclerViewAdapter;
-import de.mobicom.notebookplusplus.notebook.model.Notebook;
+import de.mobicom.notebookplusplus.data.Note;
+import de.mobicom.notebookplusplus.adapter.NotebookRecyclerViewAdapter;
+import de.mobicom.notebookplusplus.data.Notebook;
 
 import java.io.OutputStreamWriter;
 import java.sql.Date;

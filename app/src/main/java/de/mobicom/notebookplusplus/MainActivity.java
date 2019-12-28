@@ -6,11 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import de.mobicom.notebookplusplus.calendar.CalendarFragment;
-import de.mobicom.notebookplusplus.archive.ArchiveFragment;
-import de.mobicom.notebookplusplus.deletedNotes.DeletedNotesFragment;
-import de.mobicom.notebookplusplus.notebook.NotebooksFragment;
-import de.mobicom.notebookplusplus.settings.SettingsActivity;
+import de.mobicom.notebookplusplus.view.CalendarFragment;
+import de.mobicom.notebookplusplus.view.ArchiveFragment;
+import de.mobicom.notebookplusplus.view.DeletedNotesFragment;
+import de.mobicom.notebookplusplus.view.NotebooksFragment;
+import de.mobicom.notebookplusplus.view.SettingsActivity;
 
 import android.os.Bundle;
 import android.view.MenuItem;

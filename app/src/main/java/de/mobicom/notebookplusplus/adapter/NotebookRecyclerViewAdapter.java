@@ -1,9 +1,7 @@
-package de.mobicom.notebookplusplus.notebook.adapter;
+package de.mobicom.notebookplusplus.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.notebook.model.Notebook;
+import de.mobicom.notebookplusplus.data.Notebook;
 
 import static android.graphics.Color.parseColor;
 

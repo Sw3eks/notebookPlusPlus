@@ -1,18 +1,15 @@
-package de.mobicom.notebookplusplus.note;
+package de.mobicom.notebookplusplus.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.note.adapter.NoteRecyclerViewAdapter;
-import de.mobicom.notebookplusplus.note.model.Note;
+import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-
-import java.util.ArrayList;
 
 public class NoteActivity extends AppCompatActivity  implements NoteRecyclerViewAdapter.ItemClickListener {
 

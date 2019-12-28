@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.notebook;
+package de.mobicom.notebookplusplus.view;
 
 import android.app.Dialog;
 import android.content.DialogInterface;

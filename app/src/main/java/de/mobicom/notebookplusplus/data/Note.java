@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.note.model;
+package de.mobicom.notebookplusplus.data;
 
 import java.util.Date;
 import java.util.Objects;

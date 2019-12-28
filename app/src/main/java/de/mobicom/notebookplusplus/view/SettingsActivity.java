@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.settings;
+package de.mobicom.notebookplusplus.view;
 
 import android.os.Bundle;
 

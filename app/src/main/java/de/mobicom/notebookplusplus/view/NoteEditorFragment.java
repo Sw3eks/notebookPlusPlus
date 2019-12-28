@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.note;
+package de.mobicom.notebookplusplus.view;
 
 import android.os.Bundle;
 
@@ -17,15 +17,16 @@ import android.widget.EditText;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import de.mobicom.notebookplusplus.NotebookViewModel;
+import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.notebook.model.Notebook;
+import de.mobicom.notebookplusplus.data.Note;
 
 public class NoteEditorFragment extends Fragment {
 
     private NotebookViewModel notebookViewModel;
     private EditText mEditTextEditNote;
-
+    private Note selectedNote;
+    private String mTitle;
 
     @Nullable
     @Override
@@ -41,7 +42,8 @@ public class NoteEditorFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                
+                selectedNote.setDescription(s.toString());
+                notebookViewModel.getNote().setValue(selectedNote);
             }
 
             @Override
@@ -50,6 +52,23 @@ public class NoteEditorFragment extends Fragment {
             }
         });
 
+        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
+
+        final Observer<Note> noteObserver = new Observer<Note>() {
+            @Override
+            public void onChanged(@Nullable final Note note) {
+                if (note != null) {
+                    selectedNote = note;
+                    mEditTextEditNote.setText(note.getDescription());
+                    //mTitle = note.getName();
+                }
+            }
+        };
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        notebookViewModel.getNote().observe(getViewLifecycleOwner(), noteObserver);
+        mEditTextEditNote.setText(selectedNote.getDescription());
+
         return view;
     }
 
@@ -57,20 +76,6 @@ public class NoteEditorFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
-
-        final Observer<Notebook> notebookObserver = new Observer<Notebook>() {
-            @Override
-            public void onChanged(@Nullable final Notebook notebook) {
-                if (notebook != null) {
-                    mEditTextEditNote.setText(notebook.getNotes().get(notebookViewModel.getNoteId()).getDescription());
-                }
-            }
-        };
-
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        notebookViewModel.getNotebook().observe(this, notebookObserver);
     }
 
     @Override

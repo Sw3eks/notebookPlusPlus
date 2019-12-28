@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.calendar;
+package de.mobicom.notebookplusplus.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

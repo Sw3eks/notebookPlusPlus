@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.note.adapter;
+package de.mobicom.notebookplusplus.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.note.model.Note;
+import de.mobicom.notebookplusplus.data.Note;
 
 public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerViewAdapter.ViewHolder> {
 

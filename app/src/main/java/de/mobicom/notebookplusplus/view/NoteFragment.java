@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.note;
+package de.mobicom.notebookplusplus.view;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -14,13 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ZoomControls;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,17 +28,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import de.mobicom.notebookplusplus.NotebookViewModel;
+import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.note.adapter.NoteRecyclerViewAdapter;
-import de.mobicom.notebookplusplus.note.model.Note;
-import de.mobicom.notebookplusplus.notebook.model.Notebook;
+import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
+import de.mobicom.notebookplusplus.data.Note;
+import de.mobicom.notebookplusplus.data.Notebook;
 
 
 public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
@@ -76,12 +71,6 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
             }
         });
 
-        return rootView;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
 
         final Observer<Notebook> notebookObserver = new Observer<Notebook>() {
@@ -94,7 +83,14 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         };
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        notebookViewModel.getNotebook().observe(this, notebookObserver);
+        notebookViewModel.getNotebook().observe(getViewLifecycleOwner(), notebookObserver);
+
+        return rootView;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -164,6 +160,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
 
         notebookViewModel.setNoteId(position);
+        notebookViewModel.setNote(adapter.getItem(position));
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteEditorFragment()).commit();
     }
