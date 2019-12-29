@@ -22,9 +22,9 @@
 
         <ImageView
             android:id="@+id/noteType"
+            imageResource="@{note.type}"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:background="@drawable/ic_note_type_text"
             android:contentDescription="@string/note_type" />
 
 

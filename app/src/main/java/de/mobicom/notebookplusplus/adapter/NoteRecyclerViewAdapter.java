@@ -41,6 +41,7 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Note note = noteList.get(position);
         holder.recyclerviewNoteItemBinding.setNote(note);
+
 //
 //        switch (note.getType()) {
 //            case "todo":

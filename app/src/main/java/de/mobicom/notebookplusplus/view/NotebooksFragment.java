@@ -81,10 +81,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
             @Override
             public void onChanged(@Nullable final List<Notebook> notebooks) {
                 adapter.setNotebookList(notebooks);
-//                if (notebooks != null) {
-//                    notebookList.addAll(notebooks);
-//                    adapter.notifyDataSetChanged();
-//                }
             }
         };
 
