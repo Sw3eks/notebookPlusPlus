@@ -1,69 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
-    android:orientation="vertical"
-    android:padding="12dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/noteType"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:background="@drawable/ic_note_type_text"
-        android:contentDescription="@string/note_type" />
-
-
-    <TextView
-        android:id="@+id/noteTitle"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_toEndOf="@+id/noteType"
-        android:gravity="center_horizontal|top"
-        android:textColor="@android:color/black"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:padding="12dp">
 
-    <TextView
-        android:id="@+id/noteModifiedDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true" />
+        <ImageView
+            android:id="@+id/noteType"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_note_type_text"
+            android:contentDescription="@string/note_type" />
 
-    <TextView
-        android:id="@+id/noteContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/noteType"
-        android:maxLines="2" />
 
-    <ImageView
-        android:id="@+id/noteCalendarIcon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_below="@id/noteType"
-        android:layout_toEndOf="@id/noteContent"
-        android:contentDescription="@string/note_context_menu_icon"
-        tools:src="@drawable/ic_calendar" />
+        <TextView
+            android:id="@+id/noteTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/noteType"
+            android:gravity="center_horizontal|top"
+            android:text="@{note.name}"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/noteBookmarkIcon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_below="@id/noteType"
-        android:layout_toEndOf="@id/noteCalendarIcon"
-        android:contentDescription="@string/note_context_menu_icon"
-        tools:src="@drawable/ic_note_bookmark" />
+        <TextView
+            android:id="@+id/noteModifiedDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@{note.lastModifiedAt.toString()}" />
 
-    <ImageView
-        android:id="@+id/noteContextMenuItem"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_below="@id/noteType"
-        android:layout_toEndOf="@id/noteBookmarkIcon"
-        android:contentDescription="@string/note_context_menu_icon"
-        tools:src="@drawable/ic_note_context_menu" />
+        <TextView
+            android:id="@+id/noteContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/noteType"
+            android:maxLines="2"
+            android:text="@{note.description}" />
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/noteCalendarIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_below="@id/noteType"
+            android:layout_toEndOf="@id/noteContent"
+            android:contentDescription="@string/note_context_menu_icon"
+            tools:src="@drawable/ic_calendar" />
+
+        <ImageView
+            android:id="@+id/noteBookmarkIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_below="@id/noteType"
+            android:layout_toEndOf="@id/noteCalendarIcon"
+            android:contentDescription="@string/note_context_menu_icon"
+            tools:src="@drawable/ic_note_bookmark" />
+
+        <ImageView
+            android:id="@+id/noteContextMenuItem"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_below="@id/noteType"
+            android:layout_toEndOf="@id/noteBookmarkIcon"
+            android:contentDescription="@string/note_context_menu_icon"
+            tools:src="@drawable/ic_note_context_menu" />
+
+    </RelativeLayout>
+
+    <data>
+
+        <variable
+            name="position"
+            type="java.lang.Integer" />
+
+        <variable
+            name="note"
+            type="de.mobicom.notebookplusplus.data.Note" />
+    </data>
+</layout>

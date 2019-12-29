@@ -51,7 +51,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     private static final String RESULT_KEY = "RESULT_KEY";
 
     private SearchView searchView = null;
-    private SearchView.OnQueryTextListener queryTextListener;
     private NotebookRecyclerViewAdapter adapter;
     private List<Notebook> notebookList = new ArrayList<>();
     private NotebookViewModel notebookViewModel;
@@ -80,7 +79,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         RecyclerView recyclerView = fragmentNotebooksBinding.rvNotebooks;
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
-        adapter = new NotebookRecyclerViewAdapter(getActivity(), notebookList);
+        adapter = new NotebookRecyclerViewAdapter();
         adapter.setClickListener(this);
         adapter.setLongClickListener(this);
         recyclerView.setAdapter(adapter);
@@ -115,11 +114,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_notebooks, menu);
 
@@ -132,7 +126,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
-            queryTextListener = new SearchView.OnQueryTextListener() {
+            SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
@@ -174,7 +168,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         notebookViewModel.setNotebook(adapter.getItem(position));
         notebookViewModel.setNoteList(adapter.getItem(position).getNotes());
 
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).addToBackStack(null).commit();
     }
 
     @Override

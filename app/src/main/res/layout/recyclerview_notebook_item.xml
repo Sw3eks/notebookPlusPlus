@@ -13,7 +13,7 @@
     </data>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="188dp"
         android:layout_marginTop="15dp">
 
@@ -23,8 +23,8 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/notebook_icon"
             android:src="@drawable/notebook_icon"
-            android:tintMode="multiply"
-            android:tint="@{notebook.color}"/>
+            android:tintMode="multiply"/>
+<!--            android:tint="@{notebook.color}"/>-->
 
         <TextView
             android:id="@+id/notebookTitle"

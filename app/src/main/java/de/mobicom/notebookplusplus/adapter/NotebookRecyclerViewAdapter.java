@@ -1,12 +1,8 @@
 package de.mobicom.notebookplusplus.adapter;
 
-import android.content.Context;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,27 +12,20 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.data.Note;
 import de.mobicom.notebookplusplus.data.Notebook;
 import de.mobicom.notebookplusplus.databinding.RecyclerviewNotebookItemBinding;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 
-import static android.graphics.Color.parseColor;
-
 public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRecyclerViewAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     private List<Notebook> notebookList;
     private List<Notebook> notebookListFiltered = new ArrayList<>();
-    private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private ItemClickListener mLongClickListener;
 
     // data is passed into the constructor
-    public NotebookRecyclerViewAdapter(Context context, List<Notebook> notebookList) {
-        this.mInflater = LayoutInflater.from(context);
-        this.notebookList = notebookList;
-        this.notebookListFiltered.addAll(notebookList);
+    public NotebookRecyclerViewAdapter() {
     }
 
     // inflates the cell layout from xml when needed
@@ -66,7 +55,7 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     }
 
     @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
+    public void onItemMove(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(notebookList, i, i + 1);
@@ -77,11 +66,15 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
             }
         }
         notifyItemMoved(fromPosition, toPosition);
-        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
     }
 
     public void setNotebookList(List<Notebook> notebookList) {
         this.notebookList = notebookList;
+        this.notebookListFiltered = notebookList;
         notifyDataSetChanged();
     }
 
@@ -115,6 +108,10 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
         @Override
         public void onItemSelected() {
             itemView.setElevation(5);
+        }
+
+        @Override
+        public void onItemClear() {
         }
     }
 

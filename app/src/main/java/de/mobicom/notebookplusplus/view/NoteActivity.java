@@ -28,7 +28,7 @@ public class NoteActivity extends AppCompatActivity  implements NoteRecyclerView
 
         RecyclerView recyclerView = findViewById(R.id.rvNotes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new NoteRecyclerViewAdapter(this, null);
+        adapter = new NoteRecyclerViewAdapter();
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }

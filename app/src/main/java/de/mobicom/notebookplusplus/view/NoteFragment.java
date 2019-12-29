@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import de.mobicom.notebookplusplus.databinding.FragmentNoteBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
@@ -46,30 +47,40 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     private SearchView.OnQueryTextListener queryTextListener;
     private NoteRecyclerViewAdapter adapter;
     private FloatingActionButton fab;
+    private Notebook selectedNotebook;
     private List<Note> noteList = new ArrayList<>();
     private NotebookViewModel notebookViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_note, container, false);
+        FragmentNoteBinding fragmentNoteBinding = FragmentNoteBinding.inflate(inflater, container, false);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
-
         }
         setHasOptionsMenu(true);
 
-        fab = rootView.findViewById(R.id.addNewNote);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        fab = rootView.findViewById(R.id.addNewNote);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                showDialog();
+//            }
+//        });
 
-                showDialog();
-            }
-        });
+
+        RecyclerView recyclerView = fragmentNoteBinding.rvNotes;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        DividerItemDecoration itemDecor = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecor);
+        adapter = new NoteRecyclerViewAdapter();
+        adapter.setClickListener(this);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
 
@@ -77,7 +88,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
             @Override
             public void onChanged(@Nullable final Notebook notebook) {
                 if (notebook != null) {
-                    noteList.addAll(notebook.getNotes());
+                    adapter.setNoteList(notebook.getNotes());
                 }
             }
         };
@@ -85,32 +96,8 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         notebookViewModel.getNotebook().observe(getViewLifecycleOwner(), notebookObserver);
 
-        return rootView;
+        return fragmentNoteBinding.getRoot();
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // mEditTextNoteName = view.findViewById(R.id.edit_text_new_notebook);
-
-        RecyclerView recyclerView = view.findViewById(R.id.rvNotes);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(itemDecor);
-        adapter = new NoteRecyclerViewAdapter(getActivity(), noteList);
-        adapter.setClickListener(this);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-
-
-    }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -161,7 +148,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
 
         notebookViewModel.setNote(adapter.getItem(position));
 
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteEditorFragment()).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteEditorFragment()).addToBackStack(null).commit();
     }
 
     private void showDialog() {
