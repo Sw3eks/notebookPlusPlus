@@ -19,12 +19,11 @@
 
         <ImageView
             android:id="@+id/notebookIcon"
+            colorFilter="@{notebook.color}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/notebook_icon"
-            android:src="@drawable/notebook_icon"
-            android:tintMode="multiply"/>
-<!--            android:tint="@{notebook.color}"/>-->
+            android:src="@drawable/notebook_icon" />
 
         <TextView
             android:id="@+id/notebookTitle"

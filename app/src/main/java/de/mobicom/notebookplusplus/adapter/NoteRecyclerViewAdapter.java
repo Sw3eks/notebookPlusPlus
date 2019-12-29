@@ -41,19 +41,6 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Note note = noteList.get(position);
         holder.recyclerviewNoteItemBinding.setNote(note);
-
-//
-//        switch (note.getType()) {
-//            case "todo":
-//                //holder.noteType.setBackgroundResource(R.drawable.ic_note_type_todo);
-//                break;
-//            case "speech":
-//                //holder.noteType.setBackgroundResource(R.drawable.ic_note_type_speech);
-//                break;
-//            default:
-//                //holder.noteType.setBackgroundResource(R.drawable.ic_note_type_text);
-//        }
-
     }
 
     @Override

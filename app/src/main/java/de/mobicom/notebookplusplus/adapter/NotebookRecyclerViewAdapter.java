@@ -45,7 +45,7 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notebook notebook = notebookList.get(position);
         holder.recyclerviewNotebookItemBinding.setNotebook(notebook);
-        holder.recyclerviewNotebookItemBinding.notebookIcon.setColorFilter(parseColor(notebook.getColor()), PorterDuff.Mode.MULTIPLY);
+        //holder.recyclerviewNotebookItemBinding.notebookIcon.setColorFilter(parseColor(notebook.getColor()), PorterDuff.Mode.MULTIPLY);
 
     }
 
