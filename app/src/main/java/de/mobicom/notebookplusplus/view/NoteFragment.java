@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -31,9 +32,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.databinding.FragmentNoteBinding;
+import de.mobicom.notebookplusplus.utils.SimpleItemTouchHelperCallback;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
@@ -79,8 +82,14 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         recyclerView.addItemDecoration(itemDecor);
         adapter = new NoteRecyclerViewAdapter();
         adapter.setClickListener(this);
+        adapter.setLongClickListener(this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
+
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
 
@@ -149,6 +158,11 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         notebookViewModel.setNote(adapter.getItem(position));
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteEditorFragment()).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onLongItemClick(View view, int position) {
+        Toast.makeText(getContext(), "Click at: " + position, Toast.LENGTH_LONG).show();
     }
 
     private void showDialog() {

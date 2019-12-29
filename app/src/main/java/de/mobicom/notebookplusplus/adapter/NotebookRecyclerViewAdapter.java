@@ -1,5 +1,6 @@
 package de.mobicom.notebookplusplus.adapter;
 
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import de.mobicom.notebookplusplus.data.Notebook;
 import de.mobicom.notebookplusplus.databinding.RecyclerviewNotebookItemBinding;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
+
+import static android.graphics.Color.parseColor;
 
 public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRecyclerViewAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
@@ -34,7 +37,6 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding =
                 DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.recyclerview_notebook_item, parent, false);
-        //View view = mInflater.inflate(R.layout.recyclerview_notebook_item, parent, false);
         return new ViewHolder(recyclerviewNotebookItemBinding);
     }
 
@@ -43,9 +45,8 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notebook notebook = notebookList.get(position);
         holder.recyclerviewNotebookItemBinding.setNotebook(notebook);
-        //holder.notebookTitle.setText(notebook.getName());
+        holder.recyclerviewNotebookItemBinding.notebookIcon.setColorFilter(parseColor(notebook.getColor()), PorterDuff.Mode.MULTIPLY);
 
-        //holder.notebookIcon.setColorFilter(parseColor(notebook.getColor()), PorterDuff.Mode.MULTIPLY);
     }
 
     // total number of cells
@@ -81,14 +82,10 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ItemTouchHelperViewHolder {
         private RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding;
-        //TextView notebookTitle;
-        //ImageView notebookIcon;
 
         ViewHolder(RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding) {
             super(recyclerviewNotebookItemBinding.getRoot());
             this.recyclerviewNotebookItemBinding = recyclerviewNotebookItemBinding;
-            //notebookTitle = itemView.findViewById(R.id.notebookTitle);
-            //notebookIcon = itemView.findViewById(R.id.notebookIcon);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }

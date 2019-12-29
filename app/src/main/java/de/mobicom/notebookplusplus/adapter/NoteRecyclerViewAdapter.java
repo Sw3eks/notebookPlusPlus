@@ -23,6 +23,8 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
     private List<Note> noteList;
     private List<Note> noteListFiltered = new ArrayList<>();
     private ItemClickListener mClickListener;
+    private ItemClickListener mLongClickListener;
+
 
     public NoteRecyclerViewAdapter() {
     }
@@ -75,18 +77,27 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder, View.OnLongClickListener {
         private RecyclerviewNoteItemBinding recyclerviewNoteItemBinding;
 
         ViewHolder(RecyclerviewNoteItemBinding recyclerviewNoteItemBinding) {
             super(recyclerviewNoteItemBinding.getRoot());
             this.recyclerviewNoteItemBinding = recyclerviewNoteItemBinding;
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            if (mLongClickListener != null)
+                mLongClickListener.onLongItemClick(view, getAdapterPosition());
+
+            return true;
         }
 
         @Override
@@ -96,7 +107,7 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
 
         @Override
         public void onItemClear() {
-
+            itemView.setBackgroundColor(0);
         }
     }
 
@@ -108,8 +119,15 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         this.mClickListener = itemClickListener;
     }
 
+    public void setLongClickListener(ItemClickListener itemClickListener) {
+        this.mLongClickListener = itemClickListener;
+    }
+
+
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+
+        void onLongItemClick(View view, int position);
     }
 
     public void filter(String text) {

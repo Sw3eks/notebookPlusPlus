@@ -60,7 +60,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentNotebooksBinding fragmentNotebooksBinding = FragmentNotebooksBinding.inflate(inflater, container, false);
-        //View view = inflater.inflate(R.layout.fragment_notebooks, container, false);
 
 //        FloatingActionButton fab = view.findViewById(R.id.addNewNotebook);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +74,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 //            }
 //        });
 
-        //RecyclerView recyclerView = view.findViewById(R.id.rvNotebooks);
         RecyclerView recyclerView = fragmentNotebooksBinding.rvNotebooks;
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));

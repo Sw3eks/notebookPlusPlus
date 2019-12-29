@@ -38,4 +38,9 @@ public class NoteActivity extends AppCompatActivity  implements NoteRecyclerView
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
     }
 
+    @Override
+    public void onLongItemClick(View view, int position) {
+
+    }
+
 }
