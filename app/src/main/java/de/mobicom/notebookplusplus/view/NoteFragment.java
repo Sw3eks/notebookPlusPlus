@@ -49,7 +49,6 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
     private NoteRecyclerViewAdapter adapter;
-    private FloatingActionButton fab;
     private Notebook selectedNotebook;
     private List<Note> noteList = new ArrayList<>();
     private NotebookViewModel notebookViewModel;
@@ -66,15 +65,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         }
         setHasOptionsMenu(true);
 
-//        fab = rootView.findViewById(R.id.addNewNote);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                showDialog();
-//            }
-//        });
-
+        fragmentNoteBinding.setHandler(this);
 
         RecyclerView recyclerView = fragmentNoteBinding.rvNotes;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -163,6 +154,10 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     @Override
     public void onLongItemClick(View view, int position) {
         Toast.makeText(getContext(), "Click at: " + position, Toast.LENGTH_LONG).show();
+    }
+
+    public void onAddNote() {
+        showDialog();
     }
 
     private void showDialog() {

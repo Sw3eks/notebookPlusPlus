@@ -61,18 +61,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentNotebooksBinding fragmentNotebooksBinding = FragmentNotebooksBinding.inflate(inflater, container, false);
 
-//        FloatingActionButton fab = view.findViewById(R.id.addNewNotebook);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //showDialog();
-//                CreateNotebookDialogFragment createNotebookDialogFragment = CreateNotebookDialogFragment.newInstance(getResources().getString(R.string.create_a_new_notebook));
-//                createNotebookDialogFragment.setTargetFragment(NotebooksFragment.this, DIALOG_FRAGMENT);
-//                if (getFragmentManager() != null) {
-//                    createNotebookDialogFragment.show(getFragmentManager(), "CreateNotebookDialog");
-//                }
-//            }
-//        });
+        fragmentNotebooksBinding.setHandler(this);
 
         RecyclerView recyclerView = fragmentNotebooksBinding.rvNotebooks;
         int numberOfColumns = 2;
@@ -172,6 +161,15 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     @Override
     public void onLongItemClick(View view, int position) {
         Toast.makeText(getContext(), "Click at: " + position, Toast.LENGTH_LONG).show();
+    }
+
+    public void onAddNotebook() {
+        //showDialog();
+        CreateNotebookDialogFragment createNotebookDialogFragment = CreateNotebookDialogFragment.newInstance(getResources().getString(R.string.create_a_new_notebook));
+        createNotebookDialogFragment.setTargetFragment(NotebooksFragment.this, DIALOG_FRAGMENT);
+        if (getFragmentManager() != null) {
+            createNotebookDialogFragment.show(getFragmentManager(), "CreateNotebookDialog");
+        }
     }
 
     private void showDialog() {

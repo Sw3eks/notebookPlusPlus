@@ -2,6 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="handler"
+            type="de.mobicom.notebookplusplus.view.NoteFragment" />
+
+    </data>
+
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
@@ -36,6 +44,7 @@
             android:tint="@android:color/white"
             app:fabSize="auto"
             app:rippleColor="@android:color/white"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@android:drawable/ic_input_add"
+            android:onClick="@{() -> handler.onAddNote()}"/>
     </RelativeLayout>
 </layout>

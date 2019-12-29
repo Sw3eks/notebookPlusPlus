@@ -2,6 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="position"
+            type="java.lang.Integer" />
+
+        <variable
+            name="note"
+            type="de.mobicom.notebookplusplus.data.Note" />
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,15 +83,4 @@
             tools:src="@drawable/ic_note_context_menu" />
 
     </RelativeLayout>
-
-    <data>
-
-        <variable
-            name="position"
-            type="java.lang.Integer" />
-
-        <variable
-            name="note"
-            type="de.mobicom.notebookplusplus.data.Note" />
-    </data>
 </layout>
