@@ -40,9 +40,9 @@ public class NotebookRepository {
         noteList2.add(new Note(2, "Notelist2 note 2", R.drawable.ic_note_type_text, "Notelist 2 todo liste", Date.valueOf("2019-07-15")));
         noteList2.add(new Note(3, "Note 3", R.drawable.ic_note_type_speech, "Audio von notelist 2", Date.valueOf("2019-12-31")));
 
-        notebookList.add(new Notebook(1, "Work", "#3498db", noteList));
-        notebookList.add(new Notebook(2, "Personal\nStuff", "#f39c12", noteList2));
-        notebookList.add(new Notebook(3, "Good\nJokes", "#e74c3c", noteList));
+        notebookList.add(new Notebook(1, "Work", R.color.colorPeterRiver, noteList));
+        notebookList.add(new Notebook(2, "Personal\nStuff", R.color.colorOrange, noteList2));
+        notebookList.add(new Notebook(3, "Good\nJokes", R.color.colorAmethyst, noteList));
 
         return notebookList;
     }

@@ -7,13 +7,13 @@ public class Notebook {
 
     private int id;
     private String name;
-    private String color;
+    private int color;
     private List<Note> notes;
 
     public Notebook() {
     }
 
-    Notebook(int id, String name, String color, List<Note> notes) {
+    Notebook(int id, String name, int color, List<Note> notes) {
         this.id = id;
         this.name = name;
         this.color = color;
@@ -36,11 +36,11 @@ public class Notebook {
         this.name = name;
     }
 
-    public String getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(int color) {
         this.color = color;
     }
 
@@ -58,9 +58,9 @@ public class Notebook {
         if (!(o instanceof Notebook)) return false;
         Notebook notebook = (Notebook) o;
         return getId() == notebook.getId() &&
-                Objects.equals(getName(), notebook.getName()) &&
-                Objects.equals(getColor(), notebook.getColor()) &&
-                Objects.equals(getNotes(), notebook.getNotes());
+                getColor() == notebook.getColor() &&
+                getName().equals(notebook.getName()) &&
+                getNotes().equals(notebook.getNotes());
     }
 
     @Override
@@ -68,7 +68,7 @@ public class Notebook {
         return "Notebook{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", color='" + color + '\'' +
+                ", color=" + color +
                 ", notes=" + notes +
                 '}';
     }

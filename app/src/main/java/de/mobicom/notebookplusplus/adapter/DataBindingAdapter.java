@@ -15,8 +15,8 @@ public class DataBindingAdapter {
     }
 
     @BindingAdapter("colorFilter")
-    public static void setColorFilter(ImageView imageView, String resource) {
-        imageView.setColorFilter(parseColor(resource), PorterDuff.Mode.MULTIPLY);
+    public static void setColorFilter(ImageView imageView, int resource) {
+        imageView.setColorFilter(resource, PorterDuff.Mode.MULTIPLY);
     }
 
 }
