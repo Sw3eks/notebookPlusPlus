@@ -1,6 +1,7 @@
 package de.mobicom.notebookplusplus.adapter;
 
 import android.graphics.PorterDuff;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
@@ -17,6 +18,11 @@ public class DataBindingAdapter {
     @BindingAdapter("colorFilter")
     public static void setColorFilter(ImageView imageView, String resource) {
         imageView.setColorFilter(parseColor(resource), PorterDuff.Mode.MULTIPLY);
+    }
+
+    @BindingAdapter("visibleGone")
+    public static void showHide(View view, boolean show) {
+        view.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
 }

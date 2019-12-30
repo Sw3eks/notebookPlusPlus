@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#16a085</color>
     <color name="colorAccent">#1abc9c</color>
     <color name="colorClouds">#ecf0f1</color>
+    <color name="colorAsbestos">#7f8c8d</color>
 
     <!-- Notebook Colors    -->
     <color name="colorOrange">#f39c12</color>

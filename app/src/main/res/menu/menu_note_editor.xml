@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/create_notification"
+        android:icon="@drawable/ic_calendar"
+        android:title="@string/to_calendar"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/moveToArchive"
+        android:title="@string/move_note_to_archive" />
+
+    <item
+        android:id="@+id/deleteNote"
+        android:title="@string/delete_note" />
+
+</menu>

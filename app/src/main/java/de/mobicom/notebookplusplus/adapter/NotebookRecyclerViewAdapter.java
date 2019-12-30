@@ -10,6 +10,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.data.Notebook;
@@ -47,7 +48,7 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     // total number of cells
     @Override
     public int getItemCount() {
-        return notebookList.size();
+        return notebookList == null ? 0 : notebookList.size();
     }
 
     @Override
@@ -68,7 +69,7 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     public void onItemDismiss(int position) {
     }
 
-    public void setNotebookList(List<Notebook> notebookList) {
+    public void setNotebookList(final List<Notebook> notebookList) {
         this.notebookList = notebookList;
         this.notebookListFiltered = notebookList;
         notifyDataSetChanged();

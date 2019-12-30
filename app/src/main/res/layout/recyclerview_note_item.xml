@@ -9,6 +9,10 @@
             type="java.lang.Integer" />
 
         <variable
+            name="handler"
+            type="de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter" />
+
+        <variable
             name="note"
             type="de.mobicom.notebookplusplus.data.Note" />
     </data>
@@ -23,6 +27,7 @@
             android:id="@+id/noteType"
             imageResource="@{note.type}"
             android:layout_width="32dp"
+
             android:layout_height="32dp"
             android:contentDescription="@string/note_type"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +83,8 @@
             android:layout_height="32dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/note_context_menu_icon"
-            android:src="@drawable/ic_note_bookmark"
+            android:onClick="@{() -> handler.onBookmarkNote()}"
+            android:src="@drawable/ic_note_bookmark_disabled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/noteContextMenuItem" />
 
@@ -87,6 +93,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:contentDescription="@string/note_context_menu_icon"
+            android:onClick="@{() -> handler.onOpenContextMenu()}"
             android:src="@drawable/ic_note_context_menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

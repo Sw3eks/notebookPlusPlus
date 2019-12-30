@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +21,7 @@ import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 
 public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerViewAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
-    private List<Note> noteList;
+    private List<Note> noteList = new ArrayList<>();
     private List<Note> noteListFiltered = new ArrayList<>();
     private ItemClickListener mClickListener;
     private ItemClickListener mLongClickListener;
@@ -41,6 +42,7 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Note note = noteList.get(position);
         holder.recyclerviewNoteItemBinding.setNote(note);
+        holder.recyclerviewNoteItemBinding.setHandler(this);
     }
 
     @Override
@@ -49,8 +51,8 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
     }
 
     public void setNoteList(List<Note> noteList) {
-        this.noteList = noteList;
-        this.noteListFiltered = noteList;
+        this.noteList.addAll(noteList);
+        this.noteListFiltered.addAll(noteList);
         notifyDataSetChanged();
     }
 
@@ -63,6 +65,14 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
     @Override
     public void onItemDismiss(int position) {
 
+    }
+
+    public void onBookmarkNote() {
+        System.out.println("Bookmarked");
+    }
+
+    public void onOpenContextMenu() {
+        System.out.println("Context");
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder, View.OnLongClickListener {
@@ -130,6 +140,6 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
                 }
             }
         }
-        notifyDataSetChanged();
+        setNoteList(noteList);
     }
 }

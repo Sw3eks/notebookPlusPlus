@@ -8,6 +8,11 @@
             name="handler"
             type="de.mobicom.notebookplusplus.view.NotebooksFragment" />
 
+        <variable
+            name="isEmpty"
+            type="boolean" />
+
+
     </data>
 
     <RelativeLayout
@@ -19,7 +24,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvNotebooks"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            visibleGone="@{!isEmpty}"/>
 
         <TextView
             android:id="@+id/empty_view"
@@ -27,7 +33,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/no_data_available"
-            android:visibility="gone" />
+            visibleGone="@{isEmpty}" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addNewNotebook"

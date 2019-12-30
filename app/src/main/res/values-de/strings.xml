@@ -40,6 +40,8 @@
     <string name="new_note_name">Note name</string>
     <string name="dialog_type_label">Type</string>
     <string name="no_data_available">No Notebooks available, start creating one...</string>
+    <string name="note_content_hint">Type something...</string>
+    <string name="delete_note">Delete</string>
 
     <string-array name="color_Array">
         <item>Blau</item>

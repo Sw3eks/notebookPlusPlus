@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
@@ -11,12 +12,15 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import de.mobicom.notebookplusplus.databinding.FragmentNoteEditorBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.data.Note;
@@ -24,17 +28,17 @@ import de.mobicom.notebookplusplus.data.Note;
 public class NoteEditorFragment extends Fragment {
 
     private NotebookViewModel notebookViewModel;
-    private EditText mEditTextEditNote;
     private Note selectedNote;
     private String mTitle;
+    private FragmentNoteEditorBinding fragmentNoteEditorBinding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_note_editor, container, false);
+        fragmentNoteEditorBinding = FragmentNoteEditorBinding.inflate(inflater, container, false);
+        setHasOptionsMenu(true);
 
-        mEditTextEditNote = view.findViewById(R.id.editNote);
-        mEditTextEditNote.addTextChangedListener(new TextWatcher() {
+        fragmentNoteEditorBinding.editNote.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -59,33 +63,38 @@ public class NoteEditorFragment extends Fragment {
             @Override
             public void onChanged(@Nullable final Note note) {
                 if (note != null) {
-                    mEditTextEditNote.setText(note.getDescription());
+                    fragmentNoteEditorBinding.setNote(note);
+                    //mEditTextEditNote.setText(note.getDescription());
                     //mTitle = note.getName();
                 }
             }
         };
 
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         notebookViewModel.getNote().observe(getViewLifecycleOwner(), noteObserver);
 
-        return view;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        return fragmentNoteEditorBinding.getRoot();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_note, menu);
+        inflater.inflate(R.menu.menu_note_editor, menu);
 
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+            case R.id.moveToArchive:
+                Toast.makeText(getContext(), "Archived", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.deleteNote:
+                Toast.makeText(getContext(), "Deleted", Toast.LENGTH_LONG).show();
+                break;
+        }
+
+        return true;
     }
 }

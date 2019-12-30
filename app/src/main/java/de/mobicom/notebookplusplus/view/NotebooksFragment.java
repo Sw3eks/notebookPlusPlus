@@ -49,12 +49,13 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     private NotebookRecyclerViewAdapter adapter;
     private List<Notebook> notebookList = new ArrayList<>();
     private NotebookViewModel notebookViewModel;
+    private FragmentNotebooksBinding fragmentNotebooksBinding;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentNotebooksBinding fragmentNotebooksBinding = FragmentNotebooksBinding.inflate(inflater, container, false);
+        fragmentNotebooksBinding = FragmentNotebooksBinding.inflate(inflater, container, false);
 
         fragmentNotebooksBinding.setHandler(this);
 
@@ -72,15 +73,25 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
 
-        final Observer<List<Notebook>> notebookListObserver = new Observer<List<Notebook>>() {
+        notebookViewModel.getNotebookList().observe(this, new Observer<List<Notebook>>() {
             @Override
-            public void onChanged(@Nullable final List<Notebook> notebooks) {
-                adapter.setNotebookList(notebooks);
+            public void onChanged(List<Notebook> notebooks) {
+                if (notebooks != null) {
+                    fragmentNotebooksBinding.setIsEmpty(false);
+                    adapter.setNotebookList(notebooks);
+                }
             }
-        };
+        });
 
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        notebookViewModel.getNotebookList().observe(getActivity(), notebookListObserver);
+//        final Observer<List<Notebook>> notebookListObserver = new Observer<List<Notebook>>() {
+//            @Override
+//            public void onChanged(@Nullable final List<Notebook> notebooks) {
+//                adapter.setNotebookList(notebooks);
+//            }
+//        };
+//
+//        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+//        notebookViewModel.getNotebookList().observe(getActivity(), notebookListObserver);
 
         return fragmentNotebooksBinding.getRoot();
     }
@@ -144,7 +155,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
 
         notebookViewModel.setNotebook(adapter.getItem(position));
-        notebookViewModel.setNoteList(adapter.getItem(position).getNotes());
 
         getFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).addToBackStack(null).commit();
     }
