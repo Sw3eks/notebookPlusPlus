@@ -41,10 +41,10 @@
             android:backgroundTint="@color/colorPrimary"
             android:clickable="true"
             android:focusable="true"
+            android:onClick="@{() -> handler.onAddNotebook()}"
             android:tint="@android:color/white"
             app:fabSize="auto"
             app:rippleColor="@android:color/white"
-            app:srcCompat="@android:drawable/ic_input_add"
-            android:onClick="@{() -> handler.onAddNotebook()}"/>
+            app:srcCompat="@android:drawable/ic_input_add" />
     </RelativeLayout>
 </layout>

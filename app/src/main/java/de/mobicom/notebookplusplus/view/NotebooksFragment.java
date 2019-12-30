@@ -14,11 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,12 +32,10 @@ import de.mobicom.notebookplusplus.databinding.FragmentNotebooksBinding;
 import de.mobicom.notebookplusplus.utils.SimpleItemTouchHelperCallback;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.data.Note;
 import de.mobicom.notebookplusplus.adapter.NotebookRecyclerViewAdapter;
 import de.mobicom.notebookplusplus.data.Notebook;
 
 import java.io.OutputStreamWriter;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
