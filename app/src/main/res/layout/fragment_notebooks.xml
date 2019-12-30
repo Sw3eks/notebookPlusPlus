@@ -12,7 +12,6 @@
             name="isEmpty"
             type="boolean" />
 
-
     </data>
 
     <RelativeLayout
@@ -23,17 +22,17 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvNotebooks"
+            visibleGone="@{!isEmpty}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            visibleGone="@{!isEmpty}"/>
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/empty_view"
+            visibleGone="@{isEmpty}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/no_data_available"
-            visibleGone="@{isEmpty}" />
+            android:text="@string/no_data_available" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addNewNotebook"

@@ -8,6 +8,10 @@
             name="handler"
             type="de.mobicom.notebookplusplus.view.NoteFragment" />
 
+        <variable
+            name="isEmpty"
+            type="boolean" />
+
     </data>
 
     <RelativeLayout
@@ -41,10 +45,10 @@
             android:backgroundTint="@color/colorPrimary"
             android:clickable="true"
             android:focusable="true"
+            android:onClick="@{() -> handler.onAddNote()}"
             android:tint="@android:color/white"
             app:fabSize="auto"
             app:rippleColor="@android:color/white"
-            app:srcCompat="@android:drawable/ic_input_add"
-            android:onClick="@{() -> handler.onAddNote()}"/>
+            app:srcCompat="@android:drawable/ic_input_add" />
     </RelativeLayout>
 </layout>

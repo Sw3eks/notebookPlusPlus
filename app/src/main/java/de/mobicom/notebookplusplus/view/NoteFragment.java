@@ -16,11 +16,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -40,23 +35,22 @@ import de.mobicom.notebookplusplus.utils.SimpleItemTouchHelperCallback;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
-import de.mobicom.notebookplusplus.data.Note;
 import de.mobicom.notebookplusplus.data.Notebook;
 
 
 public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
+    public static final String TAG = "NoteFragmentTag";
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
     private NoteRecyclerViewAdapter adapter;
-    private Notebook selectedNotebook;
-    private List<Note> noteList = new ArrayList<>();
     private NotebookViewModel notebookViewModel;
+    private FragmentNoteBinding fragmentNoteBinding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentNoteBinding fragmentNoteBinding = FragmentNoteBinding.inflate(inflater, container, false);
+        fragmentNoteBinding = FragmentNoteBinding.inflate(inflater, container, false);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
@@ -81,22 +75,34 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
 
+        return fragmentNoteBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
 
-        final Observer<Notebook> notebookObserver = new Observer<Notebook>() {
+        notebookViewModel.getNotebook().observe(this, new Observer<Notebook>() {
             @Override
-            public void onChanged(@Nullable final Notebook notebook) {
+            public void onChanged(Notebook notebook) {
                 if (notebook != null) {
                     adapter.setNoteList(notebook.getNotes());
+                    fragmentNoteBinding.setIsEmpty(false);
                 }
             }
-        };
+        });
+//        final Observer<Notebook> notebookObserver = new Observer<Notebook>() {
+//            @Override
+//            public void onChanged(@Nullable final Notebook notebook) {
+//                if (notebook != null) {
+//                    adapter.setNoteList(notebook.getNotes());
+//                }
+//            }
+//        };
 
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        notebookViewModel.getNotebook().observe(getViewLifecycleOwner(), notebookObserver);
-
-        return fragmentNoteBinding.getRoot();
+        //notebookViewModel.getNotebook().observe(getViewLifecycleOwner(), notebookObserver);
     }
 
     @Override

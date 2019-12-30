@@ -4,11 +4,11 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -21,7 +21,7 @@ import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 
 public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerViewAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
-    private List<Note> noteList = new ArrayList<>();
+    private List<Note> noteList;
     private List<Note> noteListFiltered = new ArrayList<>();
     private ItemClickListener mClickListener;
     private ItemClickListener mLongClickListener;
@@ -51,8 +51,10 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
     }
 
     public void setNoteList(List<Note> noteList) {
-        this.noteList.addAll(noteList);
-        this.noteListFiltered.addAll(noteList);
+        this.noteList = noteList;
+        if (noteListFiltered.isEmpty()) {
+            this.noteListFiltered = noteList.stream().collect(Collectors.<Note>toList());
+        }
         notifyDataSetChanged();
     }
 

@@ -47,7 +47,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
     private SearchView searchView = null;
     private NotebookRecyclerViewAdapter adapter;
-    private List<Notebook> notebookList = new ArrayList<>();
     private NotebookViewModel notebookViewModel;
     private FragmentNotebooksBinding fragmentNotebooksBinding;
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -71,7 +72,9 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
 
     public void setNotebookList(final List<Notebook> notebookList) {
         this.notebookList = notebookList;
-        this.notebookListFiltered = notebookList;
+        if (notebookListFiltered.isEmpty()) {
+            this.notebookListFiltered = notebookList.stream().collect(Collectors.<Notebook>toList());
+        }
         notifyDataSetChanged();
     }
 
