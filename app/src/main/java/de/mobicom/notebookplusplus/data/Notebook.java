@@ -23,9 +23,6 @@ public class Notebook {
 
     private List<Note> notes;
 
-    public Notebook() {
-    }
-
     public Notebook(String name, int priority, String color, List<Note> notes) {
         this.name = name;
         this.priority = priority;

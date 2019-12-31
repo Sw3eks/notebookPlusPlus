@@ -14,8 +14,7 @@ public class Note {
 
     @NonNull
     private String name;
-
-    @NonNull
+    
     private int type;
 
     private int priority;
@@ -43,6 +42,7 @@ public class Note {
         this.id = id;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
@@ -51,12 +51,21 @@ public class Note {
         return type;
     }
 
+    public int getPriority() {
+        return priority;
+    }
+
     public String getDescription() {
         return description;
     }
 
+    @NonNull
     public LocalDate getCreatedAt() {
         return createdAt;
+    }
+
+    public void setCreatedAt(@NonNull LocalDate createdAt) {
+        this.createdAt = createdAt;
     }
 
     public LocalDate getLastModifiedAt() {
