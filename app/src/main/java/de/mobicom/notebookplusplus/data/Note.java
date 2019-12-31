@@ -1,26 +1,38 @@
 package de.mobicom.notebookplusplus.data;
 
-import java.util.Date;
-import java.util.Objects;
+import java.time.LocalDate;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "note_table")
 public class Note {
 
+    @PrimaryKey(autoGenerate = true)
     private int id;
+
+    @NonNull
     private String name;
+
+    @NonNull
     private int type;
+
+    private int priority;
+
     private String description;
-    private Date createdAt;
-    private Date lastModifiedAt;
 
-    public Note() {
-    }
+    @NonNull
+    private LocalDate createdAt;
 
-    public Note(int id, String name, int type, String description, Date createdAt) {
-        this.id = id;
+    private LocalDate lastModifiedAt;
+
+    public Note(String name, int type, int priority, String description) {
         this.name = name;
         this.type = type;
+        this.priority = priority;
         this.description = description;
-        this.createdAt = createdAt;
+        this.createdAt = LocalDate.now();
     }
 
     public int getId() {
@@ -35,53 +47,24 @@ public class Note {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getType() {
         return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getLastModifiedAt() {
+    public LocalDate getLastModifiedAt() {
         return lastModifiedAt;
     }
 
-    public void setLastModifiedAt(Date lastModifiedAt) {
+    public void setLastModifiedAt(LocalDate lastModifiedAt) {
         this.lastModifiedAt = lastModifiedAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Note)) return false;
-        Note note = (Note) o;
-        return getId() == note.getId() &&
-                getType() == note.getType() &&
-                getName().equals(note.getName()) &&
-                getDescription().equals(note.getDescription()) &&
-                getCreatedAt().equals(note.getCreatedAt()) &&
-                Objects.equals(getLastModifiedAt(), note.getLastModifiedAt());
     }
 
     @Override
@@ -90,6 +73,7 @@ public class Note {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
+                ", priority=" + priority +
                 ", description='" + description + '\'' +
                 ", createdAt=" + createdAt +
                 ", lastModifiedAt=" + lastModifiedAt +

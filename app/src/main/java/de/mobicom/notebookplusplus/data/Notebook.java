@@ -3,19 +3,32 @@ package de.mobicom.notebookplusplus.data;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "notebook_table")
 public class Notebook {
 
+    @PrimaryKey(autoGenerate = true)
     private int id;
+
+    @NonNull
     private String name;
+
+    private int priority;
+
+    @NonNull
     private String color;
+
     private List<Note> notes;
 
     public Notebook() {
     }
 
-    Notebook(int id, String name, String color, List<Note> notes) {
-        this.id = id;
+    public Notebook(String name, int priority, String color, List<Note> notes) {
         this.name = name;
+        this.priority = priority;
         this.color = color;
         this.notes = notes;
     }
@@ -32,8 +45,8 @@ public class Notebook {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getPriority() {
+        return priority;
     }
 
     public String getColor() {
@@ -48,19 +61,16 @@ public class Notebook {
         return notes;
     }
 
-    public void setNotes(List<Note> notes) {
-        this.notes = notes;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Notebook)) return false;
         Notebook notebook = (Notebook) o;
         return getId() == notebook.getId() &&
-                getColor().equals(notebook.getColor()) &&
+                getPriority() == notebook.getPriority() &&
                 getName().equals(notebook.getName()) &&
-                getNotes().equals(notebook.getNotes());
+                getColor().equals(notebook.getColor()) &&
+                Objects.equals(getNotes(), notebook.getNotes());
     }
 
     @Override
@@ -68,6 +78,7 @@ public class Notebook {
         return "Notebook{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", priority=" + priority +
                 ", color='" + color + '\'' +
                 ", notes=" + notes +
                 '}';
