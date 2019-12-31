@@ -49,6 +49,26 @@ public class NotebookViewModel extends AndroidViewModel {
         return allNotebooks;
     }
 
+    public void insert(Note note) {
+        noteRepository.insert(note);
+    }
+
+    public void update(Note note) {
+        noteRepository.update(note);
+    }
+
+    public void delete(Note note) {
+        noteRepository.delete(note);
+    }
+
+    public void deleteAllNotes() {
+        noteRepository.deleteAllNotes();
+    }
+
+    public LiveData<List<Note>> getAllNotesFromNotebook(long notebookId) {
+        return noteRepository.getAllNotes(notebookId);
+    }
+
     public LiveData<Notebook> getNotebook() {
         return selectedNotebook;
     }

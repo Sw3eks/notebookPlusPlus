@@ -5,9 +5,13 @@ import java.time.LocalDateTime;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "note_table")
+@Entity(tableName = "note_table", foreignKeys =
+@ForeignKey(entity = Notebook.class,
+        parentColumns = "notebook_id",
+        childColumns = "notebook_parent_id"))
 public class Note {
 
     @PrimaryKey(autoGenerate = true)
@@ -33,7 +37,8 @@ public class Note {
     @ColumnInfo(name = "last_modified_date")
     private LocalDateTime lastModifiedAt;
 
-    public Note(@NonNull String name, int type, int priority, String description) {
+    public Note(long notebookParentId, @NonNull String name, int type, int priority, String description) {
+        this.notebookParentId = notebookParentId;
         this.name = name;
         this.type = type;
         this.priority = priority;

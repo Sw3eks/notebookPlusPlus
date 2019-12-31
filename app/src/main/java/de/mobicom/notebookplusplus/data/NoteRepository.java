@@ -15,7 +15,6 @@ public class NoteRepository {
     public NoteRepository(Application application) {
         NotebookDatabase database = NotebookDatabase.getInstance(application);
         noteDao = database.noteDao();
-        allNotes = noteDao.getAllNotes();
 
     }
 
@@ -35,8 +34,8 @@ public class NoteRepository {
         new NoteRepository.DeleteAllNotesAsyncTask(noteDao).execute();
     }
 
-    public LiveData<List<Note>> getAllNotes() {
-        return allNotes;
+    public LiveData<List<Note>> getAllNotes(long notebookId) {
+        return noteDao.getAllNotes(notebookId);
     }
 
     private static class InsertNoteAsyncTask extends AsyncTask<Note, Void, Void> {
@@ -91,6 +90,13 @@ public class NoteRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             noteDao.deleteAllNotes();
+            return null;
+        }
+    }
+
+    private static class SelectNotesAsyncTask extends AsyncTask<Note, Void, Void> {
+        @Override
+        protected Void doInBackground(Note... notes) {
             return null;
         }
     }
