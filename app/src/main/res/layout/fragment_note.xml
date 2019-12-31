@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -22,16 +23,18 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvNotes"
+            visibleGone="@{!isEmpty}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/recyclerview_note_item" />
 
         <TextView
             android:id="@+id/empty_view"
+            visibleGone="@{isEmpty}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/no_data_available"
-            android:visibility="gone" />
+            android:text="@string/no_data_available" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addNewNote"
@@ -46,9 +49,7 @@
             android:clickable="true"
             android:focusable="true"
             android:onClick="@{() -> handler.onAddNote()}"
-            android:tint="@android:color/white"
             app:fabSize="auto"
-            app:rippleColor="@android:color/white"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@drawable/ic_add" />
     </RelativeLayout>
 </layout>

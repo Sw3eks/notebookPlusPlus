@@ -1,27 +1,52 @@
 package de.mobicom.notebookplusplus.viewmodel;
 
+import android.app.Application;
+
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import de.mobicom.notebookplusplus.data.Note;
+import de.mobicom.notebookplusplus.data.NoteRepository;
 import de.mobicom.notebookplusplus.data.Notebook;
 import de.mobicom.notebookplusplus.data.NotebookRepository;
 
-public class NotebookViewModel extends ViewModel {
-
+public class NotebookViewModel extends AndroidViewModel {
     private NotebookRepository notebookRepository;
+    private NoteRepository noteRepository;
+    private LiveData<List<Notebook>> allNotebooks;
 
     private MutableLiveData<Notebook> selectedNotebook = new MutableLiveData<>();
     private MutableLiveData<Note> selectedNote = new MutableLiveData<>();
 
-    public NotebookViewModel() {
-        notebookRepository = new NotebookRepository();
+    public NotebookViewModel(@NonNull Application application) {
+        super(application);
+        notebookRepository = new NotebookRepository(application);
+        noteRepository = new NoteRepository(application);
+        allNotebooks = notebookRepository.getAllNotebooks();
     }
 
-    public LiveData<List<Notebook>> getNotebookList() {
-        return notebookRepository.getMutableLiveData();
+    public void insert(Notebook notebook) {
+        notebookRepository.insert(notebook);
+    }
+
+    public void update(Notebook notebook) {
+        notebookRepository.update(notebook);
+    }
+
+    public void delete(Notebook notebook) {
+        notebookRepository.delete(notebook);
+    }
+
+    public void deleteAllNotebooks() {
+        notebookRepository.deleteAllNotebooks();
+    }
+
+    public LiveData<List<Notebook>> getAllNotebooks() {
+        return allNotebooks;
     }
 
     public LiveData<Notebook> getNotebook() {

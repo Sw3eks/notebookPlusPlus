@@ -14,7 +14,7 @@ public class Note {
 
     @NonNull
     private String name;
-    
+
     private int type;
 
     private int priority;

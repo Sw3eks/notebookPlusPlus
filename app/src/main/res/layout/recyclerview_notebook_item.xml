@@ -16,7 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="188dp"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="8dp">
 
         <ImageView
             android:id="@+id/notebookIcon"
@@ -43,8 +43,7 @@
             android:elevation="1dp"
             android:gravity="center"
             android:text="@{notebook.name}"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             app:layout_constraintBottom_toBottomOf="@+id/notebookIcon"
             app:layout_constraintEnd_toEndOf="@+id/notebookIcon"
             app:layout_constraintStart_toStartOf="@+id/notebookIcon"

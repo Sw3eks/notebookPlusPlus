@@ -88,8 +88,10 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
             @Override
             public void onChanged(Notebook notebook) {
                 if (notebook != null) {
-                    adapter.setNoteList(notebook.getNotes());
+                    //adapter.setNoteList(notebook.getNotes());
                     fragmentNoteBinding.setIsEmpty(false);
+                } else {
+                    fragmentNoteBinding.setIsEmpty(true);
                 }
             }
         });

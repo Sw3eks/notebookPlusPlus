@@ -59,9 +59,9 @@ public abstract class NotebookDatabase extends RoomDatabase {
             noteDao.insert(new Note("Note 2", R.drawable.ic_note_type_todo, 2, "Das ist eine Liste"));
             noteDao.insert(new Note("Note 3", R.drawable.ic_note_type_speech, 3, "Das ist eine Audionotiz"));
 
-            notebookDao.insert(new Notebook("Work", 1, "#f39c12", noteDao.getAllNotes().getValue()));
-            notebookDao.insert(new Notebook("Personal\nStuff", 3, "#3498db", null));
-            notebookDao.insert(new Notebook("Good\nJokes", 2, "#9b59b6", null));
+            notebookDao.insert(new Notebook("Work", 1, "#f39c12"));
+            notebookDao.insert(new Notebook("Personal\nStuff", 3, "#3498db"));
+            notebookDao.insert(new Notebook("Good\nJokes", 2, "#9b59b6"));
             return null;
         }
     }

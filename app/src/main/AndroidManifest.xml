@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        android:allowBackup="true">
         <activity
             android:name=".view.SettingsActivity"
             android:label="@string/title_activity_settings" />
@@ -23,10 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.NoteActivity"
-            android:label="@string/title_activity_note"
-            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

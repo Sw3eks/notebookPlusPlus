@@ -21,13 +21,13 @@ public class Notebook {
     @NonNull
     private String color;
 
-    private List<Note> notes;
+    //private List<Note> notes;
 
-    public Notebook(String name, int priority, String color, List<Note> notes) {
+
+    public Notebook(@NonNull String name, int priority, @NonNull String color) {
         this.name = name;
         this.priority = priority;
         this.color = color;
-        this.notes = notes;
     }
 
     public int getId() {
@@ -54,30 +54,7 @@ public class Notebook {
         this.color = color;
     }
 
-    public List<Note> getNotes() {
-        return notes;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Notebook)) return false;
-        Notebook notebook = (Notebook) o;
-        return getId() == notebook.getId() &&
-                getPriority() == notebook.getPriority() &&
-                getName().equals(notebook.getName()) &&
-                getColor().equals(notebook.getColor()) &&
-                Objects.equals(getNotes(), notebook.getNotes());
-    }
-
-    @Override
-    public String toString() {
-        return "Notebook{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", priority=" + priority +
-                ", color='" + color + '\'' +
-                ", notes=" + notes +
-                '}';
-    }
+    //public List<Note> getNotes() {
+    //    return notes;
+    //}
 }

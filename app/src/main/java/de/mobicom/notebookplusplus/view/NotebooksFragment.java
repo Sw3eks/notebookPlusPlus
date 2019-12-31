@@ -21,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -36,7 +35,6 @@ import de.mobicom.notebookplusplus.adapter.NotebookRecyclerViewAdapter;
 import de.mobicom.notebookplusplus.data.Notebook;
 
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class NotebooksFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
@@ -61,6 +59,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         RecyclerView recyclerView = fragmentNotebooksBinding.rvNotebooks;
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
+        recyclerView.setHasFixedSize(true);
         adapter = new NotebookRecyclerViewAdapter();
         adapter.setClickListener(this);
         adapter.setLongClickListener(this);
@@ -72,7 +71,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
 
-        notebookViewModel.getNotebookList().observe(this, new Observer<List<Notebook>>() {
+        notebookViewModel.getAllNotebooks().observe(this, new Observer<List<Notebook>>() {
             @Override
             public void onChanged(List<Notebook> notebooks) {
                 if (notebooks != null) {
@@ -81,16 +80,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
                 }
             }
         });
-
-//        final Observer<List<Notebook>> notebookListObserver = new Observer<List<Notebook>>() {
-//            @Override
-//            public void onChanged(@Nullable final List<Notebook> notebooks) {
-//                adapter.setNotebookList(notebooks);
-//            }
-//        };
-//
-//        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-//        notebookViewModel.getNotebookList().observe(getActivity(), notebookListObserver);
 
         return fragmentNotebooksBinding.getRoot();
     }

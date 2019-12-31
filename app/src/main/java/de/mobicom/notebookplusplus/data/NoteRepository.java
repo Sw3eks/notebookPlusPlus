@@ -14,6 +14,7 @@ public class NoteRepository {
 
     public NoteRepository(Application application) {
         NotebookDatabase database = NotebookDatabase.getInstance(application);
+        noteDao = database.noteDao();
         allNotes = noteDao.getAllNotes();
 
     }

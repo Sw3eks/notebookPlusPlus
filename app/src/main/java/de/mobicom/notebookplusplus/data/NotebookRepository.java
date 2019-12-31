@@ -14,6 +14,7 @@ public class NotebookRepository {
 
     public NotebookRepository(Application application) {
         NotebookDatabase database = NotebookDatabase.getInstance(application);
+        notebookDao = database.notebookDao();
         allNotebooks = notebookDao.getAllNotebooks();
 
     }

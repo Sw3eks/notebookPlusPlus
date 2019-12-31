@@ -19,7 +19,7 @@ import de.mobicom.notebookplusplus.databinding.RecyclerviewNoteItemBinding;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 
-public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerViewAdapter.ViewHolder> implements ItemTouchHelperAdapter {
+public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerViewAdapter.NoteViewHolder> implements ItemTouchHelperAdapter {
 
     private List<Note> noteList;
     private List<Note> noteListFiltered = new ArrayList<>();
@@ -32,14 +32,14 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
 
     @Override
     @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerviewNoteItemBinding recyclerviewNoteItemBinding =
                 DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.recyclerview_note_item, parent, false);
-        return new ViewHolder(recyclerviewNoteItemBinding);
+        return new NoteViewHolder(recyclerviewNoteItemBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note = noteList.get(position);
         holder.recyclerviewNoteItemBinding.setNote(note);
         holder.recyclerviewNoteItemBinding.setHandler(this);
@@ -47,7 +47,7 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
 
     @Override
     public int getItemCount() {
-        return noteList.size();
+        return noteList == null ? 0 : noteList.size();
     }
 
     public void setNoteList(List<Note> noteList) {
@@ -77,10 +77,10 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         System.out.println("Context");
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder, View.OnLongClickListener {
+    public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder, View.OnLongClickListener {
         private RecyclerviewNoteItemBinding recyclerviewNoteItemBinding;
 
-        ViewHolder(RecyclerviewNoteItemBinding recyclerviewNoteItemBinding) {
+        NoteViewHolder(RecyclerviewNoteItemBinding recyclerviewNoteItemBinding) {
             super(recyclerviewNoteItemBinding.getRoot());
             this.recyclerviewNoteItemBinding = recyclerviewNoteItemBinding;
             itemView.setOnClickListener(this);

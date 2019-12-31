@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.data.Notebook;
@@ -19,7 +18,7 @@ import de.mobicom.notebookplusplus.databinding.RecyclerviewNotebookItemBinding;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 
-public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRecyclerViewAdapter.ViewHolder> implements ItemTouchHelperAdapter {
+public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRecyclerViewAdapter.NotebookViewHolder> implements ItemTouchHelperAdapter {
 
     private List<Notebook> notebookList;
     private List<Notebook> notebookListFiltered = new ArrayList<>();
@@ -33,15 +32,15 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     // inflates the cell layout from xml when needed
     @Override
     @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NotebookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding =
                 DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.recyclerview_notebook_item, parent, false);
-        return new ViewHolder(recyclerviewNotebookItemBinding);
+        return new NotebookViewHolder(recyclerviewNotebookItemBinding);
     }
 
     // binds the data to the TextView in each cell
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NotebookViewHolder holder, int position) {
         Notebook notebook = notebookList.get(position);
         holder.recyclerviewNotebookItemBinding.setNotebook(notebook);
     }
@@ -79,10 +78,10 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     }
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ItemTouchHelperViewHolder {
+    public class NotebookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ItemTouchHelperViewHolder {
         private RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding;
 
-        ViewHolder(RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding) {
+        NotebookViewHolder(RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding) {
             super(recyclerviewNotebookItemBinding.getRoot());
             this.recyclerviewNotebookItemBinding = recyclerviewNotebookItemBinding;
             itemView.setOnClickListener(this);
