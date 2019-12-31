@@ -8,16 +8,16 @@ import androidx.room.TypeConverter;
 public class LocalDateTimeConverter {
 
     @TypeConverter
-    public static LocalDate toDate(String dateString) {
+    public static LocalDateTime toDate(String dateString) {
         if (dateString == null) {
             return null;
         } else {
-            return LocalDate.parse(dateString);
+            return LocalDateTime.parse(dateString);
         }
     }
 
     @TypeConverter
-    public static String toDateString(LocalDate date) {
+    public static String toDateString(LocalDateTime date) {
         if (date == null) {
             return null;
         } else {

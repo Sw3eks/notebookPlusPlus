@@ -1,9 +1,11 @@
 package de.mobicom.notebookplusplus.data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,7 +13,8 @@ import androidx.room.PrimaryKey;
 public class Notebook {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    @ColumnInfo(name = "notebook_id")
+    private long notebookId;
 
     @NonNull
     private String name;
@@ -21,6 +24,12 @@ public class Notebook {
     @NonNull
     private String color;
 
+    @ColumnInfo(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @ColumnInfo(name = "last_modified_date")
+    private LocalDateTime lastModifiedDate;
+
     //private List<Note> notes;
 
 
@@ -28,16 +37,18 @@ public class Notebook {
         this.name = name;
         this.priority = priority;
         this.color = color;
+        this.createdAt = LocalDateTime.now();
     }
 
-    public int getId() {
-        return id;
+    public long getNotebookId() {
+        return notebookId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setNotebookId(long notebookId) {
+        this.notebookId = notebookId;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
@@ -46,12 +57,25 @@ public class Notebook {
         return priority;
     }
 
+    @NonNull
     public String getColor() {
         return color;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     //public List<Note> getNotes() {

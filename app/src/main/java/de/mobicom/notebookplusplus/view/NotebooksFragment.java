@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -144,7 +145,11 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
         notebookViewModel.setNotebook(adapter.getItem(position));
 
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).addToBackStack(null).commit();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+        NoteFragment noteFragment = new NoteFragment();
+        ft.replace(R.id.fragment_container, noteFragment, NoteFragment.TAG).addToBackStack(null).commit();
+        //getFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).addToBackStack(null).commit();
     }
 
     @Override

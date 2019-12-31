@@ -1,8 +1,9 @@
 package de.mobicom.notebookplusplus.data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -10,7 +11,11 @@ import androidx.room.PrimaryKey;
 public class Note {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    @ColumnInfo(name = "note_id")
+    private long noteId;
+
+    @ColumnInfo(name = "notebook_parent_id")
+    private long notebookParentId;
 
     @NonNull
     private String name;
@@ -22,24 +27,34 @@ public class Note {
     private String description;
 
     @NonNull
-    private LocalDate createdAt;
+    @ColumnInfo(name = "created_at")
+    private LocalDateTime createdAt;
 
-    private LocalDate lastModifiedAt;
+    @ColumnInfo(name = "last_modified_date")
+    private LocalDateTime lastModifiedAt;
 
-    public Note(String name, int type, int priority, String description) {
+    public Note(@NonNull String name, int type, int priority, String description) {
         this.name = name;
         this.type = type;
         this.priority = priority;
         this.description = description;
-        this.createdAt = LocalDate.now();
+        this.createdAt = LocalDateTime.now();
     }
 
-    public int getId() {
-        return id;
+    public long getNoteId() {
+        return noteId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setNoteId(long noteId) {
+        this.noteId = noteId;
+    }
+
+    public long getNotebookParentId() {
+        return notebookParentId;
+    }
+
+    public void setNotebookParentId(long notebookParentId) {
+        this.notebookParentId = notebookParentId;
     }
 
     @NonNull
@@ -60,26 +75,26 @@ public class Note {
     }
 
     @NonNull
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(@NonNull LocalDate createdAt) {
+    public void setCreatedAt(@NonNull LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDate getLastModifiedAt() {
+    public LocalDateTime getLastModifiedAt() {
         return lastModifiedAt;
     }
 
-    public void setLastModifiedAt(LocalDate lastModifiedAt) {
+    public void setLastModifiedAt(LocalDateTime lastModifiedAt) {
         this.lastModifiedAt = lastModifiedAt;
     }
 
     @Override
     public String toString() {
         return "Note{" +
-                "id=" + id +
+                "noteId=" + noteId +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", priority=" + priority +
