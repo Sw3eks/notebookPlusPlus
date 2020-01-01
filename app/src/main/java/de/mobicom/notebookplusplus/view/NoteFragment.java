@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -30,6 +32,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import de.mobicom.notebookplusplus.data.Note;
 import de.mobicom.notebookplusplus.databinding.FragmentNoteBinding;
 import de.mobicom.notebookplusplus.utils.SimpleItemTouchHelperCallback;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
@@ -46,6 +49,11 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     private NoteRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
     private FragmentNoteBinding fragmentNoteBinding;
+
+    // Variables for Create Dialog
+    private EditText mEditTextNoteTitle;
+    private Spinner typeSpinner;
+
 
     @Nullable
     @Override
@@ -84,27 +92,18 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
 
-        notebookViewModel.getNotebook().observe(this, new Observer<Notebook>() {
-            @Override
-            public void onChanged(Notebook notebook) {
-                if (notebook != null) {
-                    //adapter.setNoteList(notebook.getNotes());
-                    fragmentNoteBinding.setIsEmpty(false);
-                } else {
-                    fragmentNoteBinding.setIsEmpty(true);
-                }
-            }
-        });
-//        final Observer<Notebook> notebookObserver = new Observer<Notebook>() {
-//            @Override
-//            public void onChanged(@Nullable final Notebook notebook) {
-//                if (notebook != null) {
-//                    adapter.setNoteList(notebook.getNotes());
-//                }
-//            }
-//        };
-
-        //notebookViewModel.getNotebook().observe(getViewLifecycleOwner(), notebookObserver);
+        notebookViewModel.getAllNotesFromNotebook(notebookViewModel.getNotebook().getNotebookId())
+                .observe(this, new Observer<List<Note>>() {
+                    @Override
+                    public void onChanged(List<Note> notes) {
+                        if (notes != null) {
+                            adapter.setNoteList(notes);
+                            fragmentNoteBinding.setIsEmpty(false);
+                        } else {
+                            fragmentNoteBinding.setIsEmpty(true);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -176,7 +175,22 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
                 .setPositiveButton(R.string.create_button,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int arg1) {
-                                // DO TASK
+                                int type;
+                                switch (typeSpinner.getSelectedItem().toString()) {
+                                    case "List":
+                                        type = R.drawable.ic_note_type_todo;
+                                        break;
+                                    case "Speech":
+                                        type = R.drawable.ic_note_type_speech;
+                                        break;
+                                    default:
+                                        type = R.drawable.ic_note_type_text;
+                                }
+                                notebookViewModel.insert(
+                                        new Note(notebookViewModel.getNotebook().getNotebookId(),
+                                                mEditTextNoteTitle.getText().toString(),
+                                                type, 1, ""));
+                                Toast.makeText(getContext(), R.string.note_created, Toast.LENGTH_LONG).show();
                             }
                         })
                 .setNegativeButton(R.string.cancel_button,
@@ -188,11 +202,13 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_note, null);
 
-        Spinner spinner = view.findViewById(R.id.typeDropdown);
+        mEditTextNoteTitle = view.findViewById(R.id.edit_text_new_note);
+        mEditTextNoteTitle.requestFocus();
+        typeSpinner = view.findViewById(R.id.typeDropdown);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.note_type_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        typeSpinner.setAdapter(adapter);
 
         builder.setView(view);
 
@@ -200,8 +216,6 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         dialog.show();
 
         //dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-        EditText mEditTextNoteTitle = getActivity().findViewById(R.id.edit_text_new_note);
 //        mEditTextNoteTitle.addTextChangedListener(new TextWatcher() {
 //
 //            @Override

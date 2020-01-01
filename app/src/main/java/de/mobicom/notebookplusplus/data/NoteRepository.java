@@ -10,12 +10,10 @@ import androidx.lifecycle.LiveData;
 public class NoteRepository {
 
     private NoteDao noteDao;
-    private LiveData<List<Note>> allNotes;
 
     public NoteRepository(Application application) {
         NotebookDatabase database = NotebookDatabase.getInstance(application);
         noteDao = database.noteDao();
-
     }
 
     public void insert(Note note) {

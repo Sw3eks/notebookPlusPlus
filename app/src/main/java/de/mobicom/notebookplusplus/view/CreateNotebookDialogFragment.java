@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -18,12 +17,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import androidx.lifecycle.ViewModelProviders;
 import de.mobicom.notebookplusplus.R;
+import de.mobicom.notebookplusplus.data.Notebook;
+import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 public class CreateNotebookDialogFragment extends DialogFragment {
 
+    private NotebookViewModel notebookViewModel;
     private EditText mEditTextNotebookName;
-    Button positiveButton;
+    private Spinner colorSpinner;
 
     public CreateNotebookDialogFragment() {
     }
@@ -55,12 +58,12 @@ public class CreateNotebookDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Get field from view
-        mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
-        // Fetch arguments from bundle and set title
+
+        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
+
         String title = getArguments().getString("title", "Enter Name");
         getDialog().setTitle(title);
-        // Show soft keyboard automatically and request focus to field
+
         mEditTextNotebookName.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -70,15 +73,37 @@ public class CreateNotebookDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
+        final AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
                 .setView(inflater.inflate(R.layout.dialog_create_notebook, null))
                 .setTitle(R.string.create_a_new_notebook)
                 .setPositiveButton(R.string.create_button,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                sendResult();
-                                //NotebooksFragment frag = (NotebooksFragment) getTargetFragment();
-                                //frag.save(mEditTextNotebookName.toString());
+                                String color;
+                                switch (colorSpinner.getSelectedItem().toString()) {
+                                    case "Blue":
+                                        color = "#3498db";
+                                        break;
+                                    case "Red":
+                                        color = "#e74c3c";
+                                        break;
+                                    case "Purple":
+                                        color = "#9b59b6";
+                                        break;
+                                    case "Green":
+                                        color = "#2ecc71";
+                                        break;
+                                    case "Dark Grey":
+                                        color = "#34495e";
+                                        break;
+                                    case "Yellow":
+                                        color = "#f1c40f";
+                                        break;
+                                    default:
+                                        color = "#f39c12";
+                                }
+                                notebookViewModel.insert(
+                                        new Notebook(mEditTextNotebookName.getText().toString(), 1, color));
                             }
                         }
                 )
@@ -92,11 +117,12 @@ public class CreateNotebookDialogFragment extends DialogFragment {
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_notebook, null);
 
-        Spinner spinner = view.findViewById(R.id.colorDropdown);
+        mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
+        colorSpinner = view.findViewById(R.id.colorDropdown);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.color_Array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        colorSpinner.setAdapter(adapter);
 
         b.setView(view);
         return b.create();

@@ -42,6 +42,8 @@
     <string name="no_data_available">No Notebooks available, start creating one...</string>
     <string name="note_content_hint">Type something...</string>
     <string name="delete_note">Delete</string>
+    <string name="created_note_default_text">Newly created Note, write something</string>
+    <string name="note_created">Note created!</string>
 
     <string-array name="color_Array">
         <item>Blau</item>
