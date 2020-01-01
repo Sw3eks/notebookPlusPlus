@@ -129,7 +129,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         notebookViewModel.setNotebook(adapter.getItem(position));
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+        ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         NoteFragment noteFragment = new NoteFragment();
         ft.replace(R.id.fragment_container, noteFragment, NoteFragment.TAG).addToBackStack(null).commit();
         //getFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).addToBackStack(null).commit();

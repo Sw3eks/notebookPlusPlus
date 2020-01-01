@@ -6,13 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.FragmentManager;
 import de.mobicom.notebookplusplus.view.CalendarFragment;
 import de.mobicom.notebookplusplus.view.ArchiveFragment;
 import de.mobicom.notebookplusplus.view.DeletedNotesFragment;
 import de.mobicom.notebookplusplus.view.NotebooksFragment;
 import de.mobicom.notebookplusplus.view.SettingsActivity;
-import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -47,6 +46,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotebooksFragment()).commit();
             nvDrawer.setCheckedItem(R.id.nav_notebooks);
         }
+//        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+//            @Override
+//            public void onBackStackChanged() {
+//                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+//                    mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+//                    drawerToggle.setDrawerIndicatorEnabled(true);
+//                } else {
+//                    mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//                    drawerToggle.setDrawerIndicatorEnabled(false);
+//                }
+//            }
+//        });
+
     }
 
     @Override
