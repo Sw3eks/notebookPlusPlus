@@ -128,11 +128,4 @@ public class CreateNotebookDialogFragment extends DialogFragment {
         return b.create();
     }
 
-    private void sendResult() {
-        Intent intent = new Intent();
-        intent.putExtra("RESULT_KEY", mEditTextNotebookName.getText().toString());
-        getTargetFragment().onActivityResult(
-                getTargetRequestCode(), 101, intent);
-    }
-
 }

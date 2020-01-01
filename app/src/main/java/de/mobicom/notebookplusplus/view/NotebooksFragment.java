@@ -39,11 +39,6 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 
 public class NotebooksFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
-
-    private static final int DIALOG_FRAGMENT = 1;
-    private static final int RESULT_OK = 101;
-    private static final String RESULT_KEY = "RESULT_KEY";
-
     private SearchView searchView = null;
     private NotebookRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
@@ -127,18 +122,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private void save(String fileName) {
-        try {
-            OutputStreamWriter out =
-                    new OutputStreamWriter(getActivity().openFileOutput(fileName, Context.MODE_PRIVATE));
-            //out.write(mEditTextNotebookName.getText().toString());
-            out.close();
-            Toast.makeText(getContext(), "Note saved!", Toast.LENGTH_SHORT).show();
-        } catch (Throwable t) {
-            Toast.makeText(getContext(), "Exception: " + t.toString(), Toast.LENGTH_LONG).show();
-        }
-    }
-
     @Override
     public void onItemClick(View view, int position) {
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
@@ -160,7 +143,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     public void onAddNotebook() {
         //showDialog();
         CreateNotebookDialogFragment createNotebookDialogFragment = CreateNotebookDialogFragment.newInstance(getResources().getString(R.string.create_a_new_notebook));
-        createNotebookDialogFragment.setTargetFragment(NotebooksFragment.this, DIALOG_FRAGMENT);
+        createNotebookDialogFragment.setTargetFragment(NotebooksFragment.this, 0);
         if (getFragmentManager() != null) {
             createNotebookDialogFragment.show(getFragmentManager(), "CreateNotebookDialog");
         }
@@ -199,16 +182,5 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
         final AlertDialog dialog = b.create();
         dialog.show();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (resultCode == RESULT_OK) {
-            String mEditTextNotebookName = data.getStringExtra(
-                    RESULT_KEY);
-            save(mEditTextNotebookName);
-        }
-
     }
 }
