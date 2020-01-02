@@ -1,9 +1,5 @@
 package de.mobicom.notebookplusplus.view;
 
-
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,13 +8,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -39,17 +32,16 @@ import de.mobicom.notebookplusplus.data.Notebook;
 import java.util.List;
 
 public class NotebooksFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
-    private SearchView searchView = null;
     private NotebookRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
     private FragmentNotebooksBinding fragmentNotebooksBinding;
     private RecyclerView recyclerView;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentNotebooksBinding = FragmentNotebooksBinding.inflate(inflater, container, false);
+        setHasOptionsMenu(true);
 
         fragmentNotebooksBinding.setHandler(this);
 
@@ -91,43 +83,39 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull final Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_notebooks, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) searchItem.getActionView();
 
-        if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-        }
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return true;
+            }
 
-            SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    Log.i("onQueryTextChange", newText);
-                    //adapter.filter(newText);
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+        });
 
-                    return true;
-                }
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
 
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    Log.i("onQueryTextSubmit", query);
-                    //adapter.filter(query);
+            @Override
+            public boolean onMenuItemActionExpand(final MenuItem item) {
+                menu.findItem(R.id.to_calendar).setVisible(false);
+                return true;
+            }
 
-                    return true;
-                }
-            };
-            searchView.setOnQueryTextListener(queryTextListener);
-        }
+            @Override
+            public boolean onMenuItemActionCollapse(final MenuItem item) {
+                menu.findItem(R.id.to_calendar).setVisible(true);
+                return true;
+            }
+        });
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -142,7 +130,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         NoteFragment noteFragment = new NoteFragment();
         ft.replace(R.id.fragment_container, noteFragment, NoteFragment.TAG).addToBackStack(null).commit();
-        //getFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteFragment()).addToBackStack(null).commit();
     }
 
     @Override
@@ -151,46 +138,10 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     }
 
     public void onAddNotebook() {
-        //showDialog();
         CreateNotebookDialogFragment createNotebookDialogFragment = CreateNotebookDialogFragment.newInstance(getResources().getString(R.string.create_a_new_notebook));
         createNotebookDialogFragment.setTargetFragment(NotebooksFragment.this, 0);
         if (getFragmentManager() != null) {
             createNotebookDialogFragment.show(getFragmentManager(), "CreateNotebookDialog");
         }
-    }
-
-    private void showDialog() {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
-                .setView(inflater.inflate(R.layout.dialog_create_notebook, null))
-                .setTitle(R.string.create_a_new_notebook)
-                .setPositiveButton(R.string.create_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                NotebooksFragment frag = (NotebooksFragment) getTargetFragment();
-                                //frag.save(mEditTextNotebookName.toString());
-                            }
-                        }
-                )
-                .setNegativeButton(R.string.cancel_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
-                            }
-                        }
-                );
-
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_notebook, null);
-
-        Spinner spinner = view.findViewById(R.id.colorDropdown);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.color_Array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        b.setView(view);
-
-        final AlertDialog dialog = b.create();
-        dialog.show();
     }
 }

@@ -4,11 +4,12 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -21,9 +22,9 @@ import de.mobicom.notebookplusplus.databinding.RecyclerviewNotebookItemBinding;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 
-public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookRecyclerViewAdapter.NotebookViewHolder> implements ItemTouchHelperAdapter {
+public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookRecyclerViewAdapter.NotebookViewHolder> implements ItemTouchHelperAdapter, Filterable {
 
-    private List<Notebook> notebookListFiltered = new ArrayList<>();
+    private List<Notebook> notebookListAll;
     private ItemClickListener mClickListener;
     private ItemClickListener mLongClickListener;
 
@@ -77,13 +78,69 @@ public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookR
     public void onItemDismiss(int position) {
     }
 
-//    public void setNotebookList(final List<Notebook> notebookList) {
-//        this.notebookList = notebookList;
-//        if (notebookListFiltered.isEmpty()) {
-//            this.notebookListFiltered = notebookList.stream().collect(Collectors.<Notebook>toList());
-//        }
-//        notifyDataSetChanged();
-//    }
+    // inits copied list for filtering
+    public void setNotebookList() {
+
+    }
+
+    // convenience method for getting data at click position
+    public Notebook getNotebookAt(int id) {
+        return getItem(id);
+    }
+
+    // allows clicks events to be caught
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    public void setLongClickListener(ItemClickListener itemClickListener) {
+        this.mLongClickListener = itemClickListener;
+    }
+
+    // parent activity will implement this method to respond to click events
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+
+        void onLongItemClick(View view, int position);
+    }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    private Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            if(notebookListAll == null) {
+                notebookListAll = new ArrayList<>(getCurrentList());
+            }
+            List<Notebook> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(notebookListAll);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Notebook item : notebookListAll) {
+                    if (item.getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            submitList((List) results.values);
+        }
+    };
 
     // stores and recycles views as they are scrolled off screen
     public class NotebookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ItemTouchHelperViewHolder, View.OnCreateContextMenuListener {
@@ -124,48 +181,5 @@ public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookR
             menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
             menu.add(0, v.getId(), 0, "SMS");
         }
-    }
-
-    // convenience method for getting data at click position
-    public Notebook getNotebookAt(int id) {
-        return getItem(id);
-    }
-
-    // allows clicks events to be caught
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    public void setLongClickListener(ItemClickListener itemClickListener) {
-        this.mLongClickListener = itemClickListener;
-    }
-
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-
-        void onLongItemClick(View view, int position);
-    }
-
-    public void filter(String text) {
-        List<Notebook> filteredList = new ArrayList<>();
-        if (!text.isEmpty()) {
-            filteredList = getCurrentList()
-                    .stream()
-                    .filter(line -> text.equals(line))
-                    .collect(Collectors.toList());
-        }
-//        notebookList.clear();
-//        if (text.isEmpty()) {
-//            notebookList.addAll(notebookListFiltered);
-//        } else {
-//            text = text.toLowerCase();
-//            for (Notebook item : notebookListFiltered) {
-//                if (item.getName().toLowerCase().contains(text)) {
-//                    notebookList.add(item);
-//                }
-//            }
-//        }
-//        notifyDataSetChanged();
     }
 }
