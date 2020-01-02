@@ -14,7 +14,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.utils.LocalDateTimeConverter;
 
-@Database(entities = {Notebook.class, Note.class}, version = 4)
+@Database(entities = {Notebook.class, Note.class}, version = 1, exportSchema = false)
 @TypeConverters(LocalDateTimeConverter.class)
 public abstract class NotebookDatabase extends RoomDatabase {
 
