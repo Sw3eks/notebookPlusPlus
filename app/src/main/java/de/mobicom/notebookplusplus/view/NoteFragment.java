@@ -86,7 +86,6 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         super.onViewCreated(view, savedInstanceState);
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
-
         notebookViewModel.getAllNotesFromNotebook(notebookViewModel.getNotebook().getNotebookId())
                 .observe(this, new Observer<List<Note>>() {
                     @Override

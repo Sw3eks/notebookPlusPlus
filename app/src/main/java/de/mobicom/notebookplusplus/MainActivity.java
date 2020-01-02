@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import de.mobicom.notebookplusplus.view.CalendarFragment;
 import de.mobicom.notebookplusplus.view.ArchiveFragment;
 import de.mobicom.notebookplusplus.view.DeletedNotesFragment;

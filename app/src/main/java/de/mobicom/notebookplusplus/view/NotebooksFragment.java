@@ -59,8 +59,15 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
 
-        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
+        return fragmentNotebooksBinding.getRoot();
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        registerForContextMenu(recyclerView);
+
+        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
         notebookViewModel.getAllNotebooks().observe(this, new Observer<List<Notebook>>() {
             @Override
             public void onChanged(List<Notebook> notebooks) {
@@ -72,14 +79,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
                 }
             }
         });
-
-        return fragmentNotebooksBinding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        registerForContextMenu(recyclerView);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.notebooks_title);
     }
