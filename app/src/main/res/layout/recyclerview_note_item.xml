@@ -20,14 +20,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:padding="10dp">
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?android:attr/selectableItemBackground">
 
         <ImageView
             android:id="@+id/noteType"
             imageResource="@{note.type}"
             android:layout_width="32dp"
-
             android:layout_height="32dp"
             android:contentDescription="@string/note_type"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:ellipsize="end"
             android:text="@{note.name}"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@android:color/black"
@@ -50,9 +52,10 @@
             android:id="@+id/noteModifiedDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{note.lastModifiedAt.toString()}"
+            app:bindDate="@{note.lastModifiedAt}"
             app:layout_constraintBottom_toBottomOf="@+id/noteType"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="12dp"
             app:layout_constraintTop_toTopOf="@+id/noteType" />
 
         <TextView
@@ -70,33 +73,39 @@
             android:id="@+id/noteCalendarIcon"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/note_context_menu_icon"
             android:src="@drawable/ic_calendar"
             android:tint="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/noteBookmarkIcon" />
+            app:layout_constraintEnd_toStartOf="@id/noteBookmarkIcon"
+            app:layout_constraintTop_toBottomOf="@+id/noteModifiedDate" />
 
         <ImageView
             android:id="@+id/noteBookmarkIcon"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/note_context_menu_icon"
             android:onClick="@{() -> handler.onBookmarkNote()}"
             android:src="@drawable/ic_note_bookmark_disabled"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/noteContextMenuItem" />
+            app:layout_constraintEnd_toStartOf="@+id/noteContextMenuItem"
+            app:layout_constraintTop_toBottomOf="@+id/noteModifiedDate" />
 
         <ImageView
             android:id="@+id/noteContextMenuItem"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_marginTop="8dp"
             android:contentDescription="@string/note_context_menu_icon"
             android:onClick="@{() -> handler.onOpenContextMenu()}"
             android:src="@drawable/ic_note_context_menu"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/noteModifiedDate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

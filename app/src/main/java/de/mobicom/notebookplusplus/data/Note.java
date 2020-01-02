@@ -6,12 +6,18 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
+import de.mobicom.notebookplusplus.utils.LocalDateTimeConverter;
 
-@Entity(tableName = "note_table", foreignKeys =
-@ForeignKey(entity = Notebook.class,
-        parentColumns = "notebook_id",
-        childColumns = "notebook_parent_id"))
+@Entity(tableName = "note_table",
+        foreignKeys = {
+                @ForeignKey(entity = Notebook.class,
+                        parentColumns = "notebook_id",
+                        childColumns = "notebook_parent_id")},
+        indices = {
+                @Index("notebook_parent_id")}
+)
 public class Note {
 
     @PrimaryKey(autoGenerate = true)
@@ -44,6 +50,7 @@ public class Note {
         this.priority = priority;
         this.description = description;
         this.createdAt = LocalDateTime.now();
+        this.lastModifiedAt = LocalDateTime.now();
     }
 
     public long getNoteId() {

@@ -189,7 +189,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
                                 notebookViewModel.insert(
                                         new Note(notebookViewModel.getNotebook().getNotebookId(),
                                                 mEditTextNoteTitle.getText().toString(),
-                                                type, 1, ""));
+                                                type, 1, getResources().getString(R.string.created_note_default_text)));
                                 Toast.makeText(getContext(), R.string.note_created, Toast.LENGTH_LONG).show();
                             }
                         })

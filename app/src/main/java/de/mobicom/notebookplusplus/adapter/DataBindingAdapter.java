@@ -3,6 +3,10 @@ package de.mobicom.notebookplusplus.adapter;
 import android.graphics.PorterDuff;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import androidx.databinding.BindingAdapter;
 
@@ -25,4 +29,10 @@ public class DataBindingAdapter {
         view.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
+    @BindingAdapter("bindDate")
+    public static void formatDate(TextView view, LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d. MMM - HH:mm");
+        String text = formatter.format(dateTime);
+        view.setText(text);
+    }
 }

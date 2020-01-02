@@ -1,6 +1,5 @@
 package de.mobicom.notebookplusplus.utils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import androidx.room.TypeConverter;
