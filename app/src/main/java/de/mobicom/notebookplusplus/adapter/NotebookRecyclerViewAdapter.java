@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.data.Notebook;
@@ -19,16 +21,27 @@ import de.mobicom.notebookplusplus.databinding.RecyclerviewNotebookItemBinding;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 
-public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRecyclerViewAdapter.NotebookViewHolder> implements ItemTouchHelperAdapter {
+public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookRecyclerViewAdapter.NotebookViewHolder> implements ItemTouchHelperAdapter {
 
-    private List<Notebook> notebookList;
     private List<Notebook> notebookListFiltered = new ArrayList<>();
     private ItemClickListener mClickListener;
     private ItemClickListener mLongClickListener;
 
-    // data is passed into the constructor
     public NotebookRecyclerViewAdapter() {
+        super(DIFF_CALLBACK);
     }
+
+    private static final DiffUtil.ItemCallback<Notebook> DIFF_CALLBACK = new DiffUtil.ItemCallback<Notebook>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Notebook oldItem, @NonNull Notebook newItem) {
+            return oldItem.getNotebookId() == newItem.getNotebookId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Notebook oldItem, @NonNull Notebook newItem) {
+            return oldItem.getName().equals(newItem.getName()) && oldItem.getColor().equals(newItem.getColor());
+        }
+    };
 
     // inflates the cell layout from xml when needed
     @Override
@@ -42,25 +55,19 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     // binds the data to the TextView in each cell
     @Override
     public void onBindViewHolder(@NonNull NotebookViewHolder holder, int position) {
-        Notebook notebook = notebookList.get(position);
+        Notebook notebook = getNotebookAt(position);
         holder.recyclerviewNotebookItemBinding.setNotebook(notebook);
-    }
-
-    // total number of cells
-    @Override
-    public int getItemCount() {
-        return notebookList == null ? 0 : notebookList.size();
     }
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(notebookList, i, i + 1);
+                Collections.swap(getCurrentList(), i, i + 1);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(notebookList, i, i - 1);
+                Collections.swap(getCurrentList(), i, i - 1);
             }
         }
         notifyItemMoved(fromPosition, toPosition);
@@ -70,13 +77,13 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     public void onItemDismiss(int position) {
     }
 
-    public void setNotebookList(final List<Notebook> notebookList) {
-        this.notebookList = notebookList;
-        if (notebookListFiltered.isEmpty()) {
-            this.notebookListFiltered = notebookList.stream().collect(Collectors.<Notebook>toList());
-        }
-        notifyDataSetChanged();
-    }
+//    public void setNotebookList(final List<Notebook> notebookList) {
+//        this.notebookList = notebookList;
+//        if (notebookListFiltered.isEmpty()) {
+//            this.notebookListFiltered = notebookList.stream().collect(Collectors.<Notebook>toList());
+//        }
+//        notifyDataSetChanged();
+//    }
 
     // stores and recycles views as they are scrolled off screen
     public class NotebookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ItemTouchHelperViewHolder, View.OnCreateContextMenuListener {
@@ -120,8 +127,8 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     }
 
     // convenience method for getting data at click position
-    public Notebook getItem(int id) {
-        return notebookList.get(id);
+    public Notebook getNotebookAt(int id) {
+        return getItem(id);
     }
 
     // allows clicks events to be caught
@@ -141,17 +148,24 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     }
 
     public void filter(String text) {
-        notebookList.clear();
-        if (text.isEmpty()) {
-            notebookList.addAll(notebookListFiltered);
-        } else {
-            text = text.toLowerCase();
-            for (Notebook item : notebookListFiltered) {
-                if (item.getName().toLowerCase().contains(text)) {
-                    notebookList.add(item);
-                }
-            }
+        List<Notebook> filteredList = new ArrayList<>();
+        if (!text.isEmpty()) {
+            filteredList = getCurrentList()
+                    .stream()
+                    .filter(line -> text.equals(line))
+                    .collect(Collectors.toList());
         }
-        notifyDataSetChanged();
+//        notebookList.clear();
+//        if (text.isEmpty()) {
+//            notebookList.addAll(notebookListFiltered);
+//        } else {
+//            text = text.toLowerCase();
+//            for (Notebook item : notebookListFiltered) {
+//                if (item.getName().toLowerCase().contains(text)) {
+//                    notebookList.add(item);
+//                }
+//            }
+//        }
+//        notifyDataSetChanged();
     }
 }
