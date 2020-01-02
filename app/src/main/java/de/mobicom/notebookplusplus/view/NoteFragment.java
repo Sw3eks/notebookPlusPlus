@@ -104,6 +104,8 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
                         }
                     }
                 });
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(notebookViewModel.getNotebook().getName());
     }
 
     @Override

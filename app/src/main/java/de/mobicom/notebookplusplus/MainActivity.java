@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
-            setSupportActionBar(toolbar);
             toolbar.setTitle(R.string.notebooks_title);
+            setSupportActionBar(toolbar);
         }
 
         mDrawer = findViewById(R.id.drawer_layout);
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
 
-        setTitle(menuItem.getTitle());
+        getSupportActionBar().setTitle(menuItem.getTitle());
 
         mDrawer.closeDrawer(GravityCompat.START);
 

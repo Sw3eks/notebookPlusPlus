@@ -4,7 +4,6 @@ package de.mobicom.notebookplusplus.view;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,11 +19,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +36,6 @@ import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NotebookRecyclerViewAdapter;
 import de.mobicom.notebookplusplus.data.Notebook;
 
-import java.io.OutputStreamWriter;
 import java.util.List;
 
 public class NotebooksFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
@@ -57,6 +57,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
         recyclerView.setHasFixedSize(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter = new NotebookRecyclerViewAdapter();
         adapter.setClickListener(this);
         adapter.setLongClickListener(this);
@@ -73,7 +74,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
             public void onChanged(List<Notebook> notebooks) {
                 if (notebooks != null) {
                     fragmentNotebooksBinding.setIsEmpty(false);
-                    adapter.setNotebookList(notebooks);
+                    adapter.submitList(notebooks);
                 }
             }
         });
@@ -85,6 +86,8 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         registerForContextMenu(recyclerView);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.notebooks_title);
     }
 
     @Override
@@ -110,7 +113,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
-                    adapter.filter(newText);
+                    //adapter.filter(newText);
 
                     return true;
                 }
@@ -118,7 +121,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
-                    adapter.filter(query);
+                    //adapter.filter(query);
 
                     return true;
                 }
@@ -131,9 +134,9 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
     @Override
     public void onItemClick(View view, int position) {
-        Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
+        Log.i("TAG", "You clicked number " + adapter.getNotebookAt(position) + ", which is at cell position " + position);
 
-        notebookViewModel.setNotebook(adapter.getItem(position));
+        notebookViewModel.setNotebook(adapter.getNotebookAt(position));
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
