@@ -4,11 +4,15 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -27,6 +31,7 @@ public class CreateNotebookDialogFragment extends DialogFragment {
     private NotebookViewModel notebookViewModel;
     private EditText mEditTextNotebookName;
     private Spinner colorSpinner;
+    private Button positiveButton;
 
     public CreateNotebookDialogFragment() {
     }
@@ -45,15 +50,15 @@ public class CreateNotebookDialogFragment extends DialogFragment {
         return inflater.inflate(R.layout.dialog_create_notebook, container);
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        AlertDialog d = (AlertDialog) getDialog();
-//        if (d != null) {
-//            positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
-//            positiveButton.setEnabled(false);
-//        }
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        AlertDialog d = (AlertDialog) getDialog();
+        if (d != null) {
+            positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
+            positiveButton.setEnabled(false);
+        }
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -118,6 +123,33 @@ public class CreateNotebookDialogFragment extends DialogFragment {
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_notebook, null);
 
         mEditTextNotebookName = view.findViewById(R.id.edit_text_new_notebook);
+        mEditTextNotebookName.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (TextUtils.isEmpty(s.toString().trim())) {
+
+                    positiveButton.setEnabled(false);
+
+                } else {
+
+                    positiveButton.setEnabled(true);
+                }
+
+            }
+        });
+
         colorSpinner = view.findViewById(R.id.colorDropdown);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.color_Array, android.R.layout.simple_spinner_item);

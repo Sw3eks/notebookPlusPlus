@@ -43,6 +43,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     private NotebookRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
     private FragmentNotebooksBinding fragmentNotebooksBinding;
+    private RecyclerView recyclerView;
 
 
     @Nullable
@@ -52,7 +53,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
         fragmentNotebooksBinding.setHandler(this);
 
-        RecyclerView recyclerView = fragmentNotebooksBinding.rvNotebooks;
+        recyclerView = fragmentNotebooksBinding.rvNotebooks;
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
         recyclerView.setHasFixedSize(true);
@@ -78,6 +79,12 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         });
 
         return fragmentNotebooksBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        registerForContextMenu(recyclerView);
     }
 
     @Override

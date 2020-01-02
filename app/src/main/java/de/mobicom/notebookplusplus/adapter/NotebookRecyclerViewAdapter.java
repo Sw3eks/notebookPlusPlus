@@ -1,5 +1,6 @@
 package de.mobicom.notebookplusplus.adapter;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +79,7 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
     }
 
     // stores and recycles views as they are scrolled off screen
-    public class NotebookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ItemTouchHelperViewHolder {
+    public class NotebookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ItemTouchHelperViewHolder, View.OnCreateContextMenuListener {
         private RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding;
 
         NotebookViewHolder(RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding) {
@@ -86,6 +87,7 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
             this.recyclerviewNotebookItemBinding = recyclerviewNotebookItemBinding;
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
+            //itemView.setOnCreateContextMenuListener(this);
         }
 
         @Override
@@ -107,6 +109,13 @@ public class NotebookRecyclerViewAdapter extends RecyclerView.Adapter<NotebookRe
 
         @Override
         public void onItemClear() {
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle("Select The Action");
+            menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
+            menu.add(0, v.getId(), 0, "SMS");
         }
     }
 
