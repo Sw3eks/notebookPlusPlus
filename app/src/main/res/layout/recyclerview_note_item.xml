@@ -52,10 +52,10 @@
             android:id="@+id/noteModifiedDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
             app:bindDate="@{note.lastModifiedAt}"
             app:layout_constraintBottom_toBottomOf="@+id/noteType"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="12dp"
             app:layout_constraintTop_toTopOf="@+id/noteType" />
 
         <TextView
@@ -101,7 +101,7 @@
             android:layout_height="32dp"
             android:layout_marginTop="8dp"
             android:contentDescription="@string/note_context_menu_icon"
-            android:onClick="@{() -> handler.onOpenContextMenu()}"
+            android:onClick="@{(view) -> handler.onOpenContextMenu(view)}"
             android:src="@drawable/ic_note_context_menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

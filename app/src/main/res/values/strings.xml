@@ -66,5 +66,7 @@
     <string name="delete_note">Delete</string>
     <string name="created_note_default_text">Newly created Note, write something</string>
     <string name="note_created">Note created!</string>
+    <string name="move_note_to_notebook">Move to another Notebook</string>
+    <string name="clone_note">Clone</string>
 
 </resources>

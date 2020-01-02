@@ -2,6 +2,7 @@ package de.mobicom.notebookplusplus.adapter;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
@@ -19,7 +21,7 @@ import de.mobicom.notebookplusplus.databinding.RecyclerviewNoteItemBinding;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 
-public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerViewAdapter.NoteViewHolder> implements ItemTouchHelperAdapter {
+public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerViewAdapter.NoteViewHolder> implements ItemTouchHelperAdapter, androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener {
 
     private List<Note> noteList;
     private List<Note> noteListFiltered = new ArrayList<>();
@@ -73,8 +75,29 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         System.out.println("Bookmarked");
     }
 
-    public void onOpenContextMenu() {
+    public void onOpenContextMenu(View view) {
         System.out.println("Context");
+        androidx.appcompat.widget.PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+        popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.inflate(R.menu.popup_menu_note);
+        popupMenu.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.moveNote:
+                System.out.println("Move");
+                return true;
+            case R.id.archiveNote:
+                return true;
+            case R.id.cloneNote:
+                return true;
+            case R.id.deleteNote:
+                return true;
+            default:
+                return false;
+        }
     }
 
     public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder, View.OnLongClickListener {

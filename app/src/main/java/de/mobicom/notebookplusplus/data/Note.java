@@ -36,6 +36,11 @@ public class Note {
 
     private String description;
 
+    private boolean archived;
+
+    @ColumnInfo(name = "delete_mark")
+    private boolean deleteMark;
+
     @NonNull
     @ColumnInfo(name = "created_at")
     private LocalDateTime createdAt;
@@ -51,6 +56,8 @@ public class Note {
         this.description = description;
         this.createdAt = LocalDateTime.now();
         this.lastModifiedAt = LocalDateTime.now();
+        this.archived = false;
+        this.deleteMark = false;
     }
 
     public long getNoteId() {
@@ -101,6 +108,22 @@ public class Note {
 
     public void setLastModifiedAt(LocalDateTime lastModifiedAt) {
         this.lastModifiedAt = lastModifiedAt;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
+    public boolean isDeleteMark() {
+        return deleteMark;
+    }
+
+    public void setDeleteMark(boolean deleteMark) {
+        this.deleteMark = deleteMark;
     }
 
     @Override
