@@ -78,11 +78,6 @@ public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookR
     public void onItemDismiss(int position) {
     }
 
-    // inits copied list for filtering
-    public void setNotebookList() {
-
-    }
-
     // convenience method for getting data at click position
     public Notebook getNotebookAt(int id) {
         return getItem(id);

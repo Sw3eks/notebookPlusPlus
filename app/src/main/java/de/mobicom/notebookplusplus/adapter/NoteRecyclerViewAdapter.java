@@ -5,32 +5,51 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.data.Note;
+import de.mobicom.notebookplusplus.data.Notebook;
 import de.mobicom.notebookplusplus.databinding.RecyclerviewNoteItemBinding;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 
-public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerViewAdapter.NoteViewHolder> implements ItemTouchHelperAdapter, androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener {
+public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewAdapter.NoteViewHolder> implements ItemTouchHelperAdapter, androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener, Filterable {
 
-    private List<Note> noteList;
-    private List<Note> noteListFiltered = new ArrayList<>();
+    private List<Note> noteListAll;
     private ItemClickListener mClickListener;
     private ItemClickListener mLongClickListener;
 
 
     public NoteRecyclerViewAdapter() {
+        super(DIFF_CALLBACK);
     }
+
+    private static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK = new DiffUtil.ItemCallback<Note>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
+            return oldItem.getNoteId() == newItem.getNoteId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
+            return oldItem.getName().equals(newItem.getName()) &&
+                    oldItem.getDescription().equals(newItem.getDescription()) &&
+                    oldItem.getLastModifiedAt().isEqual(newItem.getLastModifiedAt());
+        }
+    };
+
 
     @Override
     @NonNull
@@ -42,27 +61,14 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
-        Note note = noteList.get(position);
+        Note note = getNoteAt(position);
         holder.recyclerviewNoteItemBinding.setNote(note);
         holder.recyclerviewNoteItemBinding.setHandler(this);
     }
 
     @Override
-    public int getItemCount() {
-        return noteList == null ? 0 : noteList.size();
-    }
-
-    public void setNoteList(List<Note> noteList) {
-        this.noteList = noteList;
-        if (noteListFiltered.isEmpty()) {
-            this.noteListFiltered = noteList.stream().collect(Collectors.<Note>toList());
-        }
-        notifyDataSetChanged();
-    }
-
-    @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(noteList, fromPosition, toPosition);
+        Collections.swap(getCurrentList(), fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
     }
 
@@ -100,6 +106,63 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         }
     }
 
+    public Note getNoteAt(int id) {
+        return getItem(id);
+    }
+
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    public void setLongClickListener(ItemClickListener itemClickListener) {
+        this.mLongClickListener = itemClickListener;
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+
+        void onLongItemClick(View view, int position);
+    }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    private Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            if (noteListAll == null) {
+                noteListAll = new ArrayList<>(getCurrentList());
+            }
+            List<Note> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(noteListAll);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Note item : noteListAll) {
+                    if (item.getName().toLowerCase().contains(filterPattern) ||
+                            item.getDescription().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            submitList((List) results.values);
+        }
+    };
+
     public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder, View.OnLongClickListener {
         private RecyclerviewNoteItemBinding recyclerviewNoteItemBinding;
 
@@ -132,39 +195,5 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         public void onItemClear() {
             itemView.setBackgroundColor(0);
         }
-    }
-
-    public Note getItem(int id) {
-        return noteList.get(id);
-    }
-
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    public void setLongClickListener(ItemClickListener itemClickListener) {
-        this.mLongClickListener = itemClickListener;
-    }
-
-
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-
-        void onLongItemClick(View view, int position);
-    }
-
-    public void filter(String text) {
-        noteList.clear();
-        if (text.isEmpty()) {
-            noteList.addAll(noteListFiltered);
-        } else {
-            text = text.toLowerCase();
-            for (Note item : noteListFiltered) {
-                if (item.getName().toLowerCase().contains(text) || item.getDescription().toLowerCase().contains(text)) {
-                    noteList.add(item);
-                }
-            }
-        }
-        setNoteList(noteList);
     }
 }

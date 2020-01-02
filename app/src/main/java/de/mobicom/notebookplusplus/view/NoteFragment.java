@@ -1,7 +1,5 @@
 package de.mobicom.notebookplusplus.view;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,14 +36,11 @@ import de.mobicom.notebookplusplus.utils.SimpleItemTouchHelperCallback;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
-import de.mobicom.notebookplusplus.data.Notebook;
 
 
 public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
     public static final String TAG = "NoteFragmentTag";
 
-    private SearchView searchView = null;
-    private SearchView.OnQueryTextListener queryTextListener;
     private NoteRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
     private FragmentNoteBinding fragmentNoteBinding;
@@ -97,7 +92,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
                     @Override
                     public void onChanged(List<Note> notes) {
                         if (notes != null) {
-                            adapter.setNoteList(notes);
+                            adapter.submitList(notes);
                             fragmentNoteBinding.setIsEmpty(false);
                         } else {
                             fragmentNoteBinding.setIsEmpty(true);
@@ -109,53 +104,33 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_note, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) searchItem.getActionView();
 
-        if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-        }
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return true;
+            }
 
-            queryTextListener = new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    Log.i("onQueryTextChange", newText);
-                    adapter.filter(newText);
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    Log.i("onQueryTextSubmit", query);
-                    adapter.filter(query);
-                    return true;
-                }
-            };
-            searchView.setOnQueryTextListener(queryTextListener);
-        }
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+        });
 
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_search) {
-            return true;
-        }
-        searchView.setOnQueryTextListener(queryTextListener);
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onItemClick(View view, int position) {
-        Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
+        Log.i("TAG", "You clicked number " + adapter.getNoteAt(position) + ", which is at cell position " + position);
 
-        notebookViewModel.setNote(adapter.getItem(position));
+        notebookViewModel.setNote(adapter.getNoteAt(position));
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteEditorFragment()).addToBackStack(null).commit();
     }
@@ -216,34 +191,6 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
 
         final AlertDialog dialog = builder.create();
         dialog.show();
-
-        //dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-//        mEditTextNoteTitle.addTextChangedListener(new TextWatcher() {
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before,
-//                                      int count) {
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count,
-//                                          int after) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//                if (TextUtils.isEmpty(s)) {
-//
-//                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-//
-//                } else {
-//
-//                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-//                }
-//
-//            }
-//        });
     }
 
 }

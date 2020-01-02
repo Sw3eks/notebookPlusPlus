@@ -67,6 +67,8 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
                 if (notebooks != null) {
                     fragmentNotebooksBinding.setIsEmpty(false);
                     adapter.submitList(notebooks);
+                } else {
+                    fragmentNotebooksBinding.setIsEmpty(true);
                 }
             }
         });
