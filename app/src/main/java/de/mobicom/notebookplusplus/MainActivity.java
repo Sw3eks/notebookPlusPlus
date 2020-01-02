@@ -30,9 +30,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.notebooks_title);
-
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            toolbar.setTitle(R.string.notebooks_title);
+        }
+        
         mDrawer = findViewById(R.id.drawer_layout);
         nvDrawer = findViewById(R.id.nav_view);
         nvDrawer.setNavigationItemSelectedListener(this);
