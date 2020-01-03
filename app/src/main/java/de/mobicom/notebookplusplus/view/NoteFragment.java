@@ -131,7 +131,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
 
         notebookViewModel.setNote(adapter.getNoteAt(position));
 
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteEditorFragment()).addToBackStack(null).commit();
+       // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteEditorFragment()).addToBackStack(null).commit();
     }
 
     @Override

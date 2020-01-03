@@ -18,10 +18,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import de.mobicom.notebookplusplus.MainActivity;
 import de.mobicom.notebookplusplus.databinding.FragmentNotebooksBinding;
 import de.mobicom.notebookplusplus.utils.SimpleItemTouchHelperCallback;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
@@ -127,10 +130,11 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
         notebookViewModel.setNotebook(adapter.getNotebookAt(position));
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-        NoteFragment noteFragment = new NoteFragment();
-        ft.replace(R.id.fragment_container, noteFragment, NoteFragment.TAG).addToBackStack(null).commit();
+
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+//        NoteFragment noteFragment = new NoteFragment();
+//        ft.replace(R.id.fragment_container, noteFragment, NoteFragment.TAG).addToBackStack(null).commit();
     }
 
     @Override
