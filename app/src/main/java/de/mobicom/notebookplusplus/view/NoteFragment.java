@@ -25,6 +25,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -39,7 +40,6 @@ import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
 
 
 public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
-    public static final String TAG = "NoteFragmentTag";
 
     private NoteRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
@@ -54,15 +54,8 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentNoteBinding = FragmentNoteBinding.inflate(inflater, container, false);
-
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeButtonEnabled(true);
-        }
-        setHasOptionsMenu(true);
-
         fragmentNoteBinding.setHandler(this);
+        setHasOptionsMenu(true);
 
         RecyclerView recyclerView = fragmentNoteBinding.rvNotes;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -131,7 +124,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
 
         notebookViewModel.setNote(adapter.getNoteAt(position));
 
-       // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NoteEditorFragment()).addToBackStack(null).commit();
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_noteFragment_to_noteEditorFragment);
     }
 
     @Override

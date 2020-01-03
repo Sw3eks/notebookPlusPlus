@@ -8,19 +8,26 @@
     <fragment
         android:id="@+id/notebooksFragment"
         android:name="de.mobicom.notebookplusplus.view.NotebooksFragment"
-        android:label="NotebooksFragment" >
+        android:label="@string/drawer_menu_notebooks"
+        tools:layout="@layout/fragment_notebooks">
         <action
             android:id="@+id/action_notebooksFragment_to_noteFragment"
             app:destination="@id/noteFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popUpTo="@+id/notebooksFragment" />
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
+            app:popUpTo="@+id/notebooksFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_notebooksFragment_to_createNotebookDialogFragment"
+            app:destination="@id/createNotebookDialogFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/noteFragment"
         android:name="de.mobicom.notebookplusplus.view.NoteFragment"
-        android:label="NoteFragment" >
+        tools:layout="@layout/fragment_note">
         <action
             android:id="@+id/action_noteFragment_to_noteEditorFragment"
             app:destination="@id/noteEditorFragment" />
@@ -28,24 +35,30 @@
     <fragment
         android:id="@+id/noteEditorFragment"
         android:name="de.mobicom.notebookplusplus.view.NoteEditorFragment"
-        android:label="NoteEditorFragment" />
+        tools:layout="@layout/fragment_note_editor"/>
     <fragment
         android:id="@+id/archiveFragment"
         android:name="de.mobicom.notebookplusplus.view.ArchiveFragment"
-        android:label="fragment_archive"
+        android:label="@string/drawer_menu_archive"
         tools:layout="@layout/fragment_archive" />
     <fragment
         android:id="@+id/calendarFragment"
         android:name="de.mobicom.notebookplusplus.view.CalendarFragment"
-        android:label="fragment_calendar"
+        android:label="@string/drawer_menu_calendar"
         tools:layout="@layout/fragment_calendar" />
     <fragment
         android:id="@+id/deletedNotesFragment"
         android:name="de.mobicom.notebookplusplus.view.DeletedNotesFragment"
-        android:label="fragment_deleted_notes"
+        android:label="@string/drawer_menu_deleted_notes"
         tools:layout="@layout/fragment_deleted_notes" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="de.mobicom.notebookplusplus.view.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="@string/drawer_menu_settings"
+        tools:layout="@layout/activity_settings"/>
+    <dialog
+        android:id="@+id/createNotebookDialogFragment"
+        android:name="de.mobicom.notebookplusplus.view.CreateNotebookDialogFragment"
+        android:label="dialog_create_notebook"
+        tools:layout="@layout/dialog_create_notebook" />
 </navigation>

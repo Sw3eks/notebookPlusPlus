@@ -10,7 +10,6 @@
     <string name="notebook_icon">Notebook Icon</string>
     <string name="search">Search</string>
     <string name="to_calendar">to Calendar</string>
-    <string name="notebooks_title">Notebooks</string>
     <string name="create_a_new_notebook">Create a new Notebook</string>
     <string name="create_new_note">Create a new Note</string>
 
@@ -49,7 +48,6 @@
         <item>Speech</item>
     </string-array>
 
-    <string name="note_title">Notes</string>
     <string name="title_activity_note">Notes</string>
     <string name="note_type">Note Type</string>
     <string name="note_bookmark_icon">Bookmark</string>

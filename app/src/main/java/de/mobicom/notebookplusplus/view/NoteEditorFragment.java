@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
@@ -15,21 +15,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import de.mobicom.notebookplusplus.databinding.FragmentNoteEditorBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.data.Note;
 
 public class NoteEditorFragment extends Fragment {
 
     private NotebookViewModel notebookViewModel;
-    private Note selectedNote;
-    private String mTitle;
     private FragmentNoteEditorBinding fragmentNoteEditorBinding;
 
     @Nullable
@@ -57,22 +52,17 @@ public class NoteEditorFragment extends Fragment {
             }
         });
 
-        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
-
-        final Observer<Note> noteObserver = new Observer<Note>() {
-            @Override
-            public void onChanged(@Nullable final Note note) {
-                if (note != null) {
-                    fragmentNoteEditorBinding.setNote(note);
-                    //mEditTextEditNote.setText(note.getDescription());
-                    //mTitle = note.getName();
-                }
-            }
-        };
-
-        notebookViewModel.getNote().observe(getViewLifecycleOwner(), noteObserver);
-
         return fragmentNoteEditorBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
+        fragmentNoteEditorBinding.setNote(notebookViewModel.getNote());
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(notebookViewModel.getNote().getName());
     }
 
     @Override

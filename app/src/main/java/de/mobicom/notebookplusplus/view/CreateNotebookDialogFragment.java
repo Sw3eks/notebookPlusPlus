@@ -2,7 +2,6 @@ package de.mobicom.notebookplusplus.view;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -33,17 +32,6 @@ public class CreateNotebookDialogFragment extends DialogFragment {
     private Spinner colorSpinner;
     private Button positiveButton;
 
-    public CreateNotebookDialogFragment() {
-    }
-
-    static CreateNotebookDialogFragment newInstance(String title) {
-        CreateNotebookDialogFragment frag = new CreateNotebookDialogFragment();
-        Bundle args = new Bundle();
-        args.putString("title", title);
-        frag.setArguments(args);
-        return frag;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,9 +53,6 @@ public class CreateNotebookDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
-
-        String title = getArguments().getString("title", "Enter Name");
-        getDialog().setTitle(title);
 
         mEditTextNotebookName.requestFocus();
         getDialog().getWindow().setSoftInputMode(

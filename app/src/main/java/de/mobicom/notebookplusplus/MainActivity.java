@@ -1,20 +1,22 @@
 package de.mobicom.notebookplusplus;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -30,51 +32,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setupNavigation() {
         toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle(R.string.notebooks_title);
             setSupportActionBar(toolbar);
         }
 
         drawerLayout = findViewById(R.id.drawer_layout);
         nvDrawer = findViewById(R.id.nav_view);
+
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
         NavigationUI.setupWithNavController(nvDrawer, navController);
 
-        nvDrawer.setNavigationItemSelectedListener(this);
+        nvDrawer.setCheckedItem(R.id.notebooksFragment);
+    }
+
+    private void setupViewModel() {
+        ViewModelProvider viewModelProvider = new ViewModelProvider(navController.getViewModelStoreOwner(R.id.navigation_graph), new ViewModelProvider.AndroidViewModelFactory(getApplication()));
+        NotebookViewModel notebookViewModel = viewModelProvider.get(NotebookViewModel.class);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(Navigation.findNavController(this, R.id.nav_host_fragment), drawerLayout);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.nav_notebooks:
-                navController.navigate(R.id.notebooksFragment);
-                break;
-            case R.id.nav_calendar:
-                navController.navigate(R.id.calendarFragment);
-                break;
-            case R.id.nav_archive:
-                navController.navigate(R.id.archiveFragment);
-                break;
-            case R.id.nav_deleted:
-                navController.navigate(R.id.deletedNotesFragment);
-                break;
-            case R.id.nav_settings:
-                navController.navigate(R.id.settingsFragment);
-                break;
-        }
-
-        menuItem.setChecked(true);
-        //getSupportActionBar().setTitle(menuItem.getTitle());
-
-        drawerLayout.closeDrawer(GravityCompat.START);
-
-        return true;
     }
 
     @Override

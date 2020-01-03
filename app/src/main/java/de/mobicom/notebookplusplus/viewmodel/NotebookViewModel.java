@@ -20,7 +20,7 @@ public class NotebookViewModel extends AndroidViewModel {
     private LiveData<List<Notebook>> allNotebooks;
 
     private Notebook selectedNotebook;
-    private MutableLiveData<Note> selectedNote = new MutableLiveData<>();
+    private Note selectedNote;
 
     public NotebookViewModel(@NonNull Application application) {
         super(application);
@@ -77,11 +77,11 @@ public class NotebookViewModel extends AndroidViewModel {
         selectedNotebook = notebook;
     }
 
-    public LiveData<Note> getNote() {
+    public Note getNote() {
         return selectedNote;
     }
 
     public void setNote(Note note) {
-        selectedNote.setValue(note);
+        selectedNote = note;
     }
 }

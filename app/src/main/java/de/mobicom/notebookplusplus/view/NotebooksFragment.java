@@ -20,6 +20,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -82,8 +83,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
                 }
             }
         });
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.notebooks_title);
     }
 
     @Override
@@ -129,12 +128,7 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         Log.i("TAG", "You clicked number " + adapter.getNotebookAt(position) + ", which is at cell position " + position);
 
         notebookViewModel.setNotebook(adapter.getNotebookAt(position));
-
-
-//        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-//        NoteFragment noteFragment = new NoteFragment();
-//        ft.replace(R.id.fragment_container, noteFragment, NoteFragment.TAG).addToBackStack(null).commit();
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_notebooksFragment_to_noteFragment);
     }
 
     @Override
@@ -143,10 +137,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     }
 
     public void onAddNotebook() {
-        CreateNotebookDialogFragment createNotebookDialogFragment = CreateNotebookDialogFragment.newInstance(getResources().getString(R.string.create_a_new_notebook));
-        createNotebookDialogFragment.setTargetFragment(NotebooksFragment.this, 0);
-        if (getFragmentManager() != null) {
-            createNotebookDialogFragment.show(getFragmentManager(), "CreateNotebookDialog");
-        }
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_notebooksFragment_to_createNotebookDialogFragment);
     }
 }
