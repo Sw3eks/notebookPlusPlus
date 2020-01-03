@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="position"
-            type="java.lang.Integer" />
-
-        <variable
             name="note"
             type="de.mobicom.notebookplusplus.data.Note" />
     </data>

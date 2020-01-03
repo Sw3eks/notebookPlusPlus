@@ -14,12 +14,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import androidx.lifecycle.ViewModelProviders;
@@ -28,7 +28,7 @@ import de.mobicom.notebookplusplus.data.Note;
 import de.mobicom.notebookplusplus.data.Notebook;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
-public class CreateNotebookDialogFragment extends DialogFragment {
+public class CreateDialogFragment extends DialogFragment {
 
     private NotebookViewModel notebookViewModel;
     private EditText editText;
@@ -38,7 +38,7 @@ public class CreateNotebookDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_create_notebook, container);
+        return inflater.inflate(R.layout.dialog_create, container);
     }
 
     @Override
@@ -67,9 +67,9 @@ public class CreateNotebookDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog dialog;
 
-        if (CreateNotebookDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(getResources().getString(R.string.notebooks_title))) {
+        if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(getResources().getString(R.string.notebooks_title))) {
             dialog = createNotebookDialog();
-        } else if (CreateNotebookDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(getResources().getString(R.string.note_title))) {
+        } else if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(getResources().getString(R.string.note_title))) {
             dialog = createNoteDialog();
         } else {
             dialog = createNoteEditorDialog();
@@ -81,12 +81,13 @@ public class CreateNotebookDialogFragment extends DialogFragment {
     private Dialog createNoteEditorDialog() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
-                .setView(inflater.inflate(R.layout.dialog_create_note, null))
+                .setView(inflater.inflate(R.layout.dialog_create, null))
                 .setTitle(R.string.edit_note_title)
                 .setPositiveButton(R.string.save_button,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int arg1) {
                                 notebookViewModel.getNote().setName(editText.getText().toString().trim());
+                                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(notebookViewModel.getNote().getName());
                             }
                         })
                 .setNegativeButton(R.string.cancel_button,
@@ -96,9 +97,9 @@ public class CreateNotebookDialogFragment extends DialogFragment {
                             }
                         });
 
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_note, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create, null);
 
-        editText = view.findViewById(R.id.edit_text_new_note);
+        editText = view.findViewById(R.id.dialogEditName);
         editText.requestFocus();
         editText.addTextChangedListener(new TextWatcher() {
 
@@ -126,8 +127,8 @@ public class CreateNotebookDialogFragment extends DialogFragment {
 
             }
         });
-        view.findViewById(R.id.typeDropdown).setVisibility(View.GONE);
-        view.findViewById(R.id.labelTypeDropdown).setVisibility(View.GONE);
+        view.findViewById(R.id.dialogDropdown).setVisibility(View.GONE);
+        view.findViewById(R.id.dialogDropdownLabel).setVisibility(View.GONE);
 
         b.setView(view);
 
@@ -137,7 +138,7 @@ public class CreateNotebookDialogFragment extends DialogFragment {
     private Dialog createNoteDialog() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
-                .setView(inflater.inflate(R.layout.dialog_create_note, null))
+                .setView(inflater.inflate(R.layout.dialog_create, null))
                 .setTitle(R.string.create_new_note)
                 .setPositiveButton(R.string.create_button,
                         new DialogInterface.OnClickListener() {
@@ -167,9 +168,9 @@ public class CreateNotebookDialogFragment extends DialogFragment {
                             }
                         });
 
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_note, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create, null);
 
-        editText = view.findViewById(R.id.edit_text_new_note);
+        editText = view.findViewById(R.id.dialogEditName);
         editText.requestFocus();
         editText.addTextChangedListener(new TextWatcher() {
 
@@ -198,7 +199,7 @@ public class CreateNotebookDialogFragment extends DialogFragment {
             }
         });
 
-        spinner = view.findViewById(R.id.typeDropdown);
+        spinner = view.findViewById(R.id.dialogDropdown);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.note_type_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -213,7 +214,7 @@ public class CreateNotebookDialogFragment extends DialogFragment {
     private AlertDialog createNotebookDialog() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
-                .setView(inflater.inflate(R.layout.dialog_create_notebook, null))
+                .setView(inflater.inflate(R.layout.dialog_create, null))
                 .setTitle(R.string.create_a_new_notebook)
                 .setPositiveButton(R.string.create_button,
                         new DialogInterface.OnClickListener() {
@@ -254,9 +255,9 @@ public class CreateNotebookDialogFragment extends DialogFragment {
                         }
                 );
 
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_notebook, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create, null);
 
-        editText = view.findViewById(R.id.edit_text_new_notebook);
+        editText = view.findViewById(R.id.dialogEditName);
         editText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -284,7 +285,7 @@ public class CreateNotebookDialogFragment extends DialogFragment {
             }
         });
 
-        spinner = view.findViewById(R.id.colorDropdown);
+        spinner = view.findViewById(R.id.dialogDropdown);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.color_Array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

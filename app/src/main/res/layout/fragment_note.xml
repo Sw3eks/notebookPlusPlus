@@ -26,8 +26,6 @@
             visibleGone="@{!isEmpty}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:transitionGroup="false"
             tools:listitem="@layout/recyclerview_note_item" />
 
         <TextView
@@ -35,8 +33,9 @@
             visibleGone="@{isEmpty}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/no_data_available" />
+            android:layout_gravity="center"
+            android:text="@string/no_data_available"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addNewNote"

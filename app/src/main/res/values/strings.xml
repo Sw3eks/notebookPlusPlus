@@ -12,8 +12,7 @@
     <string name="to_calendar">to Calendar</string>
     <string name="create_a_new_notebook">Create a new Notebook</string>
     <string name="create_new_note">Create a new Note</string>
-
-    <string name="new_notebook_name">Notebook name</string>
+    
     <string name="create_button">Create</string>
     <string name="cancel_button">Cancel</string>
     <string name="title_activity_settings">Settings</string>
@@ -71,5 +70,6 @@
     <string name="note_editor_title">Note Editor</string>
     <string name="note_title">Note</string>
     <string name="notebooks_title">Notebook</string>
+    <string name="dialog_hint">Name</string>
 
 </resources>

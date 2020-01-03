@@ -30,7 +30,9 @@
         tools:layout="@layout/fragment_note">
         <action
             android:id="@+id/action_noteFragment_to_noteEditorFragment"
-            app:destination="@id/noteEditorFragment" />
+            app:destination="@id/noteEditorFragment"
+            app:enterAnim="@anim/slide_up"
+            app:popExitAnim="@anim/slide_down" />
         <action
             android:id="@+id/action_noteFragment_to_createNotebookDialogFragment"
             app:destination="@id/createNotebookDialogFragment" />
@@ -65,9 +67,9 @@
         tools:layout="@layout/activity_settings" />
     <dialog
         android:id="@+id/createNotebookDialogFragment"
-        android:name="de.mobicom.notebookplusplus.view.CreateNotebookDialogFragment"
+        android:name="de.mobicom.notebookplusplus.view.CreateDialogFragment"
         android:label="dialog_create_notebook"
-        tools:layout="@layout/dialog_create_notebook">
+        tools:layout="@layout/dialog_create">
         <argument
             android:name="DialogType"
             android:defaultValue="Notebook"

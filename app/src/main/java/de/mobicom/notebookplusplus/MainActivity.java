@@ -1,20 +1,16 @@
 package de.mobicom.notebookplusplus;
 
+import android.os.Bundle;
+
+import com.google.android.material.navigation.NavigationView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
-
-import android.os.Bundle;
-import android.view.View;
-
-import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
@@ -44,11 +40,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(nvDrawer, navController);
 
         nvDrawer.setCheckedItem(R.id.notebooksFragment);
-    }
-
-    private void setupViewModel() {
-        ViewModelProvider viewModelProvider = new ViewModelProvider(navController.getViewModelStoreOwner(R.id.navigation_graph), new ViewModelProvider.AndroidViewModelFactory(getApplication()));
-        NotebookViewModel notebookViewModel = viewModelProvider.get(NotebookViewModel.class);
     }
 
     @Override

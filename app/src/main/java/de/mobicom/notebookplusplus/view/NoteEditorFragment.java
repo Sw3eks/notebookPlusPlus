@@ -1,17 +1,7 @@
 package de.mobicom.notebookplusplus.view;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,24 +9,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import de.mobicom.notebookplusplus.data.Note;
+import androidx.navigation.Navigation;
+import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.databinding.FragmentNoteEditorBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
-import de.mobicom.notebookplusplus.R;
 
 public class NoteEditorFragment extends Fragment {
 
     private NotebookViewModel notebookViewModel;
     private FragmentNoteEditorBinding fragmentNoteEditorBinding;
-
-    private EditText mEditTextNoteTitle;
-    private Button positiveButton;
 
     @Nullable
     @Override
@@ -44,6 +32,7 @@ public class NoteEditorFragment extends Fragment {
         fragmentNoteEditorBinding = FragmentNoteEditorBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
 
+        fragmentNoteEditorBinding.editNote.requestFocus();
         fragmentNoteEditorBinding.editNote.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -86,7 +75,7 @@ public class NoteEditorFragment extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.editNoteTitle:
-                showDialog();
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(NoteEditorFragmentDirections.actionNoteEditorFragmentToCreateNotebookDialogFragment().setDialogType("Note Editor"));
                 break;
             case R.id.moveToArchive:
                 Toast.makeText(getContext(), "Archived", Toast.LENGTH_LONG).show();
@@ -99,69 +88,9 @@ public class NoteEditorFragment extends Fragment {
         return true;
     }
 
-    private void showDialog() {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
-                .setView(inflater.inflate(R.layout.dialog_create_note, null))
-                .setTitle(R.string.edit_note_title)
-                .setPositiveButton(R.string.save_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int arg1) {
-                                notebookViewModel.getNote().setName(mEditTextNoteTitle.getText().toString().trim());
-                            }
-                        })
-                .setNegativeButton(R.string.cancel_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int arg1) {
-                                dialog.dismiss();
-                            }
-                        });
-
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_note, null);
-
-        mEditTextNoteTitle = view.findViewById(R.id.edit_text_new_note);
-        mEditTextNoteTitle.requestFocus();
-        mEditTextNoteTitle.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (TextUtils.isEmpty(s.toString().trim())) {
-
-                    positiveButton.setEnabled(false);
-
-                } else {
-
-                    positiveButton.setEnabled(true);
-                }
-
-            }
-        });
-        view.findViewById(R.id.typeDropdown).setVisibility(View.GONE);
-        view.findViewById(R.id.labelTypeDropdown).setVisibility(View.GONE);
-
-        builder.setView(view);
-
-        final AlertDialog dialog = builder.create();
-
-        positiveButton = dialog.getButton(Dialog.BUTTON_POSITIVE);
-
-        dialog.show();
-        positiveButton.setEnabled(false);
-    }
-
     @Override
     public void onDetach() {
+        Toast.makeText(getContext(), "Changes saved!", Toast.LENGTH_LONG).show();
         notebookViewModel.update(notebookViewModel.getNote());
         super.onDetach();
     }

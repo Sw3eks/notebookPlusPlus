@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/createNotebookDialog"
+    android:id="@+id/createDialog"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -8,32 +8,35 @@
     android:padding="15dp">
 
     <EditText
-        android:id="@+id/edit_text_new_notebook"
+        android:id="@+id/dialogEditName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/new_notebook_name"
         android:layout_marginBottom="10dp"
-        android:inputType="text"
-        android:importantForAutofill="no"/>
+        android:hint="@string/dialog_hint"
+        android:importantForAutofill="no"
+        android:inputType="text" />
 
 
-    <LinearLayout android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
-        <TextView android:layout_width="0dp"
-            android:layout_weight=".7"
+        <TextView
+            android:id="@+id/dialogDropdownLabel"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_color_label"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:layout_marginStart="4dp"
-            />
+            android:layout_weight=".7"
+            android:text="@string/dialog_color_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-        <Spinner android:id="@+id/colorDropdown"
+        <Spinner
+            android:id="@+id/dialogDropdown"
             android:layout_width="wrap_content"
-            android:layout_weight=".3"
             android:layout_height="wrap_content"
+            android:layout_weight=".3"
             android:prompt="@string/dialog_color_label" />
     </LinearLayout>
 </LinearLayout>

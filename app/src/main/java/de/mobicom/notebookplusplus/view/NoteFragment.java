@@ -1,6 +1,5 @@
 package de.mobicom.notebookplusplus.view;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,16 +7,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -29,12 +24,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import de.mobicom.notebookplusplus.R;
+import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
 import de.mobicom.notebookplusplus.data.Note;
 import de.mobicom.notebookplusplus.databinding.FragmentNoteBinding;
 import de.mobicom.notebookplusplus.utils.SimpleItemTouchHelperCallback;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
-import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
 
 
 public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
@@ -42,11 +37,6 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     private NoteRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
     private FragmentNoteBinding fragmentNoteBinding;
-
-    // Variables for Create Dialog
-    private EditText mEditTextNoteTitle;
-    private Spinner typeSpinner;
-
 
     @Nullable
     @Override
@@ -129,56 +119,6 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     }
 
     public void onAddNote() {
-        showDialog();
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(NoteFragmentDirections.actionNoteFragmentToCreateNotebookDialogFragment().setDialogType("Note"));
     }
-
-    private void showDialog() {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
-                .setView(inflater.inflate(R.layout.dialog_create_note, null))
-                .setTitle(R.string.create_new_note)
-                .setPositiveButton(R.string.create_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int arg1) {
-                                int type;
-                                switch (typeSpinner.getSelectedItem().toString()) {
-                                    case "List":
-                                        type = R.drawable.ic_note_type_todo;
-                                        break;
-                                    case "Speech":
-                                        type = R.drawable.ic_note_type_speech;
-                                        break;
-                                    default:
-                                        type = R.drawable.ic_note_type_text;
-                                }
-                                notebookViewModel.insert(
-                                        new Note(notebookViewModel.getNotebook().getNotebookId(),
-                                                mEditTextNoteTitle.getText().toString(),
-                                                type, 1, getResources().getString(R.string.created_note_default_text)));
-                                Toast.makeText(getContext(), R.string.note_created, Toast.LENGTH_LONG).show();
-                            }
-                        })
-                .setNegativeButton(R.string.cancel_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int arg1) {
-                                dialog.dismiss();
-                            }
-                        });
-
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_note, null);
-
-        mEditTextNoteTitle = view.findViewById(R.id.edit_text_new_note);
-        mEditTextNoteTitle.requestFocus();
-        typeSpinner = view.findViewById(R.id.typeDropdown);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.note_type_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        typeSpinner.setAdapter(adapter);
-
-        builder.setView(view);
-
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
 }
