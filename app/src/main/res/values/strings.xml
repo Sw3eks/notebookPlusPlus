@@ -66,5 +66,10 @@
     <string name="note_created">Note created!</string>
     <string name="move_note_to_notebook">Move to another Notebook</string>
     <string name="clone_note">Clone</string>
+    <string name="edit_note_title">Edit title</string>
+    <string name="save_button">Save</string>
+    <string name="note_editor_title">Note Editor</string>
+    <string name="note_title">Note</string>
+    <string name="notebooks_title">Notebook</string>
 
 </resources>

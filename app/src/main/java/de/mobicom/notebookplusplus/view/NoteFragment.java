@@ -2,7 +2,6 @@ package de.mobicom.notebookplusplus.view;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,7 +17,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -120,14 +118,12 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
 
     @Override
     public void onItemClick(View view, int position) {
-        Log.i("TAG", "You clicked number " + adapter.getNoteAt(position) + ", which is at cell position " + position);
-
         notebookViewModel.setNote(adapter.getNoteAt(position));
 
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_noteFragment_to_noteEditorFragment);
     }
 
-    @Override
+
     public void onLongItemClick(View view, int position) {
         Toast.makeText(getContext(), "Click at: " + position, Toast.LENGTH_LONG).show();
     }

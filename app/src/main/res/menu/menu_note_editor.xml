@@ -9,6 +9,10 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/editNoteTitle"
+        android:title="@string/edit_note_title" />
+
+    <item
         android:id="@+id/moveToArchive"
         android:title="@string/move_note_to_archive" />
 

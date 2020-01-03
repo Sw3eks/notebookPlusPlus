@@ -31,11 +31,18 @@
         <action
             android:id="@+id/action_noteFragment_to_noteEditorFragment"
             app:destination="@id/noteEditorFragment" />
+        <action
+            android:id="@+id/action_noteFragment_to_createNotebookDialogFragment"
+            app:destination="@id/createNotebookDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/noteEditorFragment"
         android:name="de.mobicom.notebookplusplus.view.NoteEditorFragment"
-        tools:layout="@layout/fragment_note_editor"/>
+        tools:layout="@layout/fragment_note_editor">
+        <action
+            android:id="@+id/action_noteEditorFragment_to_createNotebookDialogFragment"
+            app:destination="@id/createNotebookDialogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/archiveFragment"
         android:name="de.mobicom.notebookplusplus.view.ArchiveFragment"
@@ -55,10 +62,15 @@
         android:id="@+id/settingsFragment"
         android:name="de.mobicom.notebookplusplus.view.SettingsFragment"
         android:label="@string/drawer_menu_settings"
-        tools:layout="@layout/activity_settings"/>
+        tools:layout="@layout/activity_settings" />
     <dialog
         android:id="@+id/createNotebookDialogFragment"
         android:name="de.mobicom.notebookplusplus.view.CreateNotebookDialogFragment"
         android:label="dialog_create_notebook"
-        tools:layout="@layout/dialog_create_notebook" />
+        tools:layout="@layout/dialog_create_notebook">
+        <argument
+            android:name="DialogType"
+            android:defaultValue="Notebook"
+            app:argType="string" />
+    </dialog>
 </navigation>

@@ -81,6 +81,10 @@ public class Note {
         return name;
     }
 
+    public void setName(@NonNull String name) {
+        this.name = name;
+    }
+
     public int getType() {
         return type;
     }
@@ -91,6 +95,10 @@ public class Note {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @NonNull

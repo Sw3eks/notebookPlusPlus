@@ -1,7 +1,7 @@
 package de.mobicom.notebookplusplus.view;
 
+import android.app.ActivityOptions;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,20 +12,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
+import androidx.navigation.ActivityNavigator;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import de.mobicom.notebookplusplus.MainActivity;
 import de.mobicom.notebookplusplus.databinding.FragmentNotebooksBinding;
 import de.mobicom.notebookplusplus.utils.SimpleItemTouchHelperCallback;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
@@ -125,9 +124,8 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
 
     @Override
     public void onItemClick(View view, int position) {
-        Log.i("TAG", "You clicked number " + adapter.getNotebookAt(position) + ", which is at cell position " + position);
-
         notebookViewModel.setNotebook(adapter.getNotebookAt(position));
+
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_notebooksFragment_to_noteFragment);
     }
 
@@ -137,6 +135,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     }
 
     public void onAddNotebook() {
-        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_notebooksFragment_to_createNotebookDialogFragment);
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(NotebooksFragmentDirections.actionNotebooksFragmentToCreateNotebookDialogFragment().setDialogType("Notebook"));
     }
 }
