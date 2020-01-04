@@ -9,13 +9,16 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import static androidx.room.ForeignKey.CASCADE;
 import static androidx.room.ForeignKey.SET_NULL;
 
 @Entity(tableName = "note_table",
         foreignKeys = {
                 @ForeignKey(entity = Notebook.class,
                         parentColumns = "notebook_id",
-                        childColumns = "notebook_parent_id", onDelete = SET_NULL)},
+                        childColumns = "notebook_parent_id",
+                        onUpdate = CASCADE,
+                        onDelete = SET_NULL)},
         indices = {
                 @Index("notebook_parent_id")}
 )
