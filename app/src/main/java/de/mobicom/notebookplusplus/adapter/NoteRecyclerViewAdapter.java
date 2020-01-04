@@ -1,6 +1,7 @@
 package de.mobicom.notebookplusplus.adapter;
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ import de.mobicom.notebookplusplus.view.DeletedNotesFragment;
 
 public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewAdapter.NoteViewHolder> implements ItemTouchHelperAdapter, androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener, Filterable {
 
+    private RecyclerviewNoteItemBinding recyclerviewNoteItemBinding;
     private List<Note> noteListAll;
     private ItemClickListener mClickListener;
     private ItemClickListener mLongClickListener;
@@ -54,7 +56,7 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
     @Override
     @NonNull
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecyclerviewNoteItemBinding recyclerviewNoteItemBinding =
+        recyclerviewNoteItemBinding =
                 DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.recyclerview_note_item, parent, false);
         return new NoteViewHolder(recyclerviewNoteItemBinding);
     }
@@ -79,6 +81,7 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
     }
 
     public void onBookmarkNote() {
+        recyclerviewNoteItemBinding.noteBookmarkIcon.setImageResource(R.drawable.ic_note_bookmark_enabled);
         System.out.println("Bookmarked");
     }
 
