@@ -7,9 +7,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ZoomControls;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,13 +21,11 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import de.mobicom.notebookplusplus.databinding.FragmentNotebooksBinding;
-import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NotebookRecyclerViewAdapter;
 import de.mobicom.notebookplusplus.data.Notebook;
-
-import java.util.List;
+import de.mobicom.notebookplusplus.databinding.FragmentNotebooksBinding;
+import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 public class NotebookFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
     public static final String NOTEBOOK_FRAGMENT = "NOTEBOOK_FRAGMENT";
