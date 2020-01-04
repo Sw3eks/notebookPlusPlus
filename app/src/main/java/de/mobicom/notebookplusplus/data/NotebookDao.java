@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -25,6 +24,6 @@ public interface NotebookDao {
     @Query("DELETE FROM notebook_table")
     void deleteAllNotebooks();
 
-    @Query("SELECT * FROM notebook_table ORDER BY priority DESC")
+    @Query("SELECT * FROM notebook_table")
     LiveData<List<Notebook>> getAllNotebooks();
 }

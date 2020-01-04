@@ -2,13 +2,15 @@ package de.mobicom.notebookplusplus.adapter;
 
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -19,14 +21,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.data.Notebook;
 import de.mobicom.notebookplusplus.databinding.RecyclerviewNotebookItemBinding;
-import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
-import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 
-public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookRecyclerViewAdapter.NotebookViewHolder> implements ItemTouchHelperAdapter, Filterable {
+public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookRecyclerViewAdapter.NotebookViewHolder> implements Filterable {
 
     private List<Notebook> notebookListAll;
     private ItemClickListener mClickListener;
-    private ItemClickListener mLongClickListener;
+    private ItemClickListener mContextMenuClickListener;
 
     public NotebookRecyclerViewAdapter() {
         super(DIFF_CALLBACK);
@@ -60,24 +60,6 @@ public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookR
         holder.recyclerviewNotebookItemBinding.setNotebook(notebook);
     }
 
-    @Override
-    public void onItemMove(int fromPosition, int toPosition) {
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(getCurrentList(), i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(getCurrentList(), i, i - 1);
-            }
-        }
-        notifyItemMoved(fromPosition, toPosition);
-    }
-
-    @Override
-    public void onItemDismiss(int position) {
-    }
-
     // convenience method for getting data at click position
     public Notebook getNotebookAt(int id) {
         return getItem(id);
@@ -88,15 +70,15 @@ public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookR
         this.mClickListener = itemClickListener;
     }
 
-    public void setLongClickListener(ItemClickListener itemClickListener) {
-        this.mLongClickListener = itemClickListener;
+    public void setContextMenuItemClickListener(ItemClickListener itemClickListener) {
+        this.mContextMenuClickListener = itemClickListener;
     }
 
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
 
-        void onLongItemClick(View view, int position);
+        void onContextMenuItemClick(MenuItem item, int position);
     }
 
     @Override
@@ -107,7 +89,7 @@ public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookR
     private Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            if(notebookListAll == null) {
+            if (notebookListAll == null) {
                 notebookListAll = new ArrayList<>(getCurrentList());
             }
             List<Notebook> filteredList = new ArrayList<>();
@@ -138,15 +120,14 @@ public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookR
     };
 
     // stores and recycles views as they are scrolled off screen
-    public class NotebookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, ItemTouchHelperViewHolder, View.OnCreateContextMenuListener {
+    public class NotebookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
         private RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding;
 
         NotebookViewHolder(RecyclerviewNotebookItemBinding recyclerviewNotebookItemBinding) {
             super(recyclerviewNotebookItemBinding.getRoot());
             this.recyclerviewNotebookItemBinding = recyclerviewNotebookItemBinding;
             itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-            //itemView.setOnCreateContextMenuListener(this);
+            itemView.setOnCreateContextMenuListener(this);
         }
 
         @Override
@@ -155,26 +136,21 @@ public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookR
         }
 
         @Override
-        public boolean onLongClick(View view) {
-            if (mLongClickListener != null)
-                mLongClickListener.onLongItemClick(view, getAdapterPosition());
-            return true;
-        }
-
-        @Override
-        public void onItemSelected() {
-            itemView.setElevation(5);
-        }
-
-        @Override
-        public void onItemClear() {
-        }
-
-        @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.setHeaderTitle("Select The Action");
-            menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
-            menu.add(0, v.getId(), 0, "SMS");
+            Animation bounce = AnimationUtils.loadAnimation(v.getContext(), R.anim.shake);
+            recyclerviewNotebookItemBinding.notebookIcon.startAnimation(bounce);
+            menu.setHeaderTitle(R.string.edit_notebook);
+            menu.add(0, R.string.notebook_change_name, 0, R.string.notebook_change_name).setOnMenuItemClickListener(this);
+            menu.add(0, R.string.notebook_change_color, 1, R.string.notebook_change_color).setOnMenuItemClickListener(this);
+            menu.add(0, R.string.notebook_delete, 2, R.string.notebook_delete).setOnMenuItemClickListener(this);
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            if (mContextMenuClickListener != null) {
+                mContextMenuClickListener.onContextMenuItemClick(item, getAdapterPosition());
+            }
+            return true;
         }
     }
 }

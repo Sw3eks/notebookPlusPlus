@@ -77,5 +77,10 @@
     <string name="back_to_notebook">Move to notebook</string>
     <string name="archive_note">Archive</string>
     <string name="delete_note_forever">Delete forever</string>
+    <string name="edit_notebook">Edit notebook</string>
+    <string name="notebook_change_name">Edit name</string>
+    <string name="notebook_change_color">Edit color</string>
+    <string name="notebook_delete">Delete</string>
+    <string name="notebook_deleted"><![CDATA[Notebook deleted & Notes moved to trash]]></string>
 
 </resources>

@@ -77,6 +77,10 @@ public class NotebookViewModel extends AndroidViewModel {
         return noteRepository.getAllNotesDeleted();
     }
 
+    public void updateNotesOfDeletedNotebook(long notebookId) {
+        noteRepository.updateNotesOfDeletedNotebook(notebookId);
+    }
+
     public Notebook getNotebook() {
         return selectedNotebook;
     }

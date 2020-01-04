@@ -1,8 +1,6 @@
 package de.mobicom.notebookplusplus.data;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -19,8 +17,6 @@ public class Notebook {
     @NonNull
     private String name;
 
-    private int priority;
-
     @NonNull
     private String color;
 
@@ -33,9 +29,8 @@ public class Notebook {
     //private List<Note> notes;
 
 
-    public Notebook(@NonNull String name, int priority, @NonNull String color) {
+    public Notebook(@NonNull String name, @NonNull String color) {
         this.name = name;
-        this.priority = priority;
         this.color = color;
         this.createdAt = LocalDateTime.now();
     }
@@ -51,10 +46,6 @@ public class Notebook {
     @NonNull
     public String getName() {
         return name;
-    }
-
-    public int getPriority() {
-        return priority;
     }
 
     @NonNull
@@ -77,8 +68,4 @@ public class Notebook {
     public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
-
-    //public List<Note> getNotes() {
-    //    return notes;
-    //}
 }

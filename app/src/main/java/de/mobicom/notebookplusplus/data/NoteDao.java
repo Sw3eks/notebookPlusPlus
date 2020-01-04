@@ -32,4 +32,7 @@ public interface NoteDao {
 
     @Query("SELECT * FROM note_table WHERE archived = 0 AND delete_mark = 1 ORDER BY last_modified_date DESC")
     LiveData<List<Note>> getAllNotesDeleted();
+
+    @Query("UPDATE note_table SET delete_mark = 1 WHERE notebook_parent_id = :notebookParentId")
+    void updateNotesWithNotebookId(long notebookParentId);
 }

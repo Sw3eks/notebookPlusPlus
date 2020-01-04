@@ -7,7 +7,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ZoomControls;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +20,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.databinding.FragmentNotebooksBinding;
-import de.mobicom.notebookplusplus.utils.SimpleItemTouchHelperCallback;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NotebookRecyclerViewAdapter;
@@ -50,12 +50,8 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter = new NotebookRecyclerViewAdapter();
         adapter.setClickListener(this);
-        adapter.setLongClickListener(this);
+        adapter.setContextMenuItemClickListener(this);
         recyclerView.setAdapter(adapter);
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
 
         return fragmentNotebooksBinding.getRoot();
     }
@@ -125,8 +121,20 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     }
 
     @Override
-    public void onLongItemClick(View view, int position) {
-        Toast.makeText(getContext(), "Click at: " + position, Toast.LENGTH_LONG).show();
+    public void onContextMenuItemClick(MenuItem item, int position) {
+        switch (item.getItemId()) {
+            case R.string.notebook_change_name:
+                Toast.makeText(getContext(), "Name", Toast.LENGTH_LONG).show();
+                break;
+            case R.string.notebook_change_color:
+                Toast.makeText(getContext(), "Color", Toast.LENGTH_LONG).show();
+                break;
+            case R.string.notebook_delete:
+                notebookViewModel.updateNotesOfDeletedNotebook(adapter.getNotebookAt(position).getNotebookId());
+                notebookViewModel.delete(adapter.getNotebookAt(position));
+                Toast.makeText(getContext(), R.string.notebook_deleted, Toast.LENGTH_LONG).show();
+                break;
+        }
     }
 
     public void onAddNotebook() {

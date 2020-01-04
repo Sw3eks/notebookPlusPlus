@@ -25,6 +25,10 @@ public class NoteRepository {
         new NoteRepository.UpdateNoteAsyncTask(noteDao).execute(note);
     }
 
+    public void updateNotesOfDeletedNotebook(long notebookId) {
+        new NoteRepository.UpdateNotesWithNotebookIdAsyncTask(noteDao).execute(notebookId);
+    }
+
     public void delete(Note note) {
         new NoteRepository.DeleteNoteAsyncTask(noteDao).execute(note);
     }
@@ -60,6 +64,8 @@ public class NoteRepository {
         return null;
     }
 
+
+    // Async Tasks for Note operations
     private static class InsertNoteAsyncTask extends AsyncTask<Note, Void, Void> {
         private NoteDao noteDao;
 
@@ -152,6 +158,20 @@ public class NoteRepository {
         @Override
         protected LiveData<List<Note>> doInBackground(Void... voids) {
             return noteDao.getAllNotesDeleted();
+        }
+    }
+
+    private static class UpdateNotesWithNotebookIdAsyncTask extends AsyncTask<Long, Void, Void> {
+        private NoteDao noteDao;
+
+        private UpdateNotesWithNotebookIdAsyncTask(NoteDao noteDao) {
+            this.noteDao = noteDao;
+        }
+
+        @Override
+        protected Void doInBackground(Long... longs) {
+            noteDao.updateNotesWithNotebookId(longs[0]);
+            return null;
         }
     }
 }

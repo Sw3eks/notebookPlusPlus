@@ -251,7 +251,7 @@ public class CreateDialogFragment extends DialogFragment {
                                         color = "#f39c12";
                                 }
                                 notebookViewModel.insert(
-                                        new Notebook(editText.getText().toString(), 1, color));
+                                        new Notebook(editText.getText().toString(), color));
                             }
                         }
                 )
