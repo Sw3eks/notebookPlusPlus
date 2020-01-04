@@ -68,8 +68,6 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(getCurrentList(), fromPosition, toPosition);
-        notifyItemMoved(fromPosition, toPosition);
     }
 
     @Override

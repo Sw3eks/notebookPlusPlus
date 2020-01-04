@@ -32,8 +32,6 @@ public class Note {
 
     private int type;
 
-    private int priority;
-
     private String description;
 
     private boolean archived;
@@ -48,11 +46,10 @@ public class Note {
     @ColumnInfo(name = "last_modified_date")
     private LocalDateTime lastModifiedAt;
 
-    public Note(long notebookParentId, @NonNull String name, int type, int priority, String description) {
+    public Note(long notebookParentId, @NonNull String name, int type, String description) {
         this.notebookParentId = notebookParentId;
         this.name = name;
         this.type = type;
-        this.priority = priority;
         this.description = description;
         this.createdAt = LocalDateTime.now();
         this.lastModifiedAt = LocalDateTime.now();
@@ -87,10 +84,6 @@ public class Note {
 
     public int getType() {
         return type;
-    }
-
-    public int getPriority() {
-        return priority;
     }
 
     public String getDescription() {
@@ -140,7 +133,6 @@ public class Note {
                 "noteId=" + noteId +
                 ", name='" + name + '\'' +
                 ", type=" + type +
-                ", priority=" + priority +
                 ", description='" + description + '\'' +
                 ", createdAt=" + createdAt +
                 ", lastModifiedAt=" + lastModifiedAt +

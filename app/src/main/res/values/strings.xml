@@ -48,7 +48,7 @@
     </string-array>
 
     <string name="title_activity_note">Notes</string>
-    <string name="note_type">Note Type</string>
+    <string name="note_type">Type</string>
     <string name="note_bookmark_icon">Bookmark</string>
     <string name="note_context_menu_icon">Context Menu</string>
     <string name="reset_calendar_icon">Reset Calendar</string>
@@ -71,5 +71,8 @@
     <string name="note_title">Note</string>
     <string name="notebooks_title">Notebook</string>
     <string name="dialog_hint">Name</string>
+    <string name="moved_note_to_deleted">Moved to trash</string>
+    <string name="moved_note_to_archive">Moved to archive</string>
+    <string name="changes_saved">Changes saved</string>
 
 </resources>

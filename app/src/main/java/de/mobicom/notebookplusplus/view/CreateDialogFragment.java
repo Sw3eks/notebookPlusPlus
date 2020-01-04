@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -88,6 +89,7 @@ public class CreateDialogFragment extends DialogFragment {
                             public void onClick(DialogInterface dialog, int arg1) {
                                 notebookViewModel.getNote().setName(editText.getText().toString().trim());
                                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(notebookViewModel.getNote().getName());
+
                             }
                         })
                 .setNegativeButton(R.string.cancel_button,
@@ -127,8 +129,12 @@ public class CreateDialogFragment extends DialogFragment {
 
             }
         });
-        view.findViewById(R.id.dialogDropdown).setVisibility(View.GONE);
-        view.findViewById(R.id.dialogDropdownLabel).setVisibility(View.GONE);
+        view.findViewById(R.id.dialogDropdown).
+
+                setVisibility(View.GONE);
+        view.findViewById(R.id.dialogDropdownLabel).
+
+                setVisibility(View.GONE);
 
         b.setView(view);
 
@@ -157,7 +163,7 @@ public class CreateDialogFragment extends DialogFragment {
                                 notebookViewModel.insert(
                                         new Note(notebookViewModel.getNotebook().getNotebookId(),
                                                 editText.getText().toString(),
-                                                type, 1, getResources().getString(R.string.created_note_default_text)));
+                                                type, getResources().getString(R.string.created_note_default_text)));
                                 Toast.makeText(getContext(), R.string.note_created, Toast.LENGTH_LONG).show();
                             }
                         })
@@ -199,6 +205,8 @@ public class CreateDialogFragment extends DialogFragment {
             }
         });
 
+        TextView spinnerLabel = view.findViewById(R.id.dialogDropdownLabel);
+        spinnerLabel.setText(R.string.note_type);
         spinner = view.findViewById(R.id.dialogDropdown);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.note_type_array, android.R.layout.simple_spinner_item);

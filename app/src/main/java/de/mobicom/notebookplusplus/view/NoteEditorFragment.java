@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.time.LocalDateTime;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,12 +27,17 @@ public class NoteEditorFragment extends Fragment {
 
     private NotebookViewModel notebookViewModel;
     private FragmentNoteEditorBinding fragmentNoteEditorBinding;
+    private String currentTitle;
+    private boolean isChanged;
+    private String message;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentNoteEditorBinding = FragmentNoteEditorBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
+        isChanged = false;
+        message = getResources().getString(R.string.changes_saved);
 
         fragmentNoteEditorBinding.editNote.requestFocus();
         fragmentNoteEditorBinding.editNote.addTextChangedListener(new TextWatcher() {
@@ -45,7 +52,12 @@ public class NoteEditorFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                notebookViewModel.getNote().setDescription(s.toString().trim());
+                if (s.toString().trim().equals(notebookViewModel.getNote().getDescription())) {
+                    isChanged = false;
+                } else {
+                    notebookViewModel.getNote().setDescription(s.toString().trim());
+                    isChanged = true;
+                }
             }
         });
 
@@ -60,6 +72,7 @@ public class NoteEditorFragment extends Fragment {
         fragmentNoteEditorBinding.setNote(notebookViewModel.getNote());
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(notebookViewModel.getNote().getName());
+        currentTitle = notebookViewModel.getNote().getName();
     }
 
     @Override
@@ -78,10 +91,15 @@ public class NoteEditorFragment extends Fragment {
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(NoteEditorFragmentDirections.actionNoteEditorFragmentToCreateNotebookDialogFragment().setDialogType("Note Editor"));
                 break;
             case R.id.moveToArchive:
-                Toast.makeText(getContext(), "Archived", Toast.LENGTH_LONG).show();
+                notebookViewModel.getNote().setArchived(true);
+                isChanged = true;
+                message = getResources().getString(R.string.moved_note_to_archive);
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
                 break;
             case R.id.deleteNote:
-                Toast.makeText(getContext(), "Deleted", Toast.LENGTH_LONG).show();
+                notebookViewModel.getNote().setDeleteMark(true);
+                isChanged = true;
+                message = getResources().getString(R.string.moved_note_to_deleted);
                 break;
         }
 
@@ -89,9 +107,15 @@ public class NoteEditorFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        Toast.makeText(getContext(), "Changes saved!", Toast.LENGTH_LONG).show();
-        notebookViewModel.update(notebookViewModel.getNote());
-        super.onDetach();
+    public void onPause() {
+        if (!notebookViewModel.getNote().getName().equals(currentTitle)) {
+            isChanged = true;
+        }
+        if (isChanged) {
+            notebookViewModel.getNote().setLastModifiedAt(LocalDateTime.now());
+            notebookViewModel.update(notebookViewModel.getNote());
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
+        super.onPause();
     }
 }
