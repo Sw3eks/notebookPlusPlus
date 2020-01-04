@@ -26,4 +26,10 @@ public interface NoteDao {
 
     @Query("SELECT * FROM note_table WHERE notebook_parent_id = :notebookParentId AND archived = 0 AND delete_mark = 0 ORDER BY last_modified_date DESC")
     LiveData<List<Note>> getAllNotes(long notebookParentId);
+
+    @Query("SELECT * FROM note_table WHERE archived = 1 AND delete_mark = 0 ORDER BY last_modified_date DESC")
+    LiveData<List<Note>> getAllNotesArchived();
+
+    @Query("SELECT * FROM note_table WHERE archived = 0 AND delete_mark = 1 ORDER BY last_modified_date DESC")
+    LiveData<List<Note>> getAllNotesDeleted();
 }

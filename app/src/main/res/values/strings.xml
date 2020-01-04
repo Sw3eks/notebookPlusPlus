@@ -74,5 +74,8 @@
     <string name="moved_note_to_deleted">Moved to trash</string>
     <string name="moved_note_to_archive">Moved to archive</string>
     <string name="changes_saved">Changes saved</string>
+    <string name="back_to_notebook">Move to notebook</string>
+    <string name="archive_note">Archive</string>
+    <string name="delete_note_forever">Delete forever</string>
 
 </resources>

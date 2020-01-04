@@ -9,7 +9,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -20,20 +19,22 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.data.Note;
-import de.mobicom.notebookplusplus.data.Notebook;
 import de.mobicom.notebookplusplus.databinding.RecyclerviewNoteItemBinding;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
 import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
+import de.mobicom.notebookplusplus.view.ArchiveFragment;
+import de.mobicom.notebookplusplus.view.DeletedNotesFragment;
 
 public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewAdapter.NoteViewHolder> implements ItemTouchHelperAdapter, androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener, Filterable {
 
     private List<Note> noteListAll;
     private ItemClickListener mClickListener;
     private ItemClickListener mLongClickListener;
+    private String type;
 
-
-    public NoteRecyclerViewAdapter() {
+    public NoteRecyclerViewAdapter(String type) {
         super(DIFF_CALLBACK);
+        this.type = type;
     }
 
     private static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK = new DiffUtil.ItemCallback<Note>() {
@@ -50,7 +51,6 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
         }
     };
 
-
     @Override
     @NonNull
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -64,6 +64,9 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
         Note note = getNoteAt(position);
         holder.recyclerviewNoteItemBinding.setNote(note);
         holder.recyclerviewNoteItemBinding.setHandler(this);
+        if (this.type.equals(DeletedNotesFragment.DELETED_NOTES_FRAGMENT) || this.type.equals(ArchiveFragment.ARCHIVE_FRAGMENT)) {
+            holder.recyclerviewNoteItemBinding.noteCalendarIcon.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -83,7 +86,13 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
         System.out.println("Context");
         androidx.appcompat.widget.PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
         popupMenu.setOnMenuItemClickListener(this);
-        popupMenu.inflate(R.menu.popup_menu_note);
+        if (this.type.equals(ArchiveFragment.ARCHIVE_FRAGMENT)) {
+            popupMenu.inflate(R.menu.popup_menu_archive);
+        } else if (this.type.equals(DeletedNotesFragment.DELETED_NOTES_FRAGMENT)) {
+            popupMenu.inflate(R.menu.popup_menu_deleted_notes);
+        } else {
+            popupMenu.inflate(R.menu.popup_menu_note);
+        }
         popupMenu.show();
     }
 

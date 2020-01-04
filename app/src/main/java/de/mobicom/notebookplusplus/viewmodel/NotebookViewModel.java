@@ -69,6 +69,14 @@ public class NotebookViewModel extends AndroidViewModel {
         return noteRepository.getAllNotes(notebookId);
     }
 
+    public LiveData<List<Note>> getAllNotesWithArchiveTrue() {
+        return noteRepository.getAllNotesArchived();
+    }
+
+    public LiveData<List<Note>> getAllNotesWithDeletedTrue() {
+        return noteRepository.getAllNotesDeleted();
+    }
+
     public Notebook getNotebook() {
         return selectedNotebook;
     }

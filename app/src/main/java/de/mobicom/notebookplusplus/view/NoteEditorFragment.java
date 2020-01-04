@@ -100,6 +100,7 @@ public class NoteEditorFragment extends Fragment {
                 notebookViewModel.getNote().setDeleteMark(true);
                 isChanged = true;
                 message = getResources().getString(R.string.moved_note_to_deleted);
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
                 break;
         }
 

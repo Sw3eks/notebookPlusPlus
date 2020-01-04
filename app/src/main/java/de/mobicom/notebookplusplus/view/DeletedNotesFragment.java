@@ -1,9 +1,6 @@
 package de.mobicom.notebookplusplus.view;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,59 +8,90 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
+import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
+import de.mobicom.notebookplusplus.data.Note;
+import de.mobicom.notebookplusplus.databinding.FragmentArchiveBinding;
+import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 public class DeletedNotesFragment extends Fragment {
-    private SearchView searchView = null;
-    private SearchView.OnQueryTextListener queryTextListener;
+    public static final String DELETED_NOTES_FRAGMENT = "DELETED_NOTES_FRAGMENT";
+
+    private NoteRecyclerViewAdapter adapter;
+    private NotebookViewModel notebookViewModel;
+    private FragmentArchiveBinding fragmentArchiveBinding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_deleted_notes, container, false);
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        fragmentArchiveBinding = FragmentArchiveBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
+
+        RecyclerView recyclerView = fragmentArchiveBinding.rvNotes;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        DividerItemDecoration itemDecor = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecor);
+        adapter = new NoteRecyclerViewAdapter(DELETED_NOTES_FRAGMENT);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+
+//        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+//        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
+//        mItemTouchHelper.attachToRecyclerView(recyclerView);
+
+        return fragmentArchiveBinding.getRoot();
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_deleted_notes, menu);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
+        notebookViewModel.getAllNotesWithDeletedTrue()
+                .observe(this, new Observer<List<Note>>() {
+                    @Override
+                    public void onChanged(List<Note> notes) {
+                        if (notes != null) {
+                            adapter.submitList(notes);
+                            fragmentArchiveBinding.setIsEmpty(false);
+                        } else {
+                            fragmentArchiveBinding.setIsEmpty(true);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_note, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) searchItem.getActionView();
 
-        if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-        }
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return true;
+            }
 
-            queryTextListener = new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    Log.i("onQueryTextChange", newText);
-
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    Log.i("onQueryTextSubmit", query);
-
-                    return true;
-                }
-            };
-            searchView.setOnQueryTextListener(queryTextListener);
-        }
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+        });
 
         super.onCreateOptionsMenu(menu, inflater);
     }

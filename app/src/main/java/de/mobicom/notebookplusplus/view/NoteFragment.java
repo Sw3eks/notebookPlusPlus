@@ -33,6 +33,7 @@ import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 
 public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
+    public static final String NOTE_FRAGMENT = "NOTE_FRAGMENT";
 
     private NoteRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
@@ -49,7 +50,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         DividerItemDecoration itemDecor = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecor);
-        adapter = new NoteRecyclerViewAdapter();
+        adapter = new NoteRecyclerViewAdapter(NOTE_FRAGMENT);
         adapter.setClickListener(this);
         adapter.setLongClickListener(this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
