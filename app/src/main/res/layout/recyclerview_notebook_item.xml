@@ -33,7 +33,7 @@
                 <ImageView
                     android:id="@+id/notebookIcon"
                     colorFilter="@{notebook.color}"
-                    android:layout_width="139dp"
+                    android:layout_width="140dp"
                     android:layout_height="188dp"
                     android:contentDescription="@string/notebook_icon"
                     android:src="@drawable/notebook_icon"
