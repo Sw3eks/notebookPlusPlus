@@ -26,9 +26,6 @@ public class Notebook {
     @ColumnInfo(name = "last_modified_date")
     private LocalDateTime lastModifiedDate;
 
-    //private List<Note> notes;
-
-
     public Notebook(@NonNull String name, @NonNull String color) {
         this.name = name;
         this.color = color;
@@ -67,5 +64,16 @@ public class Notebook {
 
     public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Notebook{" +
+                "notebookId=" + notebookId +
+                ", name='" + name + '\'' +
+                ", color='" + color + '\'' +
+                ", createdAt=" + createdAt +
+                ", lastModifiedDate=" + lastModifiedDate +
+                '}';
     }
 }

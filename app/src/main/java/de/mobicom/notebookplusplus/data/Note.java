@@ -10,15 +10,15 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
-import static androidx.room.ForeignKey.SET_NULL;
 
+// TODO: keep notes in Trash if notebook is deleted!!
 @Entity(tableName = "note_table",
         foreignKeys = {
                 @ForeignKey(entity = Notebook.class,
                         parentColumns = "notebook_id",
                         childColumns = "notebook_parent_id",
                         onUpdate = CASCADE,
-                        onDelete = SET_NULL)},
+                        onDelete = CASCADE)},
         indices = {
                 @Index("notebook_parent_id")}
 )
@@ -135,9 +135,12 @@ public class Note {
     public String toString() {
         return "Note{" +
                 "noteId=" + noteId +
+                ", notebookParentId=" + notebookParentId +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", description='" + description + '\'' +
+                ", archived=" + archived +
+                ", deleteMark=" + deleteMark +
                 ", createdAt=" + createdAt +
                 ", lastModifiedAt=" + lastModifiedAt +
                 '}';

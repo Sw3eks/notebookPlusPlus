@@ -1,57 +1,77 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base Strings  -->
     <string name="drawer_menu_notebooks">Notizbücher</string>
     <string name="drawer_menu_calendar">Kalendar</string>
     <string name="drawer_menu_archive">Archiv</string>
     <string name="drawer_menu_deleted_notes">Gelöschte Notizen</string>
     <string name="drawer_menu_settings">Einstellungen</string>
-    <string name="notebook_icon">Notebook Icon</string>
-    <string name="search">Suchen</string>
-    <string name="to_calendar">zum Kalendar</string>
-    <string name="notebooks_title">Notizbücher</string>
-    <string name="create_a_new_notebook">Ein neues Notizbuch erstellen</string>
 
-    <string name="new_notebook_name">Notizbuch Name</string>
-    <string name="create_button">Erstellen</string>
-    <string name="cancel_button">Abbrechen</string>
-    <string name="title_activity_settings">Einstellungen</string>
-
-    <!-- Preference Titles -->
-    <string name="settings_calendar_header">Kalendar Benachrichtungseinstellungen</string>
-    <string name="settings_theme_header">Theme Setting</string>
-
-    <string name="calendar_notifications">Kalendar Benachrichtungen</string>
-    <string name="change_theme">Nachtmodus</string>
-    <string name="tomorrow_reminder">Morgen Erinnerung</string>
-    <string name="next_week_reminder">Nächste Woche Erinnerung</string>
-    <string name="calendar_notification_summary">Benachrichtigungen für Kalender aktivieren</string>
-    <string name="tomorrow_reminder_summary">Benachrichtigt, wenn ein Kalendereintrag für den nächsten Tag vorhanden ist.</string>
-    <string name="week_reminder_summary">Benachrichtigt, wenn ein Kalendereintrag für die nächste Woche vorhanden ist (nur an Sonntagen).</string>
-    <string name="theme_summary">Ändert das Aussehen</string>
-    <string name="dialog_color_label">Farbe</string>
-    <string name="note_title">Notes</string>
-    <string name="title_activity_note">Notes</string>
-    <string name="note_type">Note Type</string>
+    <!-- Icon Strings  -->
+    <string name="notebook_icon">Notizbuch Icon</string>
     <string name="note_bookmark_icon">Bookmark</string>
     <string name="note_context_menu_icon">Context Menu</string>
-    <string name="to_notebook">To Notebooks</string>
-    <string name="reset_calendar_icon">Reset Calendar</string>
-    <string name="to_notebook_icon">To Notebooks</string>
-    <string name="new_note_name">Note name</string>
-    <string name="dialog_type_label">Type</string>
-    <string name="no_data_available">No Notebooks available, start creating one...</string>
-    <string name="note_content_hint">Type something...</string>
-    <string name="delete_note">Delete</string>
-    <string name="created_note_default_text">Newly created Note, write something</string>
-    <string name="note_created">Note created!</string>
+    <string name="reset_calendar_icon">Kalendar zurücksetzen</string>
+    <string name="to_notebook_icon">Zu den Notizbüchern</string>
 
+    <string name="search">Suchen</string>
+    <string name="to_calendar">zum Kalendar</string>
+    <string name="create_button">Erstellen</string>
+    <string name="cancel_button">Abbrechen</string>
+    <string name="save_button">Speichern</string>
+    <string name="no_data_available">Keine Notizbücher/Notizen vorhanden, erstelle welche…</string>
+    <string name="note_content_hint">Tippe etwas…</string>
+    <string name="changes_saved">Änderungen wurden gespeichert</string>
+
+    <!-- Notebook/Note Strings  -->
+    <string name="create_a_new_notebook">Neues Notizbuch erstellen</string>
+    <string name="create_new_note">Neue Notiz erstellen</string>
+    <string name="delete_note">Löschen</string>
+    <string name="created_note_default_text">Neu erstellte Notiz, hier bearbeiten</string>
+    <string name="note_created">Notiz erstellt!</string>
+    <string name="move_note_to_notebook">In anderes Notizbuch verschieben</string>
+    <string name="clone_note">Kopieren</string>
+    <string name="edit_note_title">Titel bearbeiten</string>
+    <string name="moved_note_to_deleted">In den Papierkorb</string>
+    <string name="moved_note_to_archive">Ins Archiv</string>
+    <string name="back_to_notebook">Zurück zum Notizbuch verschieben</string>
+    <string name="archive_note">Archivieren</string>
+    <string name="delete_note_forever">Endgültig löschen</string>
+    <string name="edit_notebook">Notizbuch bearbeiten</string>
+    <string name="notebook_change_name">Titel ändern</string>
+    <string name="notebook_change_color">Farbe ändern</string>
+    <string name="notebook_delete">Löschen</string>
+    <string name="notebook_deleted">Notizbuch gelöscht</string>
+
+
+    <!-- Preference Titles -->
+    <string name="settings_calendar_header">Kalendar Benachrichtigungseinstellungen</string>
+    <string name="settings_theme_header">Theme Einstellungen</string>
+
+    <string name="calendar_notifications">Kalendar Benachrichtigungen</string>
+    <string name="tomorrow_reminder">Täglich</string>
+    <string name="next_week_reminder">Wöchentlich</string>
+    <string name="calendar_notification_summary">Kalendar Benachrichitungen aktivieren</string>
+    <string name="tomorrow_reminder_summary">Sendet eine Benachrichtigung, wenn am nächsten Tag ein Termin vorliegt</string>
+    <string name="week_reminder_summary">Sendet eine Benachrichtigung, wenn für die nächste Woche ein Termin vorliegt (nur an Sonntagen)</string>
+    <string name="change_theme">Nachtmodus</string>
+    <string name="theme_summary">Ändert das aussehen</string>
+
+    <string name="dialog_hint">Name</string>
+    <string name="dialog_color_label">Farbe</string>
     <string-array name="color_Array">
         <item>Blau</item>
         <item>Rot</item>
         <item>Lila</item>
         <item>Grün</item>
-        <item>Schwarz</item>
+        <item>Dunkelgrau</item>
         <item>Gelb</item>
         <item>Orange</item>
+    </string-array>
+
+    <string name="type_label">Typ</string>
+    <string-array name="note_type_array">
+        <item>Text</item>
+        <item>Liste</item>
+        <item>Sprachnotiz</item>
     </string-array>
 </resources>

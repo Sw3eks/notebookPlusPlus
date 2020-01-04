@@ -68,9 +68,9 @@ public class CreateDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog dialog;
 
-        if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(getResources().getString(R.string.notebooks_title))) {
+        if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(NotebooksFragment.NOTEBOOK_FRAGMENT)) {
             dialog = createNotebookDialog();
-        } else if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(getResources().getString(R.string.note_title))) {
+        } else if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(NoteFragment.NOTE_FRAGMENT)) {
             dialog = createNoteDialog();
         } else {
             dialog = createNoteEditorDialog();
@@ -206,7 +206,7 @@ public class CreateDialogFragment extends DialogFragment {
         });
 
         TextView spinnerLabel = view.findViewById(R.id.dialogDropdownLabel);
-        spinnerLabel.setText(R.string.note_type);
+        spinnerLabel.setText(R.string.type_label);
         spinner = view.findViewById(R.id.dialogDropdown);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.note_type_array, android.R.layout.simple_spinner_item);

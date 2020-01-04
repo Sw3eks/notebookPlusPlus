@@ -30,6 +30,8 @@ import de.mobicom.notebookplusplus.data.Notebook;
 import java.util.List;
 
 public class NotebooksFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
+    public static final String NOTEBOOK_FRAGMENT = "NOTEBOOK_FRAGMENT";
+
     private NotebookRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
     private FragmentNotebooksBinding fragmentNotebooksBinding;
@@ -138,6 +140,6 @@ public class NotebooksFragment extends Fragment implements NotebookRecyclerViewA
     }
 
     public void onAddNotebook() {
-        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(NotebooksFragmentDirections.actionNotebooksFragmentToCreateNotebookDialogFragment().setDialogType("Notebook"));
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(NotebooksFragmentDirections.actionNotebooksFragmentToCreateNotebookDialogFragment().setDialogType(NOTEBOOK_FRAGMENT));
     }
 }
