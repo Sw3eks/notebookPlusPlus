@@ -29,7 +29,7 @@ import de.mobicom.notebookplusplus.data.Notebook;
 
 import java.util.List;
 
-public class NotebooksFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
+public class NotebookFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
     public static final String NOTEBOOK_FRAGMENT = "NOTEBOOK_FRAGMENT";
 
     private NotebookRecyclerViewAdapter adapter;

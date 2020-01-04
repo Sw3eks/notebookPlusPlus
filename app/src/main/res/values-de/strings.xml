@@ -25,6 +25,7 @@
     <!-- Notebook/Note Strings  -->
     <string name="create_a_new_notebook">Neues Notizbuch erstellen</string>
     <string name="create_new_note">Neue Notiz erstellen</string>
+    <string name="move_note_to_archive">Archivieren</string>
     <string name="delete_note">Löschen</string>
     <string name="created_note_default_text">Neu erstellte Notiz, hier bearbeiten</string>
     <string name="note_created">Notiz erstellt!</string>

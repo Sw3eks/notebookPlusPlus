@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/notebooksFragment"
-        android:name="de.mobicom.notebookplusplus.view.NotebooksFragment"
+        android:name="de.mobicom.notebookplusplus.view.NotebookFragment"
         android:label="@string/drawer_menu_notebooks"
         tools:layout="@layout/fragment_notebooks">
         <action

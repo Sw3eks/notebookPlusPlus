@@ -68,7 +68,7 @@ public class CreateDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog dialog;
 
-        if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(NotebooksFragment.NOTEBOOK_FRAGMENT)) {
+        if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(NotebookFragment.NOTEBOOK_FRAGMENT)) {
             dialog = createNotebookDialog();
         } else if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(NoteFragment.NOTE_FRAGMENT)) {
             dialog = createNoteDialog();
