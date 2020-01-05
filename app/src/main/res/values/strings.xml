@@ -45,6 +45,7 @@
     <string name="notebook_change_color">Edit color</string>
     <string name="notebook_delete">Delete</string>
     <string name="notebook_deleted"><![CDATA[Notebook deleted & Notes moved to trash]]></string>
+    <string name="note_deleted">Note deleted</string>
 
 
     <!-- Preference Titles -->

@@ -16,6 +16,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
@@ -43,6 +45,15 @@ public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookR
             return oldItem.getName().equals(newItem.getName()) && oldItem.getColor().equals(newItem.getColor());
         }
     };
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
+            ((GridLayoutManager) recyclerView.getLayoutManager()).setRecycleChildrenOnDetach(true);
+        }
+    }
 
     // inflates the cell layout from xml when needed
     @Override

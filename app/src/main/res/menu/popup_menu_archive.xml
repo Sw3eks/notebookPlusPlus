@@ -4,9 +4,6 @@
         android:id="@+id/moveNote"
         android:title="@string/back_to_notebook" />
     <item
-        android:id="@+id/cloneNote"
-        android:title="@string/clone_note" />
-    <item
         android:id="@+id/deleteNote"
         android:title="@string/delete_note" />
 </menu>

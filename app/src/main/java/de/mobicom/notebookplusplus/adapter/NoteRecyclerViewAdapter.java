@@ -1,7 +1,6 @@
 package de.mobicom.notebookplusplus.adapter;
 
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
@@ -32,7 +32,7 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
     private List<Note> noteListAll;
     private ItemClickListener mClickListener;
     private ItemClickListener mPopupClickListener;
-    private ItemClickListener mBookmarkClicklistener;
+    private ItemClickListener mBookmarkClickListener;
     private String type;
 
     public NoteRecyclerViewAdapter(String type) {
@@ -53,6 +53,15 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
                     oldItem.getLastModifiedAt().isEqual(newItem.getLastModifiedAt());
         }
     };
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+            ((LinearLayoutManager) recyclerView.getLayoutManager()).setRecycleChildrenOnDetach(true);
+        }
+    }
 
     @Override
     @NonNull
@@ -93,7 +102,7 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
     }
 
     public void setBookmarkClickListener(ItemClickListener itemClickListener) {
-        this.mBookmarkClicklistener = itemClickListener;
+        this.mBookmarkClickListener = itemClickListener;
     }
 
     public interface ItemClickListener {
@@ -181,8 +190,8 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
 
         @Override
         public void onBookmark(View view) {
-            if (mBookmarkClicklistener != null) {
-                mBookmarkClicklistener.onBookmarkClick(view, getAdapterPosition());
+            if (mBookmarkClickListener != null) {
+                mBookmarkClickListener.onBookmarkClick(view, getAdapterPosition());
             }
         }
 

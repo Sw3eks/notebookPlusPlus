@@ -42,6 +42,7 @@
     <string name="notebook_change_color">Farbe ändern</string>
     <string name="notebook_delete">Löschen</string>
     <string name="notebook_deleted">Notizbuch gelöscht</string>
+    <string name="note_deleted">Notiz gelöscht</string>
 
 
     <!-- Preference Titles -->

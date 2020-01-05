@@ -7,9 +7,6 @@
         android:id="@+id/archiveNote"
         android:title="@string/move_note_to_archive" />
     <item
-        android:id="@+id/cloneNote"
-        android:title="@string/clone_note" />
-    <item
         android:id="@+id/deleteNote"
         android:title="@string/delete_note_forever" />
 </menu>

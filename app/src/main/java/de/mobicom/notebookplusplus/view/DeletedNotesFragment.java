@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ import de.mobicom.notebookplusplus.data.Note;
 import de.mobicom.notebookplusplus.databinding.FragmentArchiveBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
-public class DeletedNotesFragment extends Fragment {
+public class DeletedNotesFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
     public static final String DELETED_NOTES_FRAGMENT = "DELETED_NOTES_FRAGMENT";
 
     private NoteRecyclerViewAdapter adapter;
@@ -44,6 +45,8 @@ public class DeletedNotesFragment extends Fragment {
         DividerItemDecoration itemDecor = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecor);
         adapter = new NoteRecyclerViewAdapter(DELETED_NOTES_FRAGMENT);
+        adapter.setPopupMenuItemClickListener(this);
+        adapter.setBookmarkClickListener(this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -94,5 +97,40 @@ public class DeletedNotesFragment extends Fragment {
         });
 
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onPopupMenuItemClick(MenuItem item, int position) {
+        Note tmpNote = adapter.getNoteAt(position);
+        switch (item.getItemId()) {
+            case R.id.moveNote:
+                Toast.makeText(getContext(), "Move", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.archiveNote:
+                tmpNote.setArchived(true);
+                tmpNote.setMarkedForDelete(false);
+                notebookViewModel.update(tmpNote);
+                Toast.makeText(getContext(), R.string.moved_note_to_archive, Toast.LENGTH_LONG).show();
+                adapter.notifyItemChanged(position);
+            case R.id.deleteNote:
+                notebookViewModel.delete(adapter.getNoteAt(position));
+                Toast.makeText(getContext(), R.string.note_deleted, Toast.LENGTH_LONG).show();
+                adapter.notifyItemRemoved(position);
+                break;
+
+        }
+    }
+
+    @Override
+    public void onBookmarkClick(View view, int position) {
+        Note tmpNote = adapter.getNoteAt(position);
+        tmpNote.setBookmarked(!tmpNote.isBookmarked());
+        notebookViewModel.update(tmpNote);
+        adapter.notifyItemChanged(position);
     }
 }
