@@ -10,6 +10,10 @@
             type="de.mobicom.notebookplusplus.view.NoteFragment" />
 
         <variable
+            name="notebook"
+            type="de.mobicom.notebookplusplus.viewmodel.NotebookViewModel" />
+
+        <variable
             name="isEmpty"
             type="boolean" />
 
@@ -21,11 +25,17 @@
         android:layout_height="match_parent"
         android:background="@color/colorClouds">
 
+        <View
+            android:id="@+id/colorBar"
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvNotes"
             visibleGone="@{!isEmpty}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
             tools:listitem="@layout/recyclerview_note_item" />
 
         <TextView

@@ -29,6 +29,8 @@ import de.mobicom.notebookplusplus.data.Note;
 import de.mobicom.notebookplusplus.databinding.FragmentNoteBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
+import static android.graphics.Color.parseColor;
+
 
 public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
     public static final String NOTE_FRAGMENT = "NOTE_FRAGMENT";
@@ -80,6 +82,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
                     }
                 });
 
+        fragmentNoteBinding.colorBar.setBackgroundColor(parseColor(notebookViewModel.getNotebook().getColor()));
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(notebookViewModel.getNotebook().getName());
     }
 

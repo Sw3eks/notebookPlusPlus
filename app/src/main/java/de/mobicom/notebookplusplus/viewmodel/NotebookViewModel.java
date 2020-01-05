@@ -7,8 +7,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import de.mobicom.notebookplusplus.data.Note;
 import de.mobicom.notebookplusplus.data.NoteRepository;
 import de.mobicom.notebookplusplus.data.Notebook;

@@ -23,6 +23,8 @@ import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.databinding.FragmentNoteEditorBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
+import static android.graphics.Color.parseColor;
+
 public class NoteEditorFragment extends Fragment {
 
     private NotebookViewModel notebookViewModel;
@@ -70,6 +72,7 @@ public class NoteEditorFragment extends Fragment {
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
         fragmentNoteEditorBinding.setNote(notebookViewModel.getNote());
+        fragmentNoteEditorBinding.colorBar.setBackgroundColor(parseColor(notebookViewModel.getNotebook().getColor()));
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(notebookViewModel.getNote().getName());
         currentTitle = notebookViewModel.getNote().getName();
