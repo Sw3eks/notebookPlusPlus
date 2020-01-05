@@ -10,7 +10,7 @@
 
         <variable
             name="handler"
-            type="de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter" />
+            type="de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter.NoteViewHolder" />
 
         <variable
             name="note"
@@ -84,13 +84,13 @@
 
         <ImageView
             android:id="@+id/noteBookmarkIcon"
+            bookmarkIcon="@{note.isBookmarked}"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/note_context_menu_icon"
-            android:onClick="@{() -> handler.onBookmarkNote()}"
-            android:src="@drawable/ic_note_bookmark_disabled"
+            android:onClick="@{(view) -> handler.onBookmark(view)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/noteContextMenuItem"
             app:layout_constraintTop_toBottomOf="@+id/noteModifiedDate" />
@@ -101,7 +101,7 @@
             android:layout_height="32dp"
             android:layout_marginTop="8dp"
             android:contentDescription="@string/note_context_menu_icon"
-            android:onClick="@{(view) -> handler.onOpenContextMenu(view)}"
+            android:onClick="@{(view) -> handler.onOpenPopupMenu(view)}"
             android:src="@drawable/ic_note_context_menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

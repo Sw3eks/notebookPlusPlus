@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import androidx.databinding.BindingAdapter;
+import de.mobicom.notebookplusplus.R;
 
 import static android.graphics.Color.parseColor;
 
@@ -34,5 +35,14 @@ public class DataBindingAdapter {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d. MMM - HH:mm");
         String text = formatter.format(dateTime);
         view.setText(text);
+    }
+
+    @BindingAdapter("bookmarkIcon")
+    public static void setBookmarked(ImageView imageView, boolean bookmark) {
+        if (bookmark) {
+            imageView.setImageResource(R.drawable.ic_note_bookmark_enabled);
+        } else {
+            imageView.setImageResource(R.drawable.ic_note_bookmark_disabled);
+        }
     }
 }

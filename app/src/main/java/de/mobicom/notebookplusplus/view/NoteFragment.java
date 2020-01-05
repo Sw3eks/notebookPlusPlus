@@ -50,7 +50,8 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         recyclerView.addItemDecoration(itemDecor);
         adapter = new NoteRecyclerViewAdapter(NOTE_FRAGMENT);
         adapter.setClickListener(this);
-        adapter.setLongClickListener(this);
+        adapter.setPopupMenuItemClickListener(this);
+        adapter.setBookmarkClickListener(this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -112,9 +113,40 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_noteFragment_to_noteEditorFragment);
     }
 
+    @Override
+    public void onPopupMenuItemClick(MenuItem item, int position) {
+        Note tmpNote = adapter.getNoteAt(position);
+        switch (item.getItemId()) {
+            case R.id.moveNote:
+                Toast.makeText(getContext(), "Move", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.archiveNote:
+                tmpNote.setArchived(true);
+                notebookViewModel.update(tmpNote);
+                Toast.makeText(getContext(), R.string.moved_note_to_archive, Toast.LENGTH_LONG).show();
+                break;
+            case R.id.cloneNote:
+                notebookViewModel.insert(new Note(
+                        tmpNote.getNotebookParentId(),
+                        tmpNote.getName(),
+                        tmpNote.getType(),
+                        tmpNote.getDescription()));
+                break;
+            case R.id.deleteNote:
+                tmpNote.setMarkedForDelete(true);
+                notebookViewModel.update(tmpNote);
+                Toast.makeText(getContext(), R.string.moved_note_to_deleted, Toast.LENGTH_LONG).show();
+                break;
 
-    public void onLongItemClick(View view, int position) {
-        Toast.makeText(getContext(), "Click at: " + position, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onBookmarkClick(View view, int position) {
+        Note tmpNote = adapter.getNoteAt(position);
+        tmpNote.setBookmarked(!tmpNote.isBookmarked());
+        notebookViewModel.update(tmpNote);
+        adapter.notifyItemChanged(position);
     }
 
     public void onAddNote() {

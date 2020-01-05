@@ -97,7 +97,7 @@ public class NoteEditorFragment extends Fragment {
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
                 break;
             case R.id.deleteNote:
-                notebookViewModel.getNote().setDeleteMark(true);
+                notebookViewModel.getNote().setMarkedForDelete(true);
                 isChanged = true;
                 message = getResources().getString(R.string.moved_note_to_deleted);
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();

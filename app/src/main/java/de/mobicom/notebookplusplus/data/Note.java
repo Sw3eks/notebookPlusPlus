@@ -38,10 +38,14 @@ public class Note {
 
     private String description;
 
-    private boolean archived;
+    @ColumnInfo(name = "is_archived")
+    private boolean isArchived;
 
-    @ColumnInfo(name = "delete_mark")
-    private boolean deleteMark;
+    @ColumnInfo(name = "is_marked_for_delete")
+    private boolean isMarkedForDelete;
+
+    @ColumnInfo(name = "is_bookmarked")
+    private boolean isBookmarked;
 
     @NonNull
     @ColumnInfo(name = "created_at")
@@ -57,8 +61,9 @@ public class Note {
         this.description = description;
         this.createdAt = LocalDateTime.now();
         this.lastModifiedAt = LocalDateTime.now();
-        this.archived = false;
-        this.deleteMark = false;
+        this.isArchived = false;
+        this.isMarkedForDelete = false;
+        this.isBookmarked = false;
     }
 
     public long getNoteId() {
@@ -116,19 +121,27 @@ public class Note {
     }
 
     public boolean isArchived() {
-        return archived;
+        return isArchived;
     }
 
     public void setArchived(boolean archived) {
-        this.archived = archived;
+        isArchived = archived;
     }
 
-    public boolean isDeleteMark() {
-        return deleteMark;
+    public boolean isBookmarked() {
+        return isBookmarked;
     }
 
-    public void setDeleteMark(boolean deleteMark) {
-        this.deleteMark = deleteMark;
+    public void setBookmarked(boolean bookmarked) {
+        isBookmarked = bookmarked;
+    }
+
+    public boolean isMarkedForDelete() {
+        return isMarkedForDelete;
+    }
+
+    public void setMarkedForDelete(boolean markedForDelete) {
+        this.isMarkedForDelete = markedForDelete;
     }
 
     @Override
@@ -139,8 +152,9 @@ public class Note {
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", description='" + description + '\'' +
-                ", archived=" + archived +
-                ", deleteMark=" + deleteMark +
+                ", isArchived=" + isArchived +
+                ", isMarkedForDelete=" + isMarkedForDelete +
+                ", isBookmarked=" + isBookmarked +
                 ", createdAt=" + createdAt +
                 ", lastModifiedAt=" + lastModifiedAt +
                 '}';

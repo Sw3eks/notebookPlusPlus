@@ -26,12 +26,13 @@ import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 import de.mobicom.notebookplusplus.view.ArchiveFragment;
 import de.mobicom.notebookplusplus.view.DeletedNotesFragment;
 
-public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewAdapter.NoteViewHolder> implements ItemTouchHelperAdapter, androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener, Filterable {
+public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewAdapter.NoteViewHolder> implements ItemTouchHelperAdapter, Filterable {
 
     private RecyclerviewNoteItemBinding recyclerviewNoteItemBinding;
     private List<Note> noteListAll;
     private ItemClickListener mClickListener;
-    private ItemClickListener mLongClickListener;
+    private ItemClickListener mPopupClickListener;
+    private ItemClickListener mBookmarkClicklistener;
     private String type;
 
     public NoteRecyclerViewAdapter(String type) {
@@ -58,14 +59,13 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         recyclerviewNoteItemBinding =
                 DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.recyclerview_note_item, parent, false);
-        return new NoteViewHolder(recyclerviewNoteItemBinding);
+        return new NoteViewHolder(recyclerviewNoteItemBinding, this.type);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note = getNoteAt(position);
         holder.recyclerviewNoteItemBinding.setNote(note);
-        holder.recyclerviewNoteItemBinding.setHandler(this);
         if (this.type.equals(DeletedNotesFragment.DELETED_NOTES_FRAGMENT) || this.type.equals(ArchiveFragment.ARCHIVE_FRAGMENT)) {
             holder.recyclerviewNoteItemBinding.noteCalendarIcon.setVisibility(View.GONE);
         }
@@ -80,42 +80,6 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
 
     }
 
-    public void onBookmarkNote() {
-        recyclerviewNoteItemBinding.noteBookmarkIcon.setImageResource(R.drawable.ic_note_bookmark_enabled);
-        System.out.println("Bookmarked");
-    }
-
-    public void onOpenContextMenu(View view) {
-        System.out.println("Context");
-        androidx.appcompat.widget.PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-        popupMenu.setOnMenuItemClickListener(this);
-        if (this.type.equals(ArchiveFragment.ARCHIVE_FRAGMENT)) {
-            popupMenu.inflate(R.menu.popup_menu_archive);
-        } else if (this.type.equals(DeletedNotesFragment.DELETED_NOTES_FRAGMENT)) {
-            popupMenu.inflate(R.menu.popup_menu_deleted_notes);
-        } else {
-            popupMenu.inflate(R.menu.popup_menu_note);
-        }
-        popupMenu.show();
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.moveNote:
-                System.out.println("Move");
-                return true;
-            case R.id.archiveNote:
-                return true;
-            case R.id.cloneNote:
-                return true;
-            case R.id.deleteNote:
-                return true;
-            default:
-                return false;
-        }
-    }
-
     public Note getNoteAt(int id) {
         return getItem(id);
     }
@@ -124,14 +88,29 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
         this.mClickListener = itemClickListener;
     }
 
-    public void setLongClickListener(ItemClickListener itemClickListener) {
-        this.mLongClickListener = itemClickListener;
+    public void setPopupMenuItemClickListener(ItemClickListener itemClickListener) {
+        this.mPopupClickListener = itemClickListener;
+    }
+
+    public void setBookmarkClickListener(ItemClickListener itemClickListener) {
+        this.mBookmarkClicklistener = itemClickListener;
     }
 
     public interface ItemClickListener {
+
         void onItemClick(View view, int position);
 
-        void onLongItemClick(View view, int position);
+        void onPopupMenuItemClick(MenuItem item, int position);
+
+        void onBookmarkClick(View view, int position);
+
+    }
+
+    public interface ButtonClickListeners {
+
+        void onBookmark(View view);
+
+        void onOpenPopupMenu(View view);
     }
 
     @Override
@@ -173,27 +152,21 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
         }
     };
 
-    public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder, View.OnLongClickListener {
+    public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder, PopupMenu.OnMenuItemClickListener, NoteRecyclerViewAdapter.ButtonClickListeners {
         private RecyclerviewNoteItemBinding recyclerviewNoteItemBinding;
+        private String type;
 
-        NoteViewHolder(RecyclerviewNoteItemBinding recyclerviewNoteItemBinding) {
+        NoteViewHolder(RecyclerviewNoteItemBinding recyclerviewNoteItemBinding, String type) {
             super(recyclerviewNoteItemBinding.getRoot());
             this.recyclerviewNoteItemBinding = recyclerviewNoteItemBinding;
+            this.type = type;
+            this.recyclerviewNoteItemBinding.setHandler(this);
             itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-            if (mLongClickListener != null)
-                mLongClickListener.onLongItemClick(view, getAdapterPosition());
-
-            return true;
         }
 
         @Override
@@ -204,6 +177,36 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
         @Override
         public void onItemClear() {
             itemView.setBackgroundColor(0);
+        }
+
+        @Override
+        public void onBookmark(View view) {
+            if (mBookmarkClicklistener != null) {
+                mBookmarkClicklistener.onBookmarkClick(view, getAdapterPosition());
+            }
+        }
+
+        @Override
+        public void onOpenPopupMenu(View view) {
+            System.out.println("Context");
+            androidx.appcompat.widget.PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+            if (this.type.equals(ArchiveFragment.ARCHIVE_FRAGMENT)) {
+                popupMenu.inflate(R.menu.popup_menu_archive);
+            } else if (this.type.equals(DeletedNotesFragment.DELETED_NOTES_FRAGMENT)) {
+                popupMenu.inflate(R.menu.popup_menu_deleted_notes);
+            } else {
+                popupMenu.inflate(R.menu.popup_menu_note);
+            }
+            popupMenu.setOnMenuItemClickListener(this);
+            popupMenu.show();
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            if (mPopupClickListener != null) {
+                mPopupClickListener.onPopupMenuItemClick(item, getAdapterPosition());
+            }
+            return true;
         }
     }
 }
