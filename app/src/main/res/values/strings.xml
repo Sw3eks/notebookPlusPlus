@@ -74,6 +74,10 @@
     </string-array>
 
     <string name="type_label">Type</string>
+    <string name="close_button">Close</string>
+    <string name="note_set_notification_title">Setup Notification</string>
+    <string name="notification_enabled">Notification enabled</string>
+    <string name="notification_disabled">Notification disabled</string>
     <string-array name="note_type_array">
         <item>Text</item>
         <item>List</item>

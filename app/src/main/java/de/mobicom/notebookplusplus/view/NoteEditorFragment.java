@@ -9,8 +9,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import androidx.annotation.NonNull;
@@ -30,6 +33,8 @@ public class NoteEditorFragment extends Fragment {
     private NotebookViewModel notebookViewModel;
     private FragmentNoteEditorBinding fragmentNoteEditorBinding;
     private String currentTitle;
+    private boolean currentNotificationStatus;
+    private LocalDate selectedDate;
     private boolean isChanged;
     private String message;
 
@@ -41,7 +46,18 @@ public class NoteEditorFragment extends Fragment {
         isChanged = false;
         message = getResources().getString(R.string.changes_saved);
 
+        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
+        fragmentNoteEditorBinding.setNote(notebookViewModel.getNote());
+        fragmentNoteEditorBinding.colorBar.setBackgroundColor(parseColor(notebookViewModel.getNotebook().getColor()));
+        currentTitle = notebookViewModel.getNote().getName();
+        currentNotificationStatus = notebookViewModel.getNote().isNotificationEnabled();
         fragmentNoteEditorBinding.editNote.requestFocus();
+        setupListeners();
+
+        return fragmentNoteEditorBinding.getRoot();
+    }
+
+    private void setupListeners() {
         fragmentNoteEditorBinding.editNote.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -63,19 +79,33 @@ public class NoteEditorFragment extends Fragment {
             }
         });
 
-        return fragmentNoteEditorBinding.getRoot();
+        // ClickListener instead of checkChangeListener to prevent firing message when view is opened
+        fragmentNoteEditorBinding.enableNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notebookViewModel.getNote().setNotificationEnabled(!notebookViewModel.getNote().isNotificationEnabled());
+                Toast.makeText(getContext(),
+                        notebookViewModel.getNote().isNotificationEnabled() ? getResources().getString(R.string.notification_enabled)
+                                : getResources().getString(R.string.notification_disabled), Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
+
+        // set min Date to Today (cause notification has to be in future
+
+        fragmentNoteEditorBinding.datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                selectedDate = LocalDate.of(year, monthOfYear + 1, dayOfMonth);
+            }
+        });
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
-        fragmentNoteEditorBinding.setNote(notebookViewModel.getNote());
-        fragmentNoteEditorBinding.colorBar.setBackgroundColor(parseColor(notebookViewModel.getNotebook().getColor()));
-
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(notebookViewModel.getNote().getName());
-        currentTitle = notebookViewModel.getNote().getName();
     }
 
     @Override
@@ -90,6 +120,13 @@ public class NoteEditorFragment extends Fragment {
         super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
+            case R.id.create_notification:
+                if (fragmentNoteEditorBinding.cardView.getVisibility() == View.GONE) {
+                    fragmentNoteEditorBinding.cardView.setVisibility(View.VISIBLE);
+                } else {
+                    fragmentNoteEditorBinding.cardView.setVisibility(View.GONE);
+                }
+                break;
             case R.id.editNoteTitle:
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(NoteEditorFragmentDirections.actionNoteEditorFragmentToCreateNotebookDialogFragment().setDialogType("Note Editor"));
                 break;
@@ -112,7 +149,17 @@ public class NoteEditorFragment extends Fragment {
 
     @Override
     public void onPause() {
-        if (!notebookViewModel.getNote().getName().equals(currentTitle)) {
+        shouldSave();
+        super.onPause();
+    }
+
+    private void shouldSave() {
+        if (!notebookViewModel.getNote().getName().equals(currentTitle) ||
+                notebookViewModel.getNote().isNotificationEnabled() != currentNotificationStatus) {
+            isChanged = true;
+        }
+        if (!notebookViewModel.getNote().getNotificationDate().isEqual(selectedDate)) {
+            notebookViewModel.getNote().setNotificationDate(selectedDate);
             isChanged = true;
         }
         if (isChanged) {
@@ -120,6 +167,5 @@ public class NoteEditorFragment extends Fragment {
             notebookViewModel.update(notebookViewModel.getNote());
             Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
         }
-        super.onPause();
     }
 }

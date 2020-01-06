@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="handler"
+            type="de.mobicom.notebookplusplus.view.NoteEditorFragment" />
+
+        <variable
             name="note"
             type="de.mobicom.notebookplusplus.data.Note" />
     </data>
@@ -13,6 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorClouds"
         android:transitionGroup="true"
         tools:context=".view.NoteEditorFragment">
 
@@ -22,17 +27,53 @@
             android:layout_height="8dp"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/datePicker"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:importantForAutofill="no"
-            android:inputType="date"
-            app:layout_constraintTop_toTopOf="@id/colorBar"
-            tools:ignore="LabelFor" />
+            android:visibility="gone"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/colorBar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/note_set_notification_title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <DatePicker
+                    android:id="@+id/datePicker"
+                    bindDatePicker="@{note.notificationDate}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:calendarViewShown="false"
+                    android:datePickerMode="spinner"
+                    app:layout_constraintEnd_toStartOf="@id/enableNotification"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:theme="@style/AppTheme.DatePicker" />
+
+                <CheckBox
+                    android:id="@+id/enableNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:checked="@{note.notificationEnabled}"
+                    app:layout_constraintBottom_toBottomOf="@id/datePicker"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/datePicker" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
         <EditText
             android:id="@+id/editNote"
@@ -51,7 +92,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/datePicker" />
+            app:layout_constraintTop_toBottomOf="@id/cardView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

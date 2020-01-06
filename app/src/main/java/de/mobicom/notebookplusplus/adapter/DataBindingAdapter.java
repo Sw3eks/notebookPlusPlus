@@ -2,9 +2,11 @@ package de.mobicom.notebookplusplus.adapter;
 
 import android.graphics.PorterDuff;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -43,6 +45,13 @@ public class DataBindingAdapter {
             imageView.setImageResource(R.drawable.ic_note_bookmark_enabled);
         } else {
             imageView.setImageResource(R.drawable.ic_note_bookmark_disabled);
+        }
+    }
+
+    @BindingAdapter("bindDatePicker")
+    public static void setDate(DatePicker datepicker, LocalDate date) {
+        if (date != null) {
+            datepicker.updateDate(date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
         }
     }
 }

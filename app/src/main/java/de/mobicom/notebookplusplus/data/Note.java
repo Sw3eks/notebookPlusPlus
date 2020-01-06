@@ -1,6 +1,8 @@
 package de.mobicom.notebookplusplus.data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -47,6 +49,12 @@ public class Note {
     @ColumnInfo(name = "is_bookmarked")
     private boolean isBookmarked;
 
+    @ColumnInfo(name = "notification_date")
+    private LocalDate notificationDate;
+
+    @ColumnInfo(name = "is_notification_enabled")
+    private boolean isNotificationEnabled;
+
     @NonNull
     @ColumnInfo(name = "created_at")
     private LocalDateTime createdAt;
@@ -61,9 +69,11 @@ public class Note {
         this.description = description;
         this.createdAt = LocalDateTime.now();
         this.lastModifiedAt = LocalDateTime.now();
+        this.notificationDate = LocalDate.now();
         this.isArchived = false;
         this.isMarkedForDelete = false;
         this.isBookmarked = false;
+        this.isNotificationEnabled = false;
     }
 
     public long getNoteId() {
@@ -144,6 +154,22 @@ public class Note {
         this.isMarkedForDelete = markedForDelete;
     }
 
+    public LocalDate getNotificationDate() {
+        return notificationDate;
+    }
+
+    public void setNotificationDate(LocalDate notificationDate) {
+        this.notificationDate = notificationDate;
+    }
+
+    public boolean isNotificationEnabled() {
+        return isNotificationEnabled;
+    }
+
+    public void setNotificationEnabled(boolean notificationEnabled) {
+        isNotificationEnabled = notificationEnabled;
+    }
+
     @Override
     public String toString() {
         return "Note{" +
@@ -155,6 +181,8 @@ public class Note {
                 ", isArchived=" + isArchived +
                 ", isMarkedForDelete=" + isMarkedForDelete +
                 ", isBookmarked=" + isBookmarked +
+                ", notificationDate=" + notificationDate +
+                ", isNotificationEnabled=" + isNotificationEnabled +
                 ", createdAt=" + createdAt +
                 ", lastModifiedAt=" + lastModifiedAt +
                 '}';

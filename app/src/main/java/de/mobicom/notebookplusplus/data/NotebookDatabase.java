@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import de.mobicom.notebookplusplus.utils.LocalDateTimeConverter;
 
-@Database(entities = {Notebook.class, Note.class}, version = 3, exportSchema = false)
+@Database(entities = {Notebook.class, Note.class}, version = 5, exportSchema = false)
 @TypeConverters(LocalDateTimeConverter.class)
 public abstract class NotebookDatabase extends RoomDatabase {
 
