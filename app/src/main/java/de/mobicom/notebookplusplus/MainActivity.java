@@ -36,15 +36,16 @@ public class MainActivity extends AppCompatActivity {
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
         NavigationUI.setupWithNavController(nvDrawer, navController);
+        NavigationUI.setupActionBarWithNavController(this, navController);
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
 
         nvDrawer.setCheckedItem(R.id.notebooksFragment);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        return NavigationUI.navigateUp(Navigation.findNavController(this, R.id.nav_host_fragment), drawerLayout);
+        return NavigationUI.navigateUp(Navigation.findNavController(this, R.id.nav_host_fragment), drawerLayout) || super.onSupportNavigateUp();
     }
 
     @Override

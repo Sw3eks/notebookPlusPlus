@@ -92,7 +92,7 @@ public class NoteEditorFragment extends Fragment {
         });
 
         // set min Date to Today (cause notification has to be in future
-
+        fragmentNoteEditorBinding.datePicker.setMinDate(System.currentTimeMillis() - 1000);
         fragmentNoteEditorBinding.datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -120,6 +120,9 @@ public class NoteEditorFragment extends Fragment {
         super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
+            case android.R.id.home:
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
+                break;
             case R.id.create_notification:
                 if (fragmentNoteEditorBinding.cardView.getVisibility() == View.GONE) {
                     fragmentNoteEditorBinding.cardView.setVisibility(View.VISIBLE);

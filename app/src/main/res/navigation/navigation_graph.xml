@@ -16,9 +16,7 @@
             app:enterAnim="@anim/enter_from_right"
             app:exitAnim="@anim/exit_to_left"
             app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right"
-            app:popUpTo="@+id/notebooksFragment"
-            app:popUpToInclusive="false" />
+            app:popExitAnim="@anim/exit_to_right" />
         <action
             android:id="@+id/action_notebooksFragment_to_createNotebookDialogFragment"
             app:destination="@id/createNotebookDialogFragment" />
@@ -54,7 +52,13 @@
         android:id="@+id/calendarFragment"
         android:name="de.mobicom.notebookplusplus.view.CalendarFragment"
         android:label="@string/drawer_menu_calendar"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar">
+        <action
+            android:id="@+id/action_calendarFragment_to_noteEditorFragment"
+            app:destination="@id/noteEditorFragment"
+            app:enterAnim="@anim/slide_up"
+            app:popExitAnim="@anim/slide_down" />
+    </fragment>
     <fragment
         android:id="@+id/deletedNotesFragment"
         android:name="de.mobicom.notebookplusplus.view.DeletedNotesFragment"
