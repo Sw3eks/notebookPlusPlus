@@ -8,7 +8,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
-import de.mobicom.notebookplusplus.data.Notebook;
+import de.mobicom.notebookplusplus.data.model.Notebook;
 
 @Dao
 public interface NotebookDao {

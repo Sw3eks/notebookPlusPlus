@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+import de.mobicom.notebookplusplus.data.model.Note;
 
 import static androidx.room.ForeignKey.CASCADE;
 

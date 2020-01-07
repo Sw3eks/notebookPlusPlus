@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
+import de.mobicom.notebookplusplus.data.model.Notebook;
 
 public class NotebookRepository {
 

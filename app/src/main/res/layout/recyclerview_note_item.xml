@@ -14,7 +14,7 @@
 
         <variable
             name="note"
-            type="de.mobicom.notebookplusplus.data.Note" />
+            type="de.mobicom.notebookplusplus.data.model.Note" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

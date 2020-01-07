@@ -25,8 +25,8 @@ import androidx.fragment.app.DialogFragment;
 
 import androidx.lifecycle.ViewModelProviders;
 import de.mobicom.notebookplusplus.R;
-import de.mobicom.notebookplusplus.data.Note;
-import de.mobicom.notebookplusplus.data.Notebook;
+import de.mobicom.notebookplusplus.data.model.Note;
+import de.mobicom.notebookplusplus.data.model.Notebook;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 public class CreateDialogFragment extends DialogFragment {

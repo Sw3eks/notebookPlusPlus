@@ -10,7 +10,7 @@
 
         <variable
             name="notebook"
-            type="de.mobicom.notebookplusplus.data.Notebook" />
+            type="de.mobicom.notebookplusplus.data.model.Notebook" />
     </data>
 
     <LinearLayout
