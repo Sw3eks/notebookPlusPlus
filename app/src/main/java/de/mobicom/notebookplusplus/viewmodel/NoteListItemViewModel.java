@@ -7,12 +7,14 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import de.mobicom.notebookplusplus.data.Note;
 import de.mobicom.notebookplusplus.data.NoteListItem;
 import de.mobicom.notebookplusplus.data.NoteListItemRepository;
 
 public class NoteListItemViewModel extends AndroidViewModel {
 
     private NoteListItemRepository noteListItemRepository;
+    private Note selectedNote;
 
     public NoteListItemViewModel(@NonNull Application application) {
         super(application);
@@ -33,5 +35,13 @@ public class NoteListItemViewModel extends AndroidViewModel {
 
     public LiveData<List<NoteListItem>> getAllNoteListItems(long noteId) {
         return noteListItemRepository.getAllNoteListItems(noteId);
+    }
+
+    public Note getNote() {
+        return selectedNote;
+    }
+
+    public void setNote(Note note) {
+        selectedNote = note;
     }
 }
