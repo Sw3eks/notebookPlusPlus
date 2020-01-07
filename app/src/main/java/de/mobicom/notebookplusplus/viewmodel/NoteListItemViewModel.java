@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import de.mobicom.notebookplusplus.data.model.Note;
-import de.mobicom.notebookplusplus.data.NoteListItem;
+import de.mobicom.notebookplusplus.data.model.NoteListItem;
 import de.mobicom.notebookplusplus.data.NoteListItemRepository;
 
 public class NoteListItemViewModel extends AndroidViewModel {

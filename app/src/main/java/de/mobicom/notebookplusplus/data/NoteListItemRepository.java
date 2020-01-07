@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import androidx.lifecycle.LiveData;
+import de.mobicom.notebookplusplus.data.dao.NoteListItemDao;
+import de.mobicom.notebookplusplus.data.model.NoteListItem;
 
 public class NoteListItemRepository {
     private NoteListItemDao noteListItemDao;

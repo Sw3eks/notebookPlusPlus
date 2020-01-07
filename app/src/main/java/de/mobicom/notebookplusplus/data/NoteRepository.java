@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import androidx.lifecycle.LiveData;
+import de.mobicom.notebookplusplus.data.dao.NoteDao;
 import de.mobicom.notebookplusplus.data.model.Note;
 
 public class NoteRepository {

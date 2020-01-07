@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.data;
+package de.mobicom.notebookplusplus.data.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.data;
+package de.mobicom.notebookplusplus.data.dao;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
-import de.mobicom.notebookplusplus.data.NoteListItem;
+import de.mobicom.notebookplusplus.data.model.NoteListItem;
 
 @Dao
 public interface NoteListItemDao {
