@@ -36,10 +36,6 @@ public class NoteListItemRecyclerViewAdapter extends ListAdapter<NoteListItem, N
 
         @Override
         public boolean areContentsTheSame(@NonNull NoteListItem oldItem, @NonNull NoteListItem newItem) {
-            if (newItem.getContent() == null) {
-                System.out.println("Called");
-                return false;
-            }
             return oldItem.getContent().equals(newItem.getContent()) &&
                     oldItem.isChecked() == newItem.isChecked();
         }

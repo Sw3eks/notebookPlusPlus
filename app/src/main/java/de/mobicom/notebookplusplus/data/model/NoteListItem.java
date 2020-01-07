@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import de.mobicom.notebookplusplus.data.model.Note;
@@ -34,10 +35,14 @@ public class NoteListItem {
     @ColumnInfo(name = "is_checked")
     private boolean isChecked;
 
+    @Ignore
+    private boolean isDefault;
+
     public NoteListItem(long noteParentId, String content, boolean isChecked) {
         this.noteParentId = noteParentId;
         this.content = content;
         this.isChecked = isChecked;
+        this.isDefault = false;
     }
 
     public long getNoteListItemId() {
@@ -70,6 +75,14 @@ public class NoteListItem {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
     }
 
     @NonNull

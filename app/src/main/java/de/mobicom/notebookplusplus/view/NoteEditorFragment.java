@@ -110,11 +110,13 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         adapter.setEnterKeyListener(this);
         recyclerView.setAdapter(adapter);
 
-        defaultItem = new NoteListItem(notebookViewModel.getNote().getNoteId(), null, false);
+        defaultItem = new NoteListItem(notebookViewModel.getNote().getNoteId(), "", false);
         notebookViewModel.getAllNoteListItems(notebookViewModel.getNote().getNoteId()).observe(this, new Observer<List<NoteListItem>>() {
             @Override
             public void onChanged(List<NoteListItem> noteListItems) {
                 if (noteListItems != null) {
+                    defaultItem.setDefault(true);
+                    noteListItems.add(defaultItem);
                     adapter.submitList(noteListItems);
                 }
             }
@@ -217,26 +219,25 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
     @Override
     public void onCheckBoxClick(View view, boolean isChecked, int position) {
-        Toast.makeText(getContext(), "Position: " + position, Toast.LENGTH_LONG).show();
+        NoteListItem item = adapter.getNoteItemAt(position);
+        item.setChecked(isChecked);
+        notebookViewModel.update(item);
     }
 
     @Override
     public void onEnterClicked(View view, int actionId, String content, boolean isChecked, int position) {
         if (content.trim().length() > 0 && actionId == KeyEvent.KEYCODE_ENTER) {
-            NoteListItem newItem = new NoteListItem(adapter.getNoteItemAt(position).getNoteParentId(), content, isChecked);
-            if (adapter.getNoteItemAt(position).getNoteListItemId() != 0) {
-                newItem.setNoteListItemId(adapter.getNoteItemAt(position).getNoteListItemId());
+            NoteListItem item = adapter.getNoteItemAt(position);
+            item.setContent(content);
+            item.setChecked(isChecked);
+            if (adapter.getNoteItemAt(position).isDefault()) {
+                notebookViewModel.insert(item);
+            } else {
+                notebookViewModel.update(item);
             }
-            Toast.makeText(getContext(), "INSERT " + newItem, Toast.LENGTH_LONG).show();
-            //currentList.add(newItem);
-            //defaultItem.setNoteListItemId(adapter.getNoteItemAt(0).getNoteListItemId() + 1);
-            //currentList.add(defaultItem);
-            //adapter.submitList(currentList);
-            notebookViewModel.insert(newItem);
-
             return;
         }
-        if (adapter.getNoteItemAt(position).getContent() == null && actionId == KeyEvent.KEYCODE_DEL) {
+        if (content.equals("") && actionId == KeyEvent.KEYCODE_DEL) {
             Toast.makeText(getContext(), "DELETE CALLED", Toast.LENGTH_LONG).show();
             notebookViewModel.delete(adapter.getNoteItemAt(position));
             return;
