@@ -50,6 +50,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         DividerItemDecoration itemDecor = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecor);
+        recyclerView.setHasFixedSize(true);
         adapter = new NoteRecyclerViewAdapter(NOTE_FRAGMENT);
         adapter.setClickListener(this);
         adapter.setPopupMenuItemClickListener(this);

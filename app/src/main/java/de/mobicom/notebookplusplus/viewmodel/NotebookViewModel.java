@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import de.mobicom.notebookplusplus.data.model.Note;
+import de.mobicom.notebookplusplus.data.model.NoteListItem;
+import de.mobicom.notebookplusplus.data.repository.NoteListItemRepository;
 import de.mobicom.notebookplusplus.data.repository.NoteRepository;
 import de.mobicom.notebookplusplus.data.model.Notebook;
 import de.mobicom.notebookplusplus.data.repository.NotebookRepository;
@@ -15,6 +17,7 @@ import de.mobicom.notebookplusplus.data.repository.NotebookRepository;
 public class NotebookViewModel extends AndroidViewModel {
     private NotebookRepository notebookRepository;
     private NoteRepository noteRepository;
+    private NoteListItemRepository noteListItemRepository;
     private LiveData<List<Notebook>> allNotebooks;
 
     private Notebook selectedNotebook;
@@ -24,6 +27,7 @@ public class NotebookViewModel extends AndroidViewModel {
         super(application);
         notebookRepository = new NotebookRepository(application);
         noteRepository = new NoteRepository(application);
+        noteListItemRepository = new NoteListItemRepository(application);
         allNotebooks = notebookRepository.getAllNotebooks();
     }
 
@@ -93,5 +97,21 @@ public class NotebookViewModel extends AndroidViewModel {
 
     public void setNote(Note note) {
         selectedNote = note;
+    }
+
+    public void insert(NoteListItem noteListItem) {
+        noteListItemRepository.insert(noteListItem);
+    }
+
+    public void update(NoteListItem noteListItem) {
+        noteListItemRepository.update(noteListItem);
+    }
+
+    public void delete(NoteListItem noteListItem) {
+        noteListItemRepository.delete(noteListItem);
+    }
+
+    public LiveData<List<NoteListItem>> getAllNoteListItems(long noteId) {
+        return noteListItemRepository.getAllNoteListItems(noteId);
     }
 }

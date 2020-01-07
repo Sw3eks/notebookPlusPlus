@@ -47,7 +47,6 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
         recyclerView.setHasFixedSize(true);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter = new NotebookRecyclerViewAdapter();
         adapter.setClickListener(this);
         adapter.setContextMenuItemClickListener(this);

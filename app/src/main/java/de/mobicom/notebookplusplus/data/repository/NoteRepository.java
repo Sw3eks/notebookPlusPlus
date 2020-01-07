@@ -41,30 +41,17 @@ public class NoteRepository {
     }
 
     public LiveData<List<Note>> getAllNotes(long notebookId) {
-        try {
-            return new SelectNotesAsyncTask(noteDao).execute(notebookId).get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return noteDao.getAllNotes(notebookId);
     }
 
+    // LiveData is executed off the main thread by default, no AsyncTask needed.
     public LiveData<List<Note>> getAllNotesArchived() {
-        try {
-            return new SelectNotesArchivedAsyncTask(noteDao).execute().get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return noteDao.getAllNotesArchived();
     }
 
+    // LiveData is executed off the main thread by default, no AsyncTask needed.
     public LiveData<List<Note>> getAllNotesDeleted() {
-        try {
-            return new SelectNotesDeletedAsyncTask(noteDao).execute().get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return noteDao.getAllNotesDeleted();
     }
 
 
@@ -122,45 +109,6 @@ public class NoteRepository {
         protected Void doInBackground(Void... voids) {
             noteDao.deleteAllNotes();
             return null;
-        }
-    }
-
-    private static class SelectNotesAsyncTask extends AsyncTask<Long, Void, LiveData<List<Note>>> {
-        private NoteDao noteDao;
-
-        private SelectNotesAsyncTask(NoteDao noteDao) {
-            this.noteDao = noteDao;
-        }
-
-        @Override
-        protected LiveData<List<Note>> doInBackground(Long... longs) {
-            return noteDao.getAllNotes(longs[0]);
-        }
-    }
-
-    private static class SelectNotesArchivedAsyncTask extends AsyncTask<Void, Void, LiveData<List<Note>>> {
-        private NoteDao noteDao;
-
-        private SelectNotesArchivedAsyncTask(NoteDao noteDao) {
-            this.noteDao = noteDao;
-        }
-
-        @Override
-        protected LiveData<List<Note>> doInBackground(Void... voids) {
-            return noteDao.getAllNotesArchived();
-        }
-    }
-
-    private static class SelectNotesDeletedAsyncTask extends AsyncTask<Void, Void, LiveData<List<Note>>> {
-        private NoteDao noteDao;
-
-        private SelectNotesDeletedAsyncTask(NoteDao noteDao) {
-            this.noteDao = noteDao;
-        }
-
-        @Override
-        protected LiveData<List<Note>> doInBackground(Void... voids) {
-            return noteDao.getAllNotesDeleted();
         }
     }
 
