@@ -2,7 +2,6 @@ package de.mobicom.notebookplusplus.data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

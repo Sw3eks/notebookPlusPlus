@@ -37,7 +37,7 @@ public class CalendarFragment extends Fragment {
     }
 
     private void setupListeners() {
-        
+
     }
 
     @Override

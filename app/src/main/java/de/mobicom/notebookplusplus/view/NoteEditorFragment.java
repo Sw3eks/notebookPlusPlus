@@ -161,7 +161,7 @@ public class NoteEditorFragment extends Fragment {
                 notebookViewModel.getNote().isNotificationEnabled() != currentNotificationStatus) {
             isChanged = true;
         }
-        if (!notebookViewModel.getNote().getNotificationDate().isEqual(selectedDate)) {
+        if (selectedDate != null && !notebookViewModel.getNote().getNotificationDate().isEqual(selectedDate)) {
             notebookViewModel.getNote().setNotificationDate(selectedDate);
             isChanged = true;
         }
