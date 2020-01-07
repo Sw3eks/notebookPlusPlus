@@ -8,9 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import de.mobicom.notebookplusplus.data.model.Note;
-import de.mobicom.notebookplusplus.data.NoteRepository;
+import de.mobicom.notebookplusplus.data.repository.NoteRepository;
 import de.mobicom.notebookplusplus.data.model.Notebook;
-import de.mobicom.notebookplusplus.data.NotebookRepository;
+import de.mobicom.notebookplusplus.data.repository.NotebookRepository;
 
 public class NotebookViewModel extends AndroidViewModel {
     private NotebookRepository notebookRepository;

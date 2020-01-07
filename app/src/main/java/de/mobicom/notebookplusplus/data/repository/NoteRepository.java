@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.data;
+package de.mobicom.notebookplusplus.data.repository;
 
 import android.app.Application;
 import android.os.AsyncTask;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import androidx.lifecycle.LiveData;
+import de.mobicom.notebookplusplus.data.NotebookDatabase;
 import de.mobicom.notebookplusplus.data.dao.NoteDao;
 import de.mobicom.notebookplusplus.data.model.Note;
 

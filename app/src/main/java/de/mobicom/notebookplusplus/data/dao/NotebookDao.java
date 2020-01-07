@@ -1,4 +1,4 @@
-package de.mobicom.notebookplusplus.data;
+package de.mobicom.notebookplusplus.data.dao;
 
 import java.util.List;
 

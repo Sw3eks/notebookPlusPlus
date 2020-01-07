@@ -9,7 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import de.mobicom.notebookplusplus.data.model.Note;
 import de.mobicom.notebookplusplus.data.model.NoteListItem;
-import de.mobicom.notebookplusplus.data.NoteListItemRepository;
+import de.mobicom.notebookplusplus.data.repository.NoteListItemRepository;
 
 public class NoteListItemViewModel extends AndroidViewModel {
 

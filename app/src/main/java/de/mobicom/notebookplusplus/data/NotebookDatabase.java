@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import de.mobicom.notebookplusplus.data.dao.NoteDao;
 import de.mobicom.notebookplusplus.data.dao.NoteListItemDao;
+import de.mobicom.notebookplusplus.data.dao.NotebookDao;
 import de.mobicom.notebookplusplus.data.model.Note;
 import de.mobicom.notebookplusplus.data.model.NoteListItem;
 import de.mobicom.notebookplusplus.data.model.Notebook;
