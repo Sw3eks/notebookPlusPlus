@@ -32,9 +32,10 @@
 
         <EditText
             android:id="@+id/contentLine"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
             android:hint="@string/note_content_hint"
             android:importantForAutofill="no"
             android:inputType="text"
@@ -43,6 +44,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="@id/itemCheckbox"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/itemCheckbox"
             app:layout_constraintTop_toTopOf="@id/itemCheckbox"
             tools:ignore="LabelFor" />

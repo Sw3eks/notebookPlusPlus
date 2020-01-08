@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -108,6 +107,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         adapter = new NoteListItemRecyclerViewAdapter();
         adapter.setCheckBoxListener(this);
         adapter.setEnterKeyListener(this);
+        adapter.setTextChangeListener(this);
         recyclerView.setAdapter(adapter);
 
         defaultItem = new NoteListItem(notebookViewModel.getNote().getNoteId(), "", false);
@@ -115,7 +115,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
             @Override
             public void onChanged(List<NoteListItem> noteListItems) {
                 if (noteListItems != null) {
-                    defaultItem.setDefault(true);
                     noteListItems.add(defaultItem);
                     adapter.submitList(noteListItems);
                 }
@@ -225,20 +224,20 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     }
 
     @Override
-    public void onEnterClicked(View view, int actionId, String content, boolean isChecked, int position) {
+    public void onEnterClicked(long itemId, int actionId, KeyEvent event, String content, boolean isChecked, int position) {
+        if (event.getAction() != KeyEvent.ACTION_DOWN) {
+            return;
+        }
+
         if (content.trim().length() > 0 && actionId == KeyEvent.KEYCODE_ENTER) {
-            NoteListItem item = adapter.getNoteItemAt(position);
-            item.setContent(content);
-            item.setChecked(isChecked);
-            if (adapter.getNoteItemAt(position).isDefault()) {
-                notebookViewModel.insert(item);
-            } else {
-                notebookViewModel.update(item);
-            }
+            NoteListItem item = new NoteListItem(notebookViewModel.getNote().getNoteId(), content, isChecked);
+            item.setNoteListItemId(itemId);
+
+            notebookViewModel.insert(item);
+            adapter.clearDefault(position);
             return;
         }
         if (content.equals("") && actionId == KeyEvent.KEYCODE_DEL) {
-            Toast.makeText(getContext(), "DELETE CALLED", Toast.LENGTH_LONG).show();
             notebookViewModel.delete(adapter.getNoteItemAt(position));
             return;
         }
@@ -246,6 +245,15 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         // to keep back button working
         if (actionId == KeyEvent.KEYCODE_BACK) {
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
+        }
+    }
+
+    @Override
+    public void onTextChange(Editable s, int position) {
+        if (adapter.getNoteItemAt(position).getNoteListItemId() != 0) {
+            NoteListItem item = adapter.getNoteItemAt(position);
+            item.setContent(s.toString().trim());
+            notebookViewModel.insert(item);
         }
     }
 }
