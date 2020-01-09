@@ -109,7 +109,11 @@ public class DeletedNotesFragment extends Fragment implements NoteRecyclerViewAd
         Note tmpNote = adapter.getNoteAt(position);
         switch (item.getItemId()) {
             case R.id.moveNote:
-                Toast.makeText(getContext(), "Move", Toast.LENGTH_LONG).show();
+                tmpNote.setArchived(false);
+                tmpNote.setMarkedForDelete(false);
+                notebookViewModel.update(tmpNote);
+                adapter.notifyItemRemoved(position);
+                Toast.makeText(getContext(), R.string.moved_note_to_notebook, Toast.LENGTH_LONG).show();
                 break;
             case R.id.archiveNote:
                 tmpNote.setArchived(true);

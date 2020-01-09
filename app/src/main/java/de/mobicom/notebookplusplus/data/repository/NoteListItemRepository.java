@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import androidx.lifecycle.LiveData;
 import de.mobicom.notebookplusplus.data.NotebookDatabase;
@@ -32,6 +33,15 @@ public class NoteListItemRepository {
 
     public LiveData<List<NoteListItem>> getAllNoteListItems(long noteId) {
         return noteListItemDao.getAllNoteListItems(noteId);
+    }
+
+    public List<NoteListItem> getAllNoteListItemsAsync(long noteId) {
+        try {
+            return new SelectNoteListItemAsyncTask(noteListItemDao).execute(noteId).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // Async Tasks
@@ -74,6 +84,19 @@ public class NoteListItemRepository {
         protected Void doInBackground(NoteListItem... items) {
             noteListItemDao.delete(items[0]);
             return null;
+        }
+    }
+
+    private static class SelectNoteListItemAsyncTask extends AsyncTask<Long, Void, List<NoteListItem>> {
+        private NoteListItemDao noteListItemDao;
+
+        private SelectNoteListItemAsyncTask(NoteListItemDao noteListItemDao) {
+            this.noteListItemDao = noteListItemDao;
+        }
+
+        @Override
+        protected List<NoteListItem> doInBackground(Long... longs) {
+            return noteListItemDao.getAllNoteListItemsAsync(longs[0]);
         }
     }
 

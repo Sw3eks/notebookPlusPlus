@@ -114,4 +114,8 @@ public class NotebookViewModel extends AndroidViewModel {
     public LiveData<List<NoteListItem>> getAllNoteListItems(long noteId) {
         return noteListItemRepository.getAllNoteListItems(noteId);
     }
+
+    public List<NoteListItem> getAllNoteListItemsAsync(long noteId) {
+        return noteListItemRepository.getAllNoteListItemsAsync(noteId);
+    }
 }

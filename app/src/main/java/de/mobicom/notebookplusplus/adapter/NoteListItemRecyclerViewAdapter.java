@@ -64,6 +64,7 @@ public class NoteListItemRecyclerViewAdapter extends ListAdapter<NoteListItem, N
     public void onBindViewHolder(@NonNull NoteListItemRecyclerViewAdapter.NoteListItemViewHolder holder, int position) {
         NoteListItem item = getNoteItemAt(position);
         holder.binding.setItem(item);
+        holder.binding.contentLine.requestFocus();
     }
 
     public NoteListItem getNoteItemAt(int id) {
@@ -82,18 +83,13 @@ public class NoteListItemRecyclerViewAdapter extends ListAdapter<NoteListItem, N
         this.mTextChangeListener = changeListener;
     }
 
-    public void clearDefault(int position) {
-        this.getNoteItemAt(position).setContent("");
-        this.getNoteItemAt(position).setChecked(false);
-    }
-
     public interface ItemClickListener {
 
         void onCheckBoxClick(View view, boolean isChecked, int position);
 
-        void onEnterClicked(long itemId, int actionId, KeyEvent event, String content, boolean isChecked, int position);
+        void onEnterClicked(int actionId, KeyEvent event, String content, int position);
 
-        void onTextChange(Editable s, int position);
+        void onTextChange(CharSequence s, int position);
 
     }
 
@@ -117,11 +113,9 @@ public class NoteListItemRecyclerViewAdapter extends ListAdapter<NoteListItem, N
 
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
-            long itemId = getNoteItemAt(getAdapterPosition()).getNoteListItemId();
             String content = binding.contentLine.getText().toString();
-            boolean isChecked = binding.itemCheckbox.isChecked();
             if (mEnterListener != null) {
-                mEnterListener.onEnterClicked(itemId, keyCode, event, content, isChecked, getAdapterPosition());
+                mEnterListener.onEnterClicked(keyCode, event, content, getAdapterPosition());
             }
             return true;
         }
@@ -133,14 +127,13 @@ public class NoteListItemRecyclerViewAdapter extends ListAdapter<NoteListItem, N
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+            if (mTextChangeListener != null) {
+                mTextChangeListener.onTextChange(s, getAdapterPosition());
+            }
         }
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (mTextChangeListener != null) {
-                mTextChangeListener.onTextChange(s, getAdapterPosition());
-            }
         }
     }
 }

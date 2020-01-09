@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -39,9 +40,9 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     private NotebookViewModel notebookViewModel;
     private FragmentNoteEditorBinding fragmentNoteEditorBinding;
     private NoteListItemRecyclerViewAdapter adapter;
+    private RecyclerView recyclerView;
 
     private List<NoteListItem> currentList;
-    private NoteListItem defaultItem;
     private String currentTitle;
     private boolean currentNotificationStatus;
     private LocalDate selectedDate;
@@ -102,7 +103,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         fragmentNoteEditorBinding.editNote.setVisibility(View.GONE);
         fragmentNoteEditorBinding.rvNoteListItem.setVisibility(View.VISIBLE);
 
-        RecyclerView recyclerView = fragmentNoteEditorBinding.rvNoteListItem;
+        recyclerView = fragmentNoteEditorBinding.rvNoteListItem;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new NoteListItemRecyclerViewAdapter();
         adapter.setCheckBoxListener(this);
@@ -110,16 +111,14 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         adapter.setTextChangeListener(this);
         recyclerView.setAdapter(adapter);
 
-        defaultItem = new NoteListItem(notebookViewModel.getNote().getNoteId(), "", false);
-        notebookViewModel.getAllNoteListItems(notebookViewModel.getNote().getNoteId()).observe(this, new Observer<List<NoteListItem>>() {
-            @Override
-            public void onChanged(List<NoteListItem> noteListItems) {
-                if (noteListItems != null) {
-                    noteListItems.add(defaultItem);
-                    adapter.submitList(noteListItems);
-                }
-            }
-        });
+        NoteListItem defaultItem = new NoteListItem(notebookViewModel.getNote().getNoteId(), "", false);
+        if (notebookViewModel.getAllNoteListItemsAsync(notebookViewModel.getNote().getNoteId()) != null) {
+            currentList = new ArrayList<>(notebookViewModel.getAllNoteListItemsAsync(notebookViewModel.getNote().getNoteId()));
+        } else {
+            currentList = new ArrayList<>();
+        }
+        currentList.add(defaultItem);
+        adapter.submitList(currentList);
     }
 
     private void setupDatePicker() {
@@ -196,8 +195,23 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
     @Override
     public void onPause() {
+        if (notebookViewModel.getNote().getType() == R.drawable.ic_note_type_todo) {
+            saveList();
+        }
         shouldSave();
         super.onPause();
+    }
+
+    private void saveList() {
+        for (int i = 0; i < currentList.size(); i++) {
+            // save only entries with content
+            if (!currentList.get(i).getContent().equals("")) {
+                System.out.println("SAVED");
+                notebookViewModel.insert(currentList.get(i));
+            }
+        }
+
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
     private void shouldSave() {
@@ -218,27 +232,28 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
     @Override
     public void onCheckBoxClick(View view, boolean isChecked, int position) {
-        NoteListItem item = adapter.getNoteItemAt(position);
-        item.setChecked(isChecked);
-        notebookViewModel.update(item);
+        currentList.get(position).setChecked(isChecked);
+        adapter.submitList(currentList);
     }
 
     @Override
-    public void onEnterClicked(long itemId, int actionId, KeyEvent event, String content, boolean isChecked, int position) {
+    public void onEnterClicked(int actionId, KeyEvent event, String content, int position) {
         if (event.getAction() != KeyEvent.ACTION_DOWN) {
             return;
         }
 
-        if (content.trim().length() > 0 && actionId == KeyEvent.KEYCODE_ENTER) {
-            NoteListItem item = new NoteListItem(notebookViewModel.getNote().getNoteId(), content, isChecked);
-            item.setNoteListItemId(itemId);
-
-            notebookViewModel.insert(item);
-            adapter.clearDefault(position);
+        if (currentList.indexOf(adapter.getNoteItemAt(position)) == currentList.size() - 1 && content.trim().length() > 0 && actionId == KeyEvent.KEYCODE_ENTER) {
+            NoteListItem item = new NoteListItem(notebookViewModel.getNote().getNoteId(), "", false);
+            currentList.add(item);
+            adapter.submitList(currentList);
+            adapter.notifyItemInserted(position + 1);
+            recyclerView.smoothScrollToPosition(position + 1);
             return;
         }
         if (content.equals("") && actionId == KeyEvent.KEYCODE_DEL) {
-            notebookViewModel.delete(adapter.getNoteItemAt(position));
+            currentList.remove(adapter.getNoteItemAt(position));
+            adapter.submitList(currentList);
+            adapter.notifyItemRemoved(position);
             return;
         }
 
@@ -249,11 +264,12 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     }
 
     @Override
-    public void onTextChange(Editable s, int position) {
+    public void onTextChange(CharSequence s, int position) {
         if (adapter.getNoteItemAt(position).getNoteListItemId() != 0) {
             NoteListItem item = adapter.getNoteItemAt(position);
             item.setContent(s.toString().trim());
-            notebookViewModel.insert(item);
+            currentList.get(position).setContent(s.toString().trim());
+            adapter.submitList(currentList);
         }
     }
 }

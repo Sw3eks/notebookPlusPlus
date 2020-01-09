@@ -21,6 +21,7 @@
     <string name="create_button">Create</string>
     <string name="cancel_button">Cancel</string>
     <string name="save_button">Save</string>
+    <string name="close_button">Close</string>
     <string name="no_data_available">No Notebooks available, start creating one…</string>
     <string name="note_content_hint">Type something…</string>
     <string name="changes_saved">Changes saved</string>
@@ -37,6 +38,7 @@
     <string name="edit_note_title">Edit title</string>
     <string name="moved_note_to_deleted">Moved to trash</string>
     <string name="moved_note_to_archive">Moved to archive</string>
+    <string name="moved_note_to_notebook">Moved back to Notebook</string>
     <string name="back_to_notebook">Move to notebook</string>
     <string name="archive_note">Archive</string>
     <string name="delete_note_forever">Delete forever</string>
@@ -46,6 +48,9 @@
     <string name="notebook_delete">Delete</string>
     <string name="notebook_deleted"><![CDATA[Notebook deleted & Notes moved to trash]]></string>
     <string name="note_deleted">Note deleted</string>
+    <string name="note_set_notification_title">Setup Notification</string>
+    <string name="notification_enabled">Notification enabled</string>
+    <string name="notification_disabled">Notification disabled</string>
 
 
     <!-- Preference Titles -->
@@ -74,10 +79,7 @@
     </string-array>
 
     <string name="type_label">Type</string>
-    <string name="close_button">Close</string>
-    <string name="note_set_notification_title">Setup Notification</string>
-    <string name="notification_enabled">Notification enabled</string>
-    <string name="notification_disabled">Notification disabled</string>
+    <string name="moved_note_to_notebook">Moved back to Notebook</string>
     <string-array name="note_type_array">
         <item>Text</item>
         <item>List</item>

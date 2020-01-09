@@ -25,4 +25,7 @@ public interface NoteListItemDao {
 
     @Query("SELECT * FROM note_list_item_table WHERE note_parent_id = :noteParentId ORDER BY note_list_item_id ASC")
     LiveData<List<NoteListItem>> getAllNoteListItems(long noteParentId);
+
+    @Query("SELECT * FROM note_list_item_table WHERE note_parent_id = :noteParentId ORDER BY note_list_item_id ASC")
+    List<NoteListItem> getAllNoteListItemsAsync(long noteParentId);
 }

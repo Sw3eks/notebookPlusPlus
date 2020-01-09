@@ -109,7 +109,10 @@ public class ArchiveFragment extends Fragment implements NoteRecyclerViewAdapter
         Note tmpNote = adapter.getNoteAt(position);
         switch (item.getItemId()) {
             case R.id.moveNote:
-                Toast.makeText(getContext(), "Move", Toast.LENGTH_LONG).show();
+                tmpNote.setArchived(false);
+                notebookViewModel.update(tmpNote);
+                adapter.notifyItemRemoved(position);
+                Toast.makeText(getContext(), R.string.moved_note_to_notebook, Toast.LENGTH_LONG).show();
                 break;
             case R.id.deleteNote:
                 tmpNote.setMarkedForDelete(true);
