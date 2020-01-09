@@ -204,6 +204,11 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
     private void saveList() {
         for (int i = 0; i < currentList.size(); i++) {
+            if (i == 0) {
+                // save first line to note for preview
+                notebookViewModel.getNote().setDescription(currentList.get(0).getContent());
+                notebookViewModel.update(notebookViewModel.getNote());
+            }
             // save only entries with content
             if (!currentList.get(i).getContent().equals("")) {
                 System.out.println("SAVED");
