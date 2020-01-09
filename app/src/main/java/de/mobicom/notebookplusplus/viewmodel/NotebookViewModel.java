@@ -103,19 +103,11 @@ public class NotebookViewModel extends AndroidViewModel {
         noteListItemRepository.insert(noteListItem);
     }
 
-    public void update(NoteListItem noteListItem) {
-        noteListItemRepository.update(noteListItem);
-    }
-
-    public void delete(NoteListItem noteListItem) {
-        noteListItemRepository.delete(noteListItem);
-    }
-
-    public LiveData<List<NoteListItem>> getAllNoteListItems(long noteId) {
-        return noteListItemRepository.getAllNoteListItems(noteId);
+    public void delete(long noteListItemId) {
+        noteListItemRepository.delete(noteListItemId);
     }
 
     public List<NoteListItem> getAllNoteListItemsAsync(long noteId) {
-        return noteListItemRepository.getAllNoteListItemsAsync(noteId);
+        return noteListItemRepository.getAllNoteListItems(noteId);
     }
 }

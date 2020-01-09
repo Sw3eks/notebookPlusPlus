@@ -233,7 +233,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     @Override
     public void onCheckBoxClick(View view, boolean isChecked, int position) {
         currentList.get(position).setChecked(isChecked);
-        adapter.submitList(currentList);
     }
 
     @Override
@@ -245,14 +244,13 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         if (currentList.indexOf(adapter.getNoteItemAt(position)) == currentList.size() - 1 && content.trim().length() > 0 && actionId == KeyEvent.KEYCODE_ENTER) {
             NoteListItem item = new NoteListItem(notebookViewModel.getNote().getNoteId(), "", false);
             currentList.add(item);
-            adapter.submitList(currentList);
             adapter.notifyItemInserted(position + 1);
             recyclerView.smoothScrollToPosition(position + 1);
             return;
         }
         if (content.equals("") && actionId == KeyEvent.KEYCODE_DEL) {
+            notebookViewModel.delete(adapter.getNoteItemAt(position).getNoteListItemId());
             currentList.remove(adapter.getNoteItemAt(position));
-            adapter.submitList(currentList);
             adapter.notifyItemRemoved(position);
             return;
         }
@@ -265,11 +263,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
     @Override
     public void onTextChange(CharSequence s, int position) {
-        if (adapter.getNoteItemAt(position).getNoteListItemId() != 0) {
-            NoteListItem item = adapter.getNoteItemAt(position);
-            item.setContent(s.toString().trim());
-            currentList.get(position).setContent(s.toString().trim());
-            adapter.submitList(currentList);
-        }
+        currentList.get(position).setContent(s.toString().trim());
     }
 }

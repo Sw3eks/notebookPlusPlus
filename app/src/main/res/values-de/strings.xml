@@ -18,6 +18,7 @@
     <string name="create_button">Erstellen</string>
     <string name="cancel_button">Abbrechen</string>
     <string name="save_button">Speichern</string>
+    <string name="close_button">Schließen</string>
     <string name="no_data_available">Keine Notizbücher/Notizen vorhanden, erstelle welche…</string>
     <string name="note_content_hint">Tippe etwas…</string>
     <string name="changes_saved">Änderungen wurden gespeichert</string>

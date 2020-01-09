@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import androidx.lifecycle.LiveData;
 import de.mobicom.notebookplusplus.data.NotebookDatabase;
 import de.mobicom.notebookplusplus.data.dao.NoteListItemDao;
 import de.mobicom.notebookplusplus.data.model.NoteListItem;
@@ -23,19 +22,11 @@ public class NoteListItemRepository {
         new InsertNoteListItemAsyncTask(noteListItemDao).execute(noteListItem);
     }
 
-    public void update(NoteListItem noteListItem) {
-        new UpdateNoteListItemAsyncTask(noteListItemDao).execute(noteListItem);
+    public void delete(long noteListItemId) {
+        new DeleteNoteListItemAsyncTask(noteListItemDao).execute(noteListItemId);
     }
 
-    public void delete(NoteListItem noteListItem) {
-        new DeleteNoteListItemAsyncTask(noteListItemDao).execute(noteListItem);
-    }
-
-    public LiveData<List<NoteListItem>> getAllNoteListItems(long noteId) {
-        return noteListItemDao.getAllNoteListItems(noteId);
-    }
-
-    public List<NoteListItem> getAllNoteListItemsAsync(long noteId) {
+    public List<NoteListItem> getAllNoteListItems(long noteId) {
         try {
             return new SelectNoteListItemAsyncTask(noteListItemDao).execute(noteId).get();
         } catch (ExecutionException | InterruptedException e) {
@@ -59,21 +50,7 @@ public class NoteListItemRepository {
         }
     }
 
-    private static class UpdateNoteListItemAsyncTask extends AsyncTask<NoteListItem, Void, Void> {
-        private NoteListItemDao noteListItemDao;
-
-        private UpdateNoteListItemAsyncTask(NoteListItemDao noteListItemDao) {
-            this.noteListItemDao = noteListItemDao;
-        }
-
-        @Override
-        protected Void doInBackground(NoteListItem... items) {
-            noteListItemDao.update(items[0]);
-            return null;
-        }
-    }
-
-    private static class DeleteNoteListItemAsyncTask extends AsyncTask<NoteListItem, Void, Void> {
+    private static class DeleteNoteListItemAsyncTask extends AsyncTask<Long, Void, Void> {
         private NoteListItemDao noteListItemDao;
 
         private DeleteNoteListItemAsyncTask(NoteListItemDao noteListItemDao) {
@@ -81,8 +58,8 @@ public class NoteListItemRepository {
         }
 
         @Override
-        protected Void doInBackground(NoteListItem... items) {
-            noteListItemDao.delete(items[0]);
+        protected Void doInBackground(Long... longs) {
+            noteListItemDao.delete(longs[0]);
             return null;
         }
     }
@@ -96,7 +73,7 @@ public class NoteListItemRepository {
 
         @Override
         protected List<NoteListItem> doInBackground(Long... longs) {
-            return noteListItemDao.getAllNoteListItemsAsync(longs[0]);
+            return noteListItemDao.getAllNoteListItems(longs[0]);
         }
     }
 
