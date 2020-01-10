@@ -17,10 +17,10 @@
     <color name="colorSunFlower">#f1c40f</color>
 
 
-    <color name="colorNormal">#bdc3c7</color>
+    <color name="colorNormal">#2B2B2B</color>
     <color name="colorHigh">#f1f2f6</color>
     <color name="colorHint">#bdc3c7</color>
-    <color name="calendarBlack">#7f8c8d</color>
+    <color name="calendarBlack">#2B2B2B</color>
 
 
 </resources>
