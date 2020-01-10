@@ -7,6 +7,13 @@
     <color name="colorClouds">#ecf0f1</color>
     <color name="colorAsbestos">#7f8c8d</color>
 
+    <!-- Dark Basic App Colors    -->
+    <color name="darkColorPrimary">#17191D</color>
+    <color name="darkColorPrimaryDark">#0B0B0C</color>
+    <color name="darkColorAccent">#1abc9c</color>
+    <color name="darkColorClouds">#2d3436</color>
+    <color name="darkColorAsbestos">#7f8c8d</color>
+
     <!-- Notebook Colors    -->
     <color name="colorOrange">#f39c12</color>
     <color name="colorAlizarin">#e74c3c</color>
