@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Basic App Colors    -->
-    <color name="colorPrimary">#1abc9c</color>
-    <color name="colorPrimaryDark">#16a085</color>
-    <color name="colorAccent">#1abc9c</color>
-    <color name="colorClouds">#ecf0f1</color>
+    <color name="colorPrimary">#121212</color>
+    <color name="colorPrimaryDark">#0B0B0C</color>
+    <color name="colorAccent">#16a085</color>
+    <color name="colorClouds">#2d3436</color>
     <color name="colorAsbestos">#7f8c8d</color>
-
-    <!-- Dark Basic App Colors    -->
-    <color name="darkColorPrimary">#17191D</color>
-    <color name="darkColorPrimaryDark">#0B0B0C</color>
-    <color name="darkColorAccent">#1abc9c</color>
-    <color name="darkColorClouds">#2d3436</color>
-    <color name="darkColorAsbestos">#7f8c8d</color>
 
     <!-- Notebook Colors    -->
     <color name="colorOrange">#f39c12</color>
@@ -20,14 +13,14 @@
     <color name="colorPeterRiver">#3498db</color>
     <color name="colorAmethyst">#9b59b6</color>
     <color name="colorWetAsphalt">#34495e</color>
-    <color name="colorEmerald">#2ecc71</color>
+    <color name="colorEmerald">#37AF6A</color>
     <color name="colorSunFlower">#f1c40f</color>
 
 
     <color name="colorNormal">#bdc3c7</color>
     <color name="colorHigh">#f1f2f6</color>
     <color name="colorHint">#bdc3c7</color>
-    <color name="calendarBlack">#000000</color>
+    <color name="calendarBlack">#7f8c8d</color>
 
 
 </resources>

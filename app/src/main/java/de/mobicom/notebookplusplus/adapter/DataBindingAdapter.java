@@ -43,6 +43,7 @@ public class DataBindingAdapter {
     public static void setBookmarked(ImageView imageView, boolean bookmark) {
         if (bookmark) {
             imageView.setImageResource(R.drawable.ic_note_bookmark_enabled);
+            imageView.setColorFilter(R.color.colorAlizarin, PorterDuff.Mode.DST);
         } else {
             imageView.setImageResource(R.drawable.ic_note_bookmark_disabled);
         }
