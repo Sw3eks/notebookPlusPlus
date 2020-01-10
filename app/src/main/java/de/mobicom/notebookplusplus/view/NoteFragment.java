@@ -9,34 +9,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
 import de.mobicom.notebookplusplus.data.model.Note;
 import de.mobicom.notebookplusplus.databinding.FragmentNoteBinding;
-import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
-import de.mobicom.notebookplusplus.utils.SimpleItemTouchHelperCallback;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 import static android.graphics.Color.parseColor;
 
 
 public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
-    public static final String NOTE_FRAGMENT = "NOTE_FRAGMENT";
+    public static final String NOTE_FRAGMENT = NoteFragment.class.getSimpleName();
 
     private NoteRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
@@ -74,15 +68,12 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
         notebookViewModel.getAllNotesFromNotebook(notebookViewModel.getNotebook().getNotebookId())
-                .observe(this, new Observer<List<Note>>() {
-                    @Override
-                    public void onChanged(List<Note> notes) {
-                        if (notes != null) {
-                            adapter.submitList(notes);
-                            fragmentNoteBinding.setIsEmpty(false);
-                        } else {
-                            fragmentNoteBinding.setIsEmpty(true);
-                        }
+                .observe(this, notes -> {
+                    if (notes != null) {
+                        adapter.submitList(notes);
+                        fragmentNoteBinding.setIsEmpty(false);
+                    } else {
+                        fragmentNoteBinding.setIsEmpty(true);
                     }
                 });
 

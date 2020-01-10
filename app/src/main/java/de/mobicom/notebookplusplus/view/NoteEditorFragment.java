@@ -10,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import java.time.LocalDate;
@@ -22,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -123,25 +121,17 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
     private void setupDatePicker() {
         // ClickListener instead of checkChangeListener to prevent firing message when view is opened
-        fragmentNoteEditorBinding.enableNotification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notebookViewModel.getNote().setNotificationEnabled(!notebookViewModel.getNote().isNotificationEnabled());
-                Toast.makeText(getContext(),
-                        notebookViewModel.getNote().isNotificationEnabled() ? getResources().getString(R.string.notification_enabled)
-                                : getResources().getString(R.string.notification_disabled), Toast.LENGTH_LONG)
-                        .show();
-            }
+        fragmentNoteEditorBinding.enableNotification.setOnClickListener(v -> {
+            notebookViewModel.getNote().setNotificationEnabled(!notebookViewModel.getNote().isNotificationEnabled());
+            Toast.makeText(getContext(),
+                    notebookViewModel.getNote().isNotificationEnabled() ? getResources().getString(R.string.notification_enabled)
+                            : getResources().getString(R.string.notification_disabled), Toast.LENGTH_LONG)
+                    .show();
         });
 
         // set min Date to Today (cause notification has to be in future
         fragmentNoteEditorBinding.datePicker.setMinDate(System.currentTimeMillis() - 1000);
-        fragmentNoteEditorBinding.datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                selectedDate = LocalDate.of(year, monthOfYear + 1, dayOfMonth);
-            }
-        });
+        fragmentNoteEditorBinding.datePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> selectedDate = LocalDate.of(year, monthOfYear + 1, dayOfMonth));
     }
 
     @Override

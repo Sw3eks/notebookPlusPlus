@@ -50,6 +50,31 @@
     <string name="notification_disabled">Benachrichtigung deaktiviert</string>
     <string name="note_list_item_hint">Tippe um eine Zeile hinzuzufügen</string>
 
+    <!-- Calendar stuff -->
+    <string name="calendar_no_events">No events on this day</string>
+    <array name="material_calendar_months_array">
+        <item>Januar</item>
+        <item>Februar</item>
+        <item>März</item>
+        <item>April</item>
+        <item>Mai</item>
+        <item>Juni</item>
+        <item>Juli</item>
+        <item>August</item>
+        <item>September</item>
+        <item>Oktober</item>
+        <item>November</item>
+        <item>Dezember</item>
+    </array>
+    <array name="material_calendar_weekdays_array">
+        <item>Mo.</item>
+        <item>Di.</item>
+        <item>Mi.</item>
+        <item>Do.</item>
+        <item>Fr.</item>
+        <item>Sa.</item>
+        <item>So.</item>
+    </array>
 
     <!-- Preference Titles -->
     <string name="settings_calendar_header">Kalendar Benachrichtigungseinstellungen</string>

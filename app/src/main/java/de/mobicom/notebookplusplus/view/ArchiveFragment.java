@@ -28,7 +28,7 @@ import de.mobicom.notebookplusplus.databinding.FragmentArchiveBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 public class ArchiveFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
-    public static final String ARCHIVE_FRAGMENT = "ARCHIVE_FRAGMENT";
+    public static final String ARCHIVE_FRAGMENT = ArchiveFragment.class.getSimpleName();
 
     private NoteRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
@@ -63,15 +63,12 @@ public class ArchiveFragment extends Fragment implements NoteRecyclerViewAdapter
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
         notebookViewModel.getAllNotesWithArchiveTrue()
-                .observe(this, new Observer<List<Note>>() {
-                    @Override
-                    public void onChanged(List<Note> notes) {
-                        if (notes != null) {
-                            adapter.submitList(notes);
-                            fragmentArchiveBinding.setIsEmpty(false);
-                        } else {
-                            fragmentArchiveBinding.setIsEmpty(true);
-                        }
+                .observe(this, notes -> {
+                    if (notes != null) {
+                        adapter.submitList(notes);
+                        fragmentArchiveBinding.setIsEmpty(false);
+                    } else {
+                        fragmentArchiveBinding.setIsEmpty(true);
                     }
                 });
     }

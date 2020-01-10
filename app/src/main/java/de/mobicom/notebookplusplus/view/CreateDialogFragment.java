@@ -1,7 +1,6 @@
 package de.mobicom.notebookplusplus.view;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -85,19 +84,13 @@ public class CreateDialogFragment extends DialogFragment {
                 .setView(inflater.inflate(R.layout.dialog_create, null))
                 .setTitle(R.string.edit_note_title)
                 .setPositiveButton(R.string.save_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int arg1) {
-                                notebookViewModel.getNote().setName(editText.getText().toString().trim());
-                                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(notebookViewModel.getNote().getName());
+                        (dialog, arg1) -> {
+                            notebookViewModel.getNote().setName(editText.getText().toString().trim());
+                            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(notebookViewModel.getNote().getName());
 
-                            }
                         })
                 .setNegativeButton(R.string.cancel_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int arg1) {
-                                dialog.dismiss();
-                            }
-                        });
+                        (dialog, arg1) -> dialog.dismiss());
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create, null);
 
@@ -147,32 +140,26 @@ public class CreateDialogFragment extends DialogFragment {
                 .setView(inflater.inflate(R.layout.dialog_create, null))
                 .setTitle(R.string.create_new_note)
                 .setPositiveButton(R.string.create_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int arg1) {
-                                int type;
-                                switch (spinner.getSelectedItem().toString()) {
-                                    case "List":
-                                        type = R.drawable.ic_note_type_todo;
-                                        break;
-                                    case "Speech":
-                                        type = R.drawable.ic_note_type_speech;
-                                        break;
-                                    default:
-                                        type = R.drawable.ic_note_type_text;
-                                }
-                                notebookViewModel.insert(
-                                        new Note(notebookViewModel.getNotebook().getNotebookId(),
-                                                editText.getText().toString(),
-                                                type, getResources().getString(R.string.created_note_default_text)));
-                                Toast.makeText(getContext(), R.string.note_created, Toast.LENGTH_LONG).show();
+                        (dialog, arg1) -> {
+                            int type;
+                            switch (spinner.getSelectedItem().toString()) {
+                                case "List":
+                                    type = R.drawable.ic_note_type_todo;
+                                    break;
+                                case "Speech":
+                                    type = R.drawable.ic_note_type_speech;
+                                    break;
+                                default:
+                                    type = R.drawable.ic_note_type_text;
                             }
+                            notebookViewModel.insert(
+                                    new Note(notebookViewModel.getNotebook().getNotebookId(),
+                                            editText.getText().toString(),
+                                            type, getResources().getString(R.string.created_note_default_text)));
+                            Toast.makeText(getContext(), R.string.note_created, Toast.LENGTH_LONG).show();
                         })
                 .setNegativeButton(R.string.cancel_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int arg1) {
-                                dialog.dismiss();
-                            }
-                        });
+                        (dialog, arg1) -> dialog.dismiss());
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create, null);
 
@@ -225,42 +212,36 @@ public class CreateDialogFragment extends DialogFragment {
                 .setView(inflater.inflate(R.layout.dialog_create, null))
                 .setTitle(R.string.create_a_new_notebook)
                 .setPositiveButton(R.string.create_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                String color;
-                                switch (spinner.getSelectedItem().toString()) {
-                                    case "Blue":
-                                        color = "#3498db";
-                                        break;
-                                    case "Red":
-                                        color = "#e74c3c";
-                                        break;
-                                    case "Purple":
-                                        color = "#9b59b6";
-                                        break;
-                                    case "Green":
-                                        color = "#2ecc71";
-                                        break;
-                                    case "Dark Grey":
-                                        color = "#34495e";
-                                        break;
-                                    case "Yellow":
-                                        color = "#f1c40f";
-                                        break;
-                                    default:
-                                        color = "#f39c12";
-                                }
-                                notebookViewModel.insert(
-                                        new Notebook(editText.getText().toString(), color));
+                        (dialog, whichButton) -> {
+                            String color;
+                            switch (spinner.getSelectedItem().toString()) {
+                                case "Blue":
+                                    color = "#3498db";
+                                    break;
+                                case "Red":
+                                    color = "#e74c3c";
+                                    break;
+                                case "Purple":
+                                    color = "#9b59b6";
+                                    break;
+                                case "Green":
+                                    color = "#2ecc71";
+                                    break;
+                                case "Dark Grey":
+                                    color = "#34495e";
+                                    break;
+                                case "Yellow":
+                                    color = "#f1c40f";
+                                    break;
+                                default:
+                                    color = "#f39c12";
                             }
+                            notebookViewModel.insert(
+                                    new Notebook(editText.getText().toString(), color));
                         }
                 )
                 .setNegativeButton(R.string.cancel_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
-                            }
-                        }
+                        (dialog, whichButton) -> dialog.dismiss()
                 );
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create, null);

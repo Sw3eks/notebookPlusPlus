@@ -53,6 +53,31 @@
     <string name="notification_disabled">Notification disabled</string>
     <string name="note_list_item_hint">Type to add items</string>
 
+    <!-- Calendar stuff -->
+    <string name="calendar_no_events">Keine Ereignisse an diesem Tag</string>
+    <array name="material_calendar_months_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </array>
+    <array name="material_calendar_weekdays_array">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </array>
 
     <!-- Preference Titles -->
     <string name="settings_calendar_header">Calendar Notification Settings</string>

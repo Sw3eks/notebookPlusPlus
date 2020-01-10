@@ -9,13 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -28,7 +25,7 @@ import de.mobicom.notebookplusplus.databinding.FragmentArchiveBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 public class DeletedNotesFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
-    public static final String DELETED_NOTES_FRAGMENT = "DELETED_NOTES_FRAGMENT";
+    public static final String DELETED_NOTES_FRAGMENT = DeletedNotesFragment.class.getSimpleName();
 
     private NoteRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
@@ -63,15 +60,12 @@ public class DeletedNotesFragment extends Fragment implements NoteRecyclerViewAd
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
         notebookViewModel.getAllNotesWithDeletedTrue()
-                .observe(this, new Observer<List<Note>>() {
-                    @Override
-                    public void onChanged(List<Note> notes) {
-                        if (notes != null) {
-                            adapter.submitList(notes);
-                            fragmentArchiveBinding.setIsEmpty(false);
-                        } else {
-                            fragmentArchiveBinding.setIsEmpty(true);
-                        }
+                .observe(this, notes -> {
+                    if (notes != null) {
+                        adapter.submitList(notes);
+                        fragmentArchiveBinding.setIsEmpty(false);
+                    } else {
+                        fragmentArchiveBinding.setIsEmpty(true);
                     }
                 });
     }

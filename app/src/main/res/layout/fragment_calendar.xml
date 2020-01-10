@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -10,14 +11,31 @@
     </data>
 
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorClouds">
 
-        <CalendarView
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
             android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:mcv_weekDayLabels="@array/material_calendar_weekdays_array"
+            app:mcv_monthLabels="@array/material_calendar_months_array"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:mcv_dateTextAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:mcv_firstDayOfWeek="monday"
+            app:mcv_headerTextAppearance="@style/TextAppearance.AppCompat.Large"
+            app:mcv_selectionColor="@color/colorAccent"
+            app:mcv_showOtherDates="other_months"
+            app:mcv_showWeekDays="true"
+            app:mcv_tileHeight="match_parent"
+            app:mcv_weekDayTextAppearance="@style/TextAppearance.AppCompat.Medium" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

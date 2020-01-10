@@ -54,6 +54,15 @@ public class NoteRepository {
         return noteDao.getAllNotesDeleted();
     }
 
+    public List<Note> getAllNotesNotificationEnabled() {
+        try {
+            return new SelectNotesAsyncTask(noteDao).execute().get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     // Async Tasks for Note operations
     private static class InsertNoteAsyncTask extends AsyncTask<Note, Void, Void> {
@@ -123,6 +132,19 @@ public class NoteRepository {
         protected Void doInBackground(Long... longs) {
             noteDao.updateNotesWithNotebookId(longs[0]);
             return null;
+        }
+    }
+
+    private static class SelectNotesAsyncTask extends AsyncTask<Void, Void, List<Note>> {
+        private NoteDao noteDao;
+
+        private SelectNotesAsyncTask(NoteDao noteDao) {
+            this.noteDao = noteDao;
+        }
+
+        @Override
+        protected List<Note> doInBackground(Void... voids) {
+            return noteDao.getAllNotesNotificationEnabled();
         }
     }
 }

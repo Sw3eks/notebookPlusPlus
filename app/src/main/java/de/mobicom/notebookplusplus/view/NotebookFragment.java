@@ -9,11 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -28,7 +31,7 @@ import de.mobicom.notebookplusplus.databinding.FragmentNotebooksBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 public class NotebookFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
-    public static final String NOTEBOOK_FRAGMENT = "NOTEBOOK_FRAGMENT";
+    public static final String NOTEBOOK_FRAGMENT = NoteFragment.class.getSimpleName();
 
     private NotebookRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
@@ -61,15 +64,12 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
         registerForContextMenu(recyclerView);
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
-        notebookViewModel.getAllNotebooks().observe(this, new Observer<List<Notebook>>() {
-            @Override
-            public void onChanged(List<Notebook> notebooks) {
-                if (notebooks != null) {
-                    fragmentNotebooksBinding.setIsEmpty(false);
-                    adapter.submitList(notebooks);
-                } else {
-                    fragmentNotebooksBinding.setIsEmpty(true);
-                }
+        notebookViewModel.getAllNotebooks().observe(this, notebooks -> {
+            if (notebooks != null) {
+                fragmentNotebooksBinding.setIsEmpty(false);
+                adapter.submitList(notebooks);
+            } else {
+                fragmentNotebooksBinding.setIsEmpty(true);
             }
         });
     }
@@ -107,6 +107,12 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
                 menu.findItem(R.id.to_calendar).setVisible(true);
                 return true;
             }
+        });
+
+        MenuItem toCalendar = menu.findItem(R.id.to_calendar);
+        toCalendar.setOnMenuItemClickListener(item -> {
+            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_notebooksFragment_to_calendarFragment);
+            return true;
         });
 
         super.onCreateOptionsMenu(menu, inflater);
