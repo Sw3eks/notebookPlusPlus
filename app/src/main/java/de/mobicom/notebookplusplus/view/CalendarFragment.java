@@ -61,14 +61,11 @@ public class CalendarFragment extends Fragment {
     private void setup() {
         calendarView.addDecorator(new HighlightWeekendsDecorator(this));
         calendarView.addDecorator(new TodayDecorator());
-        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                if (eventDays.contains(date)) {
-                    Toast.makeText(getContext(), "TEST", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getContext(), R.string.calendar_no_events, Toast.LENGTH_LONG).show();
-                }
+        calendarView.setOnDateChangedListener((widget, date, selected) -> {
+            if (eventDays.contains(date)) {
+                Toast.makeText(getContext(), "TEST", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getContext(), R.string.calendar_no_events, Toast.LENGTH_LONG).show();
             }
         });
         //fragmentCalendarBinding.calendarView.setDateSelected(CalendarDay.today(), true);
