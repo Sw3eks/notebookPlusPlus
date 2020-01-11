@@ -1,5 +1,6 @@
 package de.mobicom.notebookplusplus.view;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -23,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
 import de.mobicom.notebookplusplus.data.model.Note;
+import de.mobicom.notebookplusplus.data.model.Notebook;
 import de.mobicom.notebookplusplus.databinding.FragmentNoteBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
@@ -116,7 +119,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         Note tmpNote = adapter.getNoteAt(position);
         switch (item.getItemId()) {
             case R.id.moveNote:
-                Toast.makeText(getContext(), "Move", Toast.LENGTH_LONG).show();
+                moveNoteDialog();
                 break;
             case R.id.archiveNote:
                 tmpNote.setArchived(true);
@@ -128,7 +131,10 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
                         tmpNote.getNotebookParentId(),
                         tmpNote.getName(),
                         tmpNote.getType(),
-                        tmpNote.getDescription()));
+                        tmpNote.getDescription(),
+                        tmpNote.isBookmarked(),
+                        tmpNote.getNotificationDate(),
+                        tmpNote.isNotificationEnabled()));
                 break;
             case R.id.deleteNote:
                 tmpNote.setMarkedForDelete(true);
@@ -137,6 +143,31 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
                 break;
 
         }
+    }
+
+    private void moveNoteDialog() {
+        String[] test = {"test"};
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme)
+                .setItems(test, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                Toast.makeText(getContext(), "1", Toast.LENGTH_LONG).show();
+                                break;
+                            case 1:
+                                Toast.makeText(getContext(), "2", Toast.LENGTH_LONG).show();
+                                break;
+                        }
+                    }
+                })
+                .setTitle("Move note")
+                .setNegativeButton(R.string.cancel_button,
+                        (dialog, arg1) -> dialog.dismiss());
+
+        alertDialog.create();
+        alertDialog.show();
     }
 
     @Override

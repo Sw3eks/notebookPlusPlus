@@ -102,6 +102,7 @@
     </string-array>
 
     <string name="type_label">Typ</string>
+    <string name="note_events_title">Events</string>
     <string-array name="note_type_array">
         <item>Text</item>
         <item>Liste</item>

@@ -33,4 +33,7 @@ public interface NotebookDao {
 
     @Query("UPDATE notebook_table SET is_marked_for_delete = 0 WHERE notebook_id = :notebookId")
     void updateDeletedNotebook(long notebookId);
+
+    @Query("SELECT color FROM notebook_table WHERE notebook_id = :notebookId")
+    String selectNotebookColor(long notebookId);
 }

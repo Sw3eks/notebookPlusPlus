@@ -9,13 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -49,10 +46,6 @@ public class ArchiveFragment extends Fragment implements NoteRecyclerViewAdapter
         adapter.setPopupMenuItemClickListener(this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
-//        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-//        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
-//        mItemTouchHelper.attachToRecyclerView(recyclerView);
 
         return fragmentArchiveBinding.getRoot();
     }

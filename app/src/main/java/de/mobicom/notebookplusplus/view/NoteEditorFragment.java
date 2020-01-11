@@ -1,5 +1,6 @@
 package de.mobicom.notebookplusplus.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import java.time.LocalDate;
@@ -56,7 +58,11 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         message = getResources().getString(R.string.changes_saved);
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
-        fragmentNoteEditorBinding.colorBar.setBackgroundColor(parseColor(notebookViewModel.getNotebook().getColor()));
+        if (notebookViewModel.getNotebook() != null) {
+            fragmentNoteEditorBinding.colorBar.setBackgroundColor(parseColor(notebookViewModel.getNotebook().getColor()));
+        } else {
+            fragmentNoteEditorBinding.colorBar.setBackgroundColor(parseColor(notebookViewModel.selectNotebookColor(notebookViewModel.getNote().getNotebookParentId())));
+        }
         fragmentNoteEditorBinding.setNote(notebookViewModel.getNote());
         currentTitle = notebookViewModel.getNote().getName();
         currentNotificationStatus = notebookViewModel.getNote().isNotificationEnabled();
@@ -189,6 +195,9 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
             saveList();
         }
         shouldSave();
+
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
         super.onPause();
     }
 

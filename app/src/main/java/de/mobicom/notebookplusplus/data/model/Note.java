@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -75,6 +76,22 @@ public class Note {
         this.isNotificationEnabled = false;
     }
 
+    // Constructor for cloning notes
+    @Ignore
+    public Note(long notebookParentId, @NonNull String name, int type, String description, boolean isBookmarked, LocalDate notificationDate, boolean isNotificationEnabled) {
+        this.notebookParentId = notebookParentId;
+        this.name = name;
+        this.type = type;
+        this.description = description;
+        this.isBookmarked = isBookmarked;
+        this.notificationDate = notificationDate;
+        this.isNotificationEnabled = isNotificationEnabled;
+        this.createdAt = LocalDateTime.now();
+        this.lastModifiedAt = LocalDateTime.now();
+        this.isArchived = false;
+        this.isMarkedForDelete = false;
+    }
+
     public long getNoteId() {
         return noteId;
     }
@@ -102,6 +119,10 @@ public class Note {
 
     public int getType() {
         return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getDescription() {

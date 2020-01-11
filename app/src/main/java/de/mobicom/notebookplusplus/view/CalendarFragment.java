@@ -9,6 +9,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -18,14 +21,19 @@ import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import de.mobicom.notebookplusplus.R;
+import de.mobicom.notebookplusplus.adapter.NoteEventAdapter;
 import de.mobicom.notebookplusplus.data.model.Note;
 import de.mobicom.notebookplusplus.databinding.FragmentCalendarBinding;
 import de.mobicom.notebookplusplus.utils.decorators.EventDecorator;
@@ -39,11 +47,11 @@ public class CalendarFragment extends Fragment {
     private FragmentCalendarBinding fragmentCalendarBinding;
     private NotebookViewModel notebookViewModel;
     private List<CalendarDay> eventDays;
+    private List<Note> noteList;
     private MaterialCalendarView calendarView;
 
     @Nullable
     @Override
-
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentCalendarBinding = FragmentCalendarBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
@@ -51,23 +59,53 @@ public class CalendarFragment extends Fragment {
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
         calendarView = fragmentCalendarBinding.calendarView;
         setup();
-
-        // Get event days in background
-        new EventDaysAsyncTask().executeOnExecutor(Executors.newSingleThreadExecutor());
         return fragmentCalendarBinding.getRoot();
     }
 
     private void setup() {
+        noteList = notebookViewModel.getAllNotesNotificationEnabled();
         calendarView.addDecorator(new HighlightWeekendsDecorator(this));
         calendarView.addDecorator(new TodayDecorator());
         calendarView.setOnDateChangedListener((widget, date, selected) -> {
             if (eventDays.contains(date)) {
-                Toast.makeText(getContext(), "TEST", Toast.LENGTH_LONG).show();
+
+                View view = getLayoutInflater().inflate(R.layout.dialog_note_events, null, false);
+
+                NoteEventAdapter adapter = new NoteEventAdapter(noteList.stream().filter(note -> LocalDate.of(note.getNotificationDate().getYear(),
+                        note.getNotificationDate().getMonthValue(),
+                        note.getNotificationDate().getDayOfMonth()).isEqual(date.getDate())).collect(Collectors.toList()),
+                        getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme)
+                        .setView(view)
+                        .setTitle(R.string.note_events_title)
+                        .setNegativeButton(R.string.cancel_button,
+                                (dialog, arg1) -> dialog.dismiss());
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                ListView listView = view.findViewById(R.id.list_view);
+                listView.setAdapter(adapter);
+
+                listView.setOnItemClickListener((parent, view1, position, id) -> {
+                    notebookViewModel.setNote(adapter.getItem(position));
+                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_calendarFragment_to_noteEditorFragment);
+                    alertDialog.dismiss();
+                });
+
+
             } else {
                 Toast.makeText(getContext(), R.string.calendar_no_events, Toast.LENGTH_LONG).show();
             }
         });
-        //fragmentCalendarBinding.calendarView.setDateSelected(CalendarDay.today(), true);
+
+        // Get event days in background
+        try {
+            eventDays = new EventDaysAsyncTask(noteList).executeOnExecutor(Executors.newSingleThreadExecutor()).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        fragmentCalendarBinding.calendarView.addDecorator(new EventDecorator(Color.RED, eventDays));
     }
 
     @Override
@@ -96,12 +134,16 @@ public class CalendarFragment extends Fragment {
         return true;
     }
 
-    private class EventDaysAsyncTask extends AsyncTask<Void, Void, List<CalendarDay>> {
+    private static class EventDaysAsyncTask extends AsyncTask<Void, Void, List<CalendarDay>> {
+        private List<Note> noteList;
+
+        EventDaysAsyncTask(List<Note> noteList) {
+            this.noteList = noteList;
+        }
 
         @Override
-        protected List<CalendarDay> doInBackground(@NonNull Void... voids) {
-            eventDays = new ArrayList<>();
-            List<Note> noteList = notebookViewModel.getAllNotesNotificationEnabled();
+        protected final List<CalendarDay> doInBackground(Void... voids) {
+            List<CalendarDay> eventDays = new ArrayList<>();
 
             for (int i = 0; i < noteList.size(); i++) {
                 final CalendarDay day = CalendarDay.from(LocalDate.of(noteList.get(i).getNotificationDate().getYear(),
@@ -110,17 +152,6 @@ public class CalendarFragment extends Fragment {
             }
 
             return eventDays;
-        }
-
-        @Override
-        protected void onPostExecute(@NonNull List<CalendarDay> calendarDays) {
-            super.onPostExecute(calendarDays);
-
-            if (getActivity().isFinishing()) {
-                return;
-            }
-
-            fragmentCalendarBinding.calendarView.addDecorator(new EventDecorator(Color.RED, eventDays));
         }
     }
 }

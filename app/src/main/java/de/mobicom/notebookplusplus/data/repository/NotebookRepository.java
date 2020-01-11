@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import androidx.lifecycle.LiveData;
 import de.mobicom.notebookplusplus.data.NotebookDatabase;
@@ -30,7 +31,7 @@ public class NotebookRepository {
         new UpdateNotebookAsyncTask(notebookDao).execute(notebook);
     }
 
-    public void updateDeletedNotebook(long notebookId){
+    public void updateDeletedNotebook(long notebookId) {
         new UpdateDeletedNotebookAsyncTask(notebookDao).execute(notebookId);
     }
 
@@ -50,6 +51,17 @@ public class NotebookRepository {
         return allNotebooks;
     }
 
+    public String selectNotebookColor(long notebookId) {
+        try {
+            return new SelectNotebookColorAsyncTask(notebookDao).execute(notebookId).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    // Async Tasks for Notebook operations
     private static class InsertNotebookAsyncTask extends AsyncTask<Notebook, Void, Void> {
         private NotebookDao notebookDao;
 
@@ -131,6 +143,19 @@ public class NotebookRepository {
         protected Void doInBackground(Void... voids) {
             notebookDao.deleteAllNotebooksMarkedForDelete();
             return null;
+        }
+    }
+
+    private static class SelectNotebookColorAsyncTask extends AsyncTask<Long, Void, String> {
+        private NotebookDao notebookDao;
+
+        private SelectNotebookColorAsyncTask(NotebookDao notebookDao) {
+            this.notebookDao = notebookDao;
+        }
+
+        @Override
+        protected String doInBackground(Long... longs) {
+            return notebookDao.selectNotebookColor(longs[0]);
         }
     }
 }

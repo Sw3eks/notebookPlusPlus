@@ -59,6 +59,10 @@ public class NotebookViewModel extends AndroidViewModel {
         return allNotebooks;
     }
 
+    public String selectNotebookColor(long notebookId) {
+        return notebookRepository.selectNotebookColor(notebookId);
+    }
+
     public void insert(Note note) {
         noteRepository.insert(note);
     }
