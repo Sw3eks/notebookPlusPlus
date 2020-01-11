@@ -28,6 +28,9 @@ import de.mobicom.notebookplusplus.data.model.Note;
 import de.mobicom.notebookplusplus.data.model.Notebook;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
+/**
+ * Dialog Fragment for different use cases to create/edit notebooks and notes
+ */
 public class CreateDialogFragment extends DialogFragment {
 
     private NotebookViewModel notebookViewModel;
@@ -41,6 +44,9 @@ public class CreateDialogFragment extends DialogFragment {
         return inflater.inflate(R.layout.dialog_create, container);
     }
 
+    /**
+     * initially disables the create button in the create new notebook/note dialog
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -63,6 +69,12 @@ public class CreateDialogFragment extends DialogFragment {
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
+    /**
+     * Creates different dialogs depending on then navigation source fragment
+     *
+     * @param savedInstanceState saved instance state
+     * @return the dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -81,6 +93,11 @@ public class CreateDialogFragment extends DialogFragment {
         return dialog;
     }
 
+    /**
+     * dialog to change the title of a note
+     *
+     * @return dialog
+     */
     private Dialog createNoteEditorDialog() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
@@ -138,6 +155,13 @@ public class CreateDialogFragment extends DialogFragment {
         return b.create();
     }
 
+    /**
+     * dialog to create a new note, contains
+     * edittext: user input for note title
+     * spinner: user input for note type
+     *
+     * @return dialog
+     */
     private Dialog createNoteDialog() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
@@ -210,6 +234,14 @@ public class CreateDialogFragment extends DialogFragment {
 
     }
 
+    /**
+     * dialog to create or edit a notebook, contains
+     * edittext: user input for notebook title
+     * spinner: user input for notebook color
+     *
+     * @param type type to determine whether to create or edit a notebook
+     * @return dialog
+     */
     private AlertDialog createNotebookDialog(String type) {
         String buttonLabel;
         String title;

@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
         setupNavigation();
     }
 
+    /**
+     * Sets up the navigation throughout the app
+     */
     private void setupNavigation() {
         toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {

@@ -24,6 +24,9 @@ import de.mobicom.notebookplusplus.data.model.Note;
 import de.mobicom.notebookplusplus.databinding.FragmentArchiveBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
+/**
+ * Fragment with a list of archived notes
+ */
 public class ArchiveFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
     public static final String ARCHIVE_FRAGMENT = ArchiveFragment.class.getSimpleName();
 
@@ -66,6 +69,12 @@ public class ArchiveFragment extends Fragment implements NoteRecyclerViewAdapter
                 });
     }
 
+    /**
+     * creates options menu in the toolbar with a searchview
+     *
+     * @param menu     options menu
+     * @param inflater to inlate the view
+     */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_note, menu);
@@ -91,9 +100,14 @@ public class ArchiveFragment extends Fragment implements NoteRecyclerViewAdapter
 
     @Override
     public void onItemClick(View view, int position) {
-
     }
 
+    /**
+     * Shows context menu with options to move or delete a note
+     *
+     * @param item     refers to the clicked menu item
+     * @param position refers to the note position in the list
+     */
     @Override
     public void onPopupMenuItemClick(MenuItem item, int position) {
         Note tmpNote = adapter.getNoteAt(position);
@@ -113,6 +127,12 @@ public class ArchiveFragment extends Fragment implements NoteRecyclerViewAdapter
         }
     }
 
+    /**
+     * Changes the clicked notes bookmark status
+     *
+     * @param view     refers the current view
+     * @param position refers the position in the list, the user clicked at
+     */
     @Override
     public void onBookmarkClick(View view, int position) {
         Note tmpNote = adapter.getNoteAt(position);

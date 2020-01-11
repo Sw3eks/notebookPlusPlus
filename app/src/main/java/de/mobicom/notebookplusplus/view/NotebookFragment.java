@@ -24,9 +24,13 @@ import de.mobicom.notebookplusplus.data.model.Notebook;
 import de.mobicom.notebookplusplus.databinding.FragmentNotebooksBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
+
+/**
+ * Fragment to display a grid with notebooks
+ */
 public class NotebookFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
-    public static final String NOTEBOOK_FRAGMENT = NotebookFragment.class.getSimpleName();
-    public static final String NOTEBOOK_FRAGMENT_EDIT = "NOTEBOOK_EDIT_DIALOG";
+    static final String NOTEBOOK_FRAGMENT = NotebookFragment.class.getSimpleName();
+    static final String NOTEBOOK_FRAGMENT_EDIT = "NOTEBOOK_EDIT_DIALOG";
 
     private NotebookRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
@@ -74,6 +78,13 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
         });
     }
 
+    /**
+     * creates options menu in the toolbar with a searchview
+     * and a quicklink to calendar view
+     *
+     * @param menu     options menu
+     * @param inflater to inlate the view
+     */
     @Override
     public void onCreateOptionsMenu(@NonNull final Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_notebooks, menu);
@@ -118,6 +129,12 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * sets the clicked notebook to the viewmodel and navigates to the note fragment
+     *
+     * @param view     current view
+     * @param position clicked position in the list/grid
+     */
     @Override
     public void onItemClick(View view, int position) {
         notebookViewModel.setNotebook(adapter.getNotebookAt(position));
@@ -125,6 +142,12 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_notebooksFragment_to_noteFragment);
     }
 
+    /**
+     * Shows context menu with options to edit and delete a notebook
+     *
+     * @param item     refers to the clicked menu item
+     * @param position refers to the note position in the list
+     */
     @Override
     public void onContextMenuItemClick(MenuItem item, int position) {
         notebookViewModel.setNotebook(adapter.getNotebookAt(position));
@@ -143,6 +166,9 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
         }
     }
 
+    /**
+     * navigates to notebook create dialog, fired by user click on fab
+     */
     public void onAddNotebook() {
         System.out.println(NOTEBOOK_FRAGMENT);
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(

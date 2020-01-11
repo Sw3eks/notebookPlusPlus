@@ -35,6 +35,9 @@ import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 import static android.graphics.Color.parseColor;
 
+/**
+ * Note editor to change content and title of notes
+ */
 public class NoteEditorFragment extends Fragment implements NoteListItemRecyclerViewAdapter.ItemClickListener {
 
     private NotebookViewModel notebookViewModel;
@@ -79,6 +82,9 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         return fragmentNoteEditorBinding.getRoot();
     }
 
+    /**
+     * inits the setup for a note with type "text"
+     */
     private void setupTextLayout() {
         fragmentNoteEditorBinding.editNote.requestFocus();
         fragmentNoteEditorBinding.editNote.addTextChangedListener(new TextWatcher() {
@@ -103,6 +109,9 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         });
     }
 
+    /**
+     * inits the setup for a note with type "list"
+     */
     private void setupListLayout() {
         fragmentNoteEditorBinding.editNote.setVisibility(View.GONE);
         fragmentNoteEditorBinding.rvNoteListItem.setVisibility(View.VISIBLE);
@@ -125,6 +134,9 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         adapter.submitList(currentList);
     }
 
+    /**
+     * datepicker to set and enable/disable a date to send notifications
+     */
     private void setupDatePicker() {
         // ClickListener instead of checkChangeListener to prevent firing message when view is opened
         fragmentNoteEditorBinding.enableNotification.setOnClickListener(v -> {
@@ -196,7 +208,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         }
         shouldSave();
 
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
         super.onPause();
     }
