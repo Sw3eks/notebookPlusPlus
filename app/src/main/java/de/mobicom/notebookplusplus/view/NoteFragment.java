@@ -1,6 +1,5 @@
 package de.mobicom.notebookplusplus.view;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,7 +7,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter;
+import de.mobicom.notebookplusplus.adapter.NotebookListAdapter;
 import de.mobicom.notebookplusplus.data.model.Note;
 import de.mobicom.notebookplusplus.data.model.Notebook;
 import de.mobicom.notebookplusplus.databinding.FragmentNoteBinding;
@@ -31,9 +34,8 @@ import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 import static android.graphics.Color.parseColor;
 
-
 public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.ItemClickListener {
-    public static final String NOTE_FRAGMENT = NoteFragment.class.getSimpleName();
+    static final String NOTE_FRAGMENT = NoteFragment.class.getSimpleName();
 
     private NoteRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
@@ -119,7 +121,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         Note tmpNote = adapter.getNoteAt(position);
         switch (item.getItemId()) {
             case R.id.moveNote:
-                moveNoteDialog();
+                moveNoteDialog(tmpNote);
                 break;
             case R.id.archiveNote:
                 tmpNote.setArchived(true);
@@ -145,29 +147,30 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         }
     }
 
-    private void moveNoteDialog() {
-        String[] test = {"test"};
+    private void moveNoteDialog(Note note) {
+        View view = getLayoutInflater().inflate(R.layout.dialog_list, null, false);
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme)
-                .setItems(test, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                Toast.makeText(getContext(), "1", Toast.LENGTH_LONG).show();
-                                break;
-                            case 1:
-                                Toast.makeText(getContext(), "2", Toast.LENGTH_LONG).show();
-                                break;
-                        }
-                    }
-                })
-                .setTitle("Move note")
+        List<Notebook> notebookList = notebookViewModel.getAllNotebooks().getValue();
+
+        NotebookListAdapter adapter = new NotebookListAdapter(notebookList,
+                getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme)
+                .setView(view)
+                .setTitle(R.string.select_notebook_to_move)
                 .setNegativeButton(R.string.cancel_button,
                         (dialog, arg1) -> dialog.dismiss());
 
-        alertDialog.create();
+        AlertDialog alertDialog = builder.create();
         alertDialog.show();
+
+        ListView listView = view.findViewById(R.id.list_view);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            note.setNotebookParentId(adapter.getItem(position).getNotebookId());
+            notebookViewModel.update(note);
+            alertDialog.dismiss();
+        });
     }
 
     @Override

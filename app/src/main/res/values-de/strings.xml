@@ -49,7 +49,7 @@
     <string name="notification_enabled">Benachrichtigung aktiviert</string>
     <string name="notification_disabled">Benachrichtigung deaktiviert</string>
     <string name="note_list_item_hint">Tippe um eine Zeile hinzuzufügen</string>
-
+    <string name="select_notebook_to_move">Wähle ein Notizbuch</string>
     <!-- Calendar stuff -->
     <string name="calendar_no_events">No events on this day</string>
     <array name="material_calendar_months_array">
@@ -75,6 +75,7 @@
         <item>Sa.</item>
         <item>So.</item>
     </array>
+    <string name="note_events_title">Ereignisse</string>
 
     <!-- Preference Titles -->
     <string name="settings_calendar_header">Kalendar Benachrichtigungseinstellungen</string>
@@ -102,7 +103,6 @@
     </string-array>
 
     <string name="type_label">Typ</string>
-    <string name="note_events_title">Events</string>
     <string-array name="note_type_array">
         <item>Text</item>
         <item>Liste</item>

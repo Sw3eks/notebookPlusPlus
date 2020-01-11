@@ -72,7 +72,7 @@ public class CalendarFragment extends Fragment {
             widget.invalidateDecorators();
             if (eventDays.contains(date)) {
 
-                View view = getLayoutInflater().inflate(R.layout.dialog_note_events, null, false);
+                View view = getLayoutInflater().inflate(R.layout.dialog_list, null, false);
 
                 NoteEventAdapter adapter = new NoteEventAdapter(noteList.stream().filter(note -> LocalDate.of(note.getNotificationDate().getYear(),
                         note.getNotificationDate().getMonthValue(),
