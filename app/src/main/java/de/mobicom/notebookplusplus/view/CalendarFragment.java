@@ -9,8 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,12 +29,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NoteEventAdapter;
 import de.mobicom.notebookplusplus.data.model.Note;
 import de.mobicom.notebookplusplus.databinding.FragmentCalendarBinding;
 import de.mobicom.notebookplusplus.utils.decorators.EventDecorator;
+import de.mobicom.notebookplusplus.utils.decorators.OneDayDecorator;
 import de.mobicom.notebookplusplus.utils.decorators.TodayDecorator;
 import de.mobicom.notebookplusplus.utils.decorators.HighlightWeekendsDecorator;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
@@ -49,6 +47,7 @@ public class CalendarFragment extends Fragment {
     private List<CalendarDay> eventDays;
     private List<Note> noteList;
     private MaterialCalendarView calendarView;
+    private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
 
     @Nullable
     @Override
@@ -64,9 +63,13 @@ public class CalendarFragment extends Fragment {
 
     private void setup() {
         noteList = notebookViewModel.getAllNotesNotificationEnabled();
-        calendarView.addDecorator(new HighlightWeekendsDecorator(this));
-        calendarView.addDecorator(new TodayDecorator());
+        calendarView.addDecorators(
+                new HighlightWeekendsDecorator(this),
+                new TodayDecorator(),
+                oneDayDecorator);
         calendarView.setOnDateChangedListener((widget, date, selected) -> {
+            oneDayDecorator.setDate(date.getDate());
+            widget.invalidateDecorators();
             if (eventDays.contains(date)) {
 
                 View view = getLayoutInflater().inflate(R.layout.dialog_note_events, null, false);
