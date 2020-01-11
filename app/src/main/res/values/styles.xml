@@ -19,6 +19,7 @@
         <item name="colorControlNormal">@color/colorNormal</item>
         <item name="colorControlHighlight">@color/colorHigh</item>
         <item name="android:textColorHint">@color/colorHint</item>
+        <item name="android:background">@color/colorHigh</item>
     </style>
 
     <style name="MyDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
