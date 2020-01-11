@@ -21,17 +21,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
-        android:paddingStart="8dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="8dp">
+        android:paddingStart="@dimen/default_padding_start"
+        android:paddingTop="@dimen/default_padding_top"
+        android:paddingEnd="@dimen/default_padding_end">
 
         <ImageView
             android:id="@+id/noteType"
             imageResource="@{note.type}"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:tint="?attr/colorControlNormal"
+            android:layout_width="@dimen/default_image_width"
+            android:layout_height="@dimen/default_image_height"
             android:contentDescription="@string/type_label"
+            android:tint="?attr/colorControlNormal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +40,7 @@
             android:id="@+id/noteTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/default_margin_start"
             android:ellipsize="end"
             android:text="@{note.name}"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -71,10 +71,10 @@
 
         <ImageView
             android:id="@+id/noteCalendarIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="@dimen/default_image_width"
+            android:layout_height="@dimen/default_image_height"
+            android:layout_marginTop="@dimen/default_margin_top"
+            android:layout_marginEnd="@dimen/default_margin_end"
             android:contentDescription="@string/note_context_menu_icon"
             android:src="@drawable/ic_calendar"
             android:tint="@{note.notificationEnabled ? @color/colorPeterRiver : @color/calendarBlack}"
@@ -85,26 +85,26 @@
         <ImageView
             android:id="@+id/noteBookmarkIcon"
             bookmarkIcon="@{note.isBookmarked}"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:tint="?attr/colorControlNormal"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="@dimen/default_image_width"
+            android:layout_height="@dimen/default_image_height"
+            android:layout_marginTop="@dimen/default_margin_top"
+            android:layout_marginEnd="@dimen/default_margin_end"
             android:contentDescription="@string/note_context_menu_icon"
             android:onClick="@{(view) -> handler.onBookmark(view)}"
+            android:tint="?attr/colorControlNormal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/noteContextMenuItem"
             app:layout_constraintTop_toBottomOf="@+id/noteModifiedDate" />
 
         <ImageView
             android:id="@+id/noteContextMenuItem"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginTop="8dp"
-            android:tint="?attr/colorControlNormal"
+            android:layout_width="@dimen/default_image_width"
+            android:layout_height="@dimen/default_image_height"
+            android:layout_marginTop="@dimen/default_margin_top"
             android:contentDescription="@string/note_context_menu_icon"
             android:onClick="@{(view) -> handler.onOpenPopupMenu(view)}"
             android:src="@drawable/ic_note_context_menu"
+            android:tint="?attr/colorControlNormal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/noteModifiedDate" />

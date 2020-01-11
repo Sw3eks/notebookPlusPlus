@@ -38,9 +38,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="8dp">
+                android:paddingStart="@dimen/default_padding_start"
+                android:paddingTop="@dimen/default_padding_top"
+                android:paddingEnd="@dimen/default_padding_end">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -79,10 +79,10 @@
             android:id="@+id/editNote"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="@dimen/default_margin_start"
+            android:layout_marginTop="@dimen/default_margin_top"
+            android:layout_marginEnd="@dimen/default_margin_end"
+            android:layout_marginBottom="@dimen/default_margin_bottom"
             android:focusable="true"
             android:gravity="top"
             android:hint="@string/note_content_hint"

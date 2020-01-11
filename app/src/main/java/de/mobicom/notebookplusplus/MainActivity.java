@@ -9,13 +9,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
+import de.mobicom.notebookplusplus.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -30,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
-        setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setupNavigation();
     }
 
@@ -38,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
      * Sets up the navigation throughout the app
      */
     private void setupNavigation() {
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = binding.toolbar;
         if (toolbar != null) {
             setSupportActionBar(toolbar);
         }
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        nvDrawer = findViewById(R.id.nav_view);
+        drawerLayout = binding.drawerLayout;
+        nvDrawer = binding.navView;
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 

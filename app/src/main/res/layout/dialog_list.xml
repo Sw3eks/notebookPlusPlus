@@ -7,7 +7,7 @@
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp" />
+        android:paddingStart="@dimen/default_padding_start"
+        android:paddingEnd="@dimen/default_padding_end" />
 
 </LinearLayout>

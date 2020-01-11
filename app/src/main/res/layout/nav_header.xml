@@ -11,10 +11,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
+        android:paddingTop="@dimen/default_padding_top"
         android:text="@string/app_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="20sp" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <ImageView
         android:layout_width="0dp"

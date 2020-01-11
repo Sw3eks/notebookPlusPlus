@@ -18,9 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
-        android:paddingStart="8dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="8dp">
+        android:paddingStart="@dimen/default_padding_start"
+        android:paddingTop="@dimen/default_padding_top"
+        android:paddingEnd="@dimen/default_padding_end">
 
         <CheckBox
             android:id="@+id/itemCheckbox"
@@ -34,7 +34,7 @@
             android:id="@+id/contentLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/default_margin_start"
             android:background="@android:color/transparent"
             android:hint="@string/note_list_item_hint"
             android:importantForAutofill="no"
