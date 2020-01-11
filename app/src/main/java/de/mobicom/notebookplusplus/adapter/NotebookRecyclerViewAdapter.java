@@ -150,9 +150,8 @@ public class NotebookRecyclerViewAdapter extends ListAdapter<Notebook, NotebookR
             Animation bounce = AnimationUtils.loadAnimation(v.getContext(), R.anim.shake);
             recyclerviewNotebookItemBinding.notebookIcon.startAnimation(bounce);
             menu.setHeaderTitle(R.string.edit_notebook);
-            menu.add(0, R.string.notebook_change_name, 0, R.string.notebook_change_name).setOnMenuItemClickListener(this);
-            menu.add(0, R.string.notebook_change_color, 1, R.string.notebook_change_color).setOnMenuItemClickListener(this);
-            menu.add(0, R.string.notebook_delete, 2, R.string.notebook_delete).setOnMenuItemClickListener(this);
+            menu.add(0, R.string.edit_notebook, 0, R.string.edit_notebook).setOnMenuItemClickListener(this);
+            menu.add(0, R.string.notebook_delete, 1, R.string.notebook_delete).setOnMenuItemClickListener(this);
         }
 
         @Override

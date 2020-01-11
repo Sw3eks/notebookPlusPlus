@@ -69,7 +69,7 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
         notebookViewModel.getAllNotesFromNotebook(notebookViewModel.getNotebook().getNotebookId())
                 .observe(this, notes -> {
-                    if (notes != null) {
+                    if (!notes.isEmpty()) {
                         adapter.submitList(notes);
                         fragmentNoteBinding.setIsEmpty(false);
                     } else {

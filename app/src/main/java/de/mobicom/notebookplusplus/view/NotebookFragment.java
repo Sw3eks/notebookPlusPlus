@@ -1,5 +1,7 @@
 package de.mobicom.notebookplusplus.view;
 
+import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,29 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NotebookRecyclerViewAdapter;
-import de.mobicom.notebookplusplus.data.model.Notebook;
 import de.mobicom.notebookplusplus.databinding.FragmentNotebooksBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
 public class NotebookFragment extends Fragment implements NotebookRecyclerViewAdapter.ItemClickListener {
-    public static final String NOTEBOOK_FRAGMENT = NoteFragment.class.getSimpleName();
+    public static final String NOTEBOOK_FRAGMENT = NotebookFragment.class.getSimpleName();
+    public static final String NOTEBOOK_FRAGMENT_EDIT = "NOTEBOOK_EDIT_DIALOG";
 
     private NotebookRecyclerViewAdapter adapter;
     private NotebookViewModel notebookViewModel;
@@ -47,7 +42,12 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
         fragmentNotebooksBinding.setHandler(this);
 
         recyclerView = fragmentNotebooksBinding.rvNotebooks;
-        int numberOfColumns = 2;
+        int numberOfColumns;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            numberOfColumns = 2;
+        } else {
+            numberOfColumns = 3;
+        }
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
         recyclerView.setHasFixedSize(true);
         adapter = new NotebookRecyclerViewAdapter();
@@ -65,7 +65,7 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
 
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
         notebookViewModel.getAllNotebooks().observe(this, notebooks -> {
-            if (notebooks != null) {
+            if (!notebooks.isEmpty()) {
                 fragmentNotebooksBinding.setIsEmpty(false);
                 adapter.submitList(notebooks);
             } else {
@@ -127,12 +127,11 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
 
     @Override
     public void onContextMenuItemClick(MenuItem item, int position) {
+        notebookViewModel.setNotebook(adapter.getNotebookAt(position));
         switch (item.getItemId()) {
-            case R.string.notebook_change_name:
-                Toast.makeText(getContext(), "Name", Toast.LENGTH_LONG).show();
-                break;
-            case R.string.notebook_change_color:
-                Toast.makeText(getContext(), "Color", Toast.LENGTH_LONG).show();
+            case R.string.edit_notebook:
+                Navigation.findNavController(
+                        getActivity(), R.id.nav_host_fragment).navigate(NotebookFragmentDirections.actionNotebooksFragmentToCreateNotebookDialogFragment().setDialogType(NOTEBOOK_FRAGMENT_EDIT));
                 break;
             case R.string.notebook_delete:
                 notebookViewModel.updateNotesOfDeletedNotebook(adapter.getNotebookAt(position).getNotebookId());
@@ -143,6 +142,8 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
     }
 
     public void onAddNotebook() {
-        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(NotebookFragmentDirections.actionNotebooksFragmentToCreateNotebookDialogFragment().setDialogType(NOTEBOOK_FRAGMENT));
+        System.out.println(NOTEBOOK_FRAGMENT);
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(
+                NotebookFragmentDirections.actionNotebooksFragmentToCreateNotebookDialogFragment().setDialogType(NOTEBOOK_FRAGMENT));
     }
 }

@@ -19,7 +19,8 @@
     <string name="cancel_button">Abbrechen</string>
     <string name="save_button">Speichern</string>
     <string name="close_button">Schließen</string>
-    <string name="no_data_available">Keine Notizbücher/Notizen vorhanden, erstelle welche…</string>
+    <string name="no_data_available">Keine Notizbücher vorhanden, erstelle welche…</string>
+    <string name="no_data_available_notes">Keine Notizen vorhanden, erstelle welche…</string>
     <string name="note_content_hint">Tippe etwas…</string>
     <string name="changes_saved">Änderungen wurden gespeichert</string>
 
@@ -40,8 +41,6 @@
     <string name="archive_note">Archivieren</string>
     <string name="delete_note_forever">Endgültig löschen</string>
     <string name="edit_notebook">Notizbuch bearbeiten</string>
-    <string name="notebook_change_name">Titel ändern</string>
-    <string name="notebook_change_color">Farbe ändern</string>
     <string name="notebook_delete">Löschen</string>
     <string name="notebook_deleted">Notizbuch gelöscht</string>
     <string name="note_deleted">Notiz gelöscht</string>

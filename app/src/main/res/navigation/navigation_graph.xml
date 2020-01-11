@@ -90,7 +90,7 @@
         android:id="@+id/settingsFragment"
         android:name="de.mobicom.notebookplusplus.view.SettingsFragment"
         android:label="@string/drawer_menu_settings"
-        tools:layout="@layout/activity_settings" />
+        tools:layout="@layout/fragment_settings" />
     <dialog
         android:id="@+id/createNotebookDialogFragment"
         android:name="de.mobicom.notebookplusplus.view.CreateDialogFragment"

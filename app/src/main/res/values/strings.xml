@@ -23,6 +23,7 @@
     <string name="save_button">Save</string>
     <string name="close_button">Close</string>
     <string name="no_data_available">No Notebooks available, start creating one…</string>
+    <string name="no_data_available_notes">No notes available, start creating one…</string>
     <string name="note_content_hint">Type something…</string>
     <string name="changes_saved">Changes saved</string>
 
@@ -43,8 +44,6 @@
     <string name="archive_note">Archive</string>
     <string name="delete_note_forever">Delete forever</string>
     <string name="edit_notebook">Edit notebook</string>
-    <string name="notebook_change_name">Edit name</string>
-    <string name="notebook_change_color">Edit color</string>
     <string name="notebook_delete">Delete</string>
     <string name="notebook_deleted"><![CDATA[Notebook deleted & Notes moved to trash]]></string>
     <string name="note_deleted">Note deleted</string>

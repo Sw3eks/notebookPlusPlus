@@ -47,15 +47,16 @@ public class CreateDialogFragment extends DialogFragment {
         AlertDialog d = (AlertDialog) getDialog();
         if (d != null) {
             positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
-            positiveButton.setEnabled(false);
+            if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(NotebookFragment.NOTEBOOK_FRAGMENT) ||
+                    CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(NoteFragment.NOTE_FRAGMENT)) {
+                positiveButton.setEnabled(false);
+            }
         }
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
 
         editText.requestFocus();
         getDialog().getWindow().setSoftInputMode(
@@ -66,9 +67,11 @@ public class CreateDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog dialog;
+        notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
 
-        if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(NotebookFragment.NOTEBOOK_FRAGMENT)) {
-            dialog = createNotebookDialog();
+        if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(NotebookFragment.NOTEBOOK_FRAGMENT) ||
+                CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(NotebookFragment.NOTEBOOK_FRAGMENT_EDIT)) {
+            dialog = createNotebookDialog(CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType());
         } else if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(NoteFragment.NOTE_FRAGMENT)) {
             dialog = createNoteDialog();
         } else {
@@ -96,6 +99,7 @@ public class CreateDialogFragment extends DialogFragment {
 
         editText = view.findViewById(R.id.dialogEditName);
         editText.requestFocus();
+        editText.setText(notebookViewModel.getNote().getName());
         editText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -206,12 +210,21 @@ public class CreateDialogFragment extends DialogFragment {
 
     }
 
-    private AlertDialog createNotebookDialog() {
+    private AlertDialog createNotebookDialog(String type) {
+        String buttonLabel;
+        String title;
+        if (type.equals(NotebookFragment.NOTEBOOK_FRAGMENT)) {
+            title = getResources().getString(R.string.create_a_new_notebook);
+            buttonLabel = getResources().getString(R.string.create_button);
+        } else {
+            title = getResources().getString(R.string.edit_notebook);
+            buttonLabel = getResources().getString(R.string.save_button);
+        }
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final AlertDialog.Builder b = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
                 .setView(inflater.inflate(R.layout.dialog_create, null))
-                .setTitle(R.string.create_a_new_notebook)
-                .setPositiveButton(R.string.create_button,
+                .setTitle(title)
+                .setPositiveButton(buttonLabel,
                         (dialog, whichButton) -> {
                             String color;
                             switch (spinner.getSelectedItem().toString()) {
@@ -236,8 +249,15 @@ public class CreateDialogFragment extends DialogFragment {
                                 default:
                                     color = "#f39c12";
                             }
-                            notebookViewModel.insert(
-                                    new Notebook(editText.getText().toString(), color));
+                            if (type.equals(NotebookFragment.NOTEBOOK_FRAGMENT)) {
+                                notebookViewModel.insert(
+                                        new Notebook(editText.getText().toString(), color));
+                            } else {
+                                Notebook notebook = notebookViewModel.getNotebook();
+                                notebook.setName(editText.getText().toString());
+                                notebook.setColor(color);
+                                notebookViewModel.update(notebook);
+                            }
                         }
                 )
                 .setNegativeButton(R.string.cancel_button,
@@ -247,6 +267,9 @@ public class CreateDialogFragment extends DialogFragment {
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_create, null);
 
         editText = view.findViewById(R.id.dialogEditName);
+        if (type.equals(NotebookFragment.NOTEBOOK_FRAGMENT_EDIT)) {
+            editText.setText(notebookViewModel.getNotebook().getName());
+        }
         editText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -283,5 +306,4 @@ public class CreateDialogFragment extends DialogFragment {
         b.setView(view);
         return b.create();
     }
-
 }

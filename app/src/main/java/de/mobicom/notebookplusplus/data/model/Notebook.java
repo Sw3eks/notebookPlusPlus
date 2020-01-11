@@ -45,9 +45,17 @@ public class Notebook {
         return name;
     }
 
+    public void setName(@NonNull String name) {
+        this.name = name;
+    }
+
     @NonNull
     public String getColor() {
         return color;
+    }
+
+    public void setColor(@NonNull String color) {
+        this.color = color;
     }
 
     public LocalDateTime getCreatedAt() {
