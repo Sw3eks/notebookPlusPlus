@@ -26,10 +26,14 @@ public class Notebook {
     @ColumnInfo(name = "last_modified_date")
     private LocalDateTime lastModifiedDate;
 
+    @ColumnInfo(name = "is_marked_for_delete")
+    private boolean isMarkedForDelete;
+
     public Notebook(@NonNull String name, @NonNull String color) {
         this.name = name;
         this.color = color;
         this.createdAt = LocalDateTime.now();
+        this.isMarkedForDelete = false;
     }
 
     public long getNotebookId() {
@@ -74,6 +78,14 @@ public class Notebook {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public void setMarkedForDelete(boolean markedForDelete) {
+        isMarkedForDelete = markedForDelete;
+    }
+
+    public boolean isMarkedForDelete() {
+        return isMarkedForDelete;
+    }
+
     @Override
     public String toString() {
         return "Notebook{" +
@@ -82,6 +94,7 @@ public class Notebook {
                 ", color='" + color + '\'' +
                 ", createdAt=" + createdAt +
                 ", lastModifiedDate=" + lastModifiedDate +
+                ", isMarkedForDelete=" + isMarkedForDelete +
                 '}';
     }
 }

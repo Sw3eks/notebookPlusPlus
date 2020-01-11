@@ -1,6 +1,5 @@
 package de.mobicom.notebookplusplus.view;
 
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.adapter.NotebookRecyclerViewAdapter;
+import de.mobicom.notebookplusplus.data.model.Notebook;
 import de.mobicom.notebookplusplus.databinding.FragmentNotebooksBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
@@ -135,7 +135,9 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
                 break;
             case R.string.notebook_delete:
                 notebookViewModel.updateNotesOfDeletedNotebook(adapter.getNotebookAt(position).getNotebookId());
-                notebookViewModel.delete(adapter.getNotebookAt(position));
+                Notebook notebook = notebookViewModel.getNotebook();
+                notebook.setMarkedForDelete(true);
+                notebookViewModel.update(notebook);
                 Toast.makeText(getContext(), R.string.notebook_deleted, Toast.LENGTH_LONG).show();
                 break;
         }

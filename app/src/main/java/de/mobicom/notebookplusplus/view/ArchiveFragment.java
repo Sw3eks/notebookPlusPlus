@@ -64,7 +64,7 @@ public class ArchiveFragment extends Fragment implements NoteRecyclerViewAdapter
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
         notebookViewModel.getAllNotesWithArchiveTrue()
                 .observe(this, notes -> {
-                    if (notes != null) {
+                    if (!notes.isEmpty()) {
                         adapter.submitList(notes);
                         fragmentArchiveBinding.setIsEmpty(false);
                     } else {
@@ -107,15 +107,14 @@ public class ArchiveFragment extends Fragment implements NoteRecyclerViewAdapter
         switch (item.getItemId()) {
             case R.id.moveNote:
                 tmpNote.setArchived(false);
+                notebookViewModel.updateDeletedNotebook(tmpNote.getNotebookParentId());
                 notebookViewModel.update(tmpNote);
-                adapter.notifyItemRemoved(position);
                 Toast.makeText(getContext(), R.string.moved_note_to_notebook, Toast.LENGTH_LONG).show();
                 break;
             case R.id.deleteNote:
                 tmpNote.setMarkedForDelete(true);
                 notebookViewModel.update(tmpNote);
                 Toast.makeText(getContext(), R.string.moved_note_to_deleted, Toast.LENGTH_LONG).show();
-                adapter.notifyItemRemoved(position);
                 break;
 
         }

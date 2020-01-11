@@ -47,6 +47,14 @@ public class NotebookViewModel extends AndroidViewModel {
         notebookRepository.deleteAllNotebooks();
     }
 
+    public void deleteAllNotebooksMarkedForDelete() {
+        notebookRepository.deleteAllNotebooksMarkedForDelete();
+    }
+
+    public void updateDeletedNotebook(long notebookId) {
+        notebookRepository.updateDeletedNotebook(notebookId);
+    }
+
     public LiveData<List<Notebook>> getAllNotebooks() {
         return allNotebooks;
     }

@@ -25,6 +25,12 @@ public interface NotebookDao {
     @Query("DELETE FROM notebook_table")
     void deleteAllNotebooks();
 
-    @Query("SELECT * FROM notebook_table")
+    @Query("SELECT * FROM notebook_table WHERE is_marked_for_delete = 0")
     LiveData<List<Notebook>> getAllNotebooks();
+
+    @Query("DELETE FROM notebook_table WHERE is_marked_for_delete = 0 AND notebook_id NOT IN (SELECT note.notebook_parent_id FROM note_table AS note WHERE note.is_marked_for_delete = 1)")
+    void deleteAllNotebooksMarkedForDelete();
+
+    @Query("UPDATE notebook_table SET is_marked_for_delete = 0 WHERE notebook_id = :notebookId")
+    void updateDeletedNotebook(long notebookId);
 }

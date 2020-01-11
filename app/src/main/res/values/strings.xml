@@ -24,6 +24,7 @@
     <string name="close_button">Close</string>
     <string name="no_data_available">No Notebooks available, start creating one…</string>
     <string name="no_data_available_notes">No notes available, start creating one…</string>
+    <string name="no_data_available_archive">Nothing here</string>
     <string name="note_content_hint">Type something…</string>
     <string name="changes_saved">Changes saved</string>
 

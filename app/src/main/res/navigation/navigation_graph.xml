@@ -85,7 +85,7 @@
         android:id="@+id/deletedNotesFragment"
         android:name="de.mobicom.notebookplusplus.view.DeletedNotesFragment"
         android:label="@string/drawer_menu_deleted_notes"
-        tools:layout="@layout/fragment_deleted_notes" />
+        tools:layout="@layout/fragment_archive" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="de.mobicom.notebookplusplus.view.SettingsFragment"

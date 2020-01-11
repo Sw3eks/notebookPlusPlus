@@ -21,6 +21,7 @@
     <string name="close_button">Schließen</string>
     <string name="no_data_available">Keine Notizbücher vorhanden, erstelle welche…</string>
     <string name="no_data_available_notes">Keine Notizen vorhanden, erstelle welche…</string>
+    <string name="no_data_available_archive">Nichts vorhanden</string>
     <string name="note_content_hint">Tippe etwas…</string>
     <string name="changes_saved">Änderungen wurden gespeichert</string>
 

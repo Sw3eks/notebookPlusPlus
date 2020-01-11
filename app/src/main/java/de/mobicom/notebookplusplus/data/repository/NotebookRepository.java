@@ -30,8 +30,16 @@ public class NotebookRepository {
         new UpdateNotebookAsyncTask(notebookDao).execute(notebook);
     }
 
+    public void updateDeletedNotebook(long notebookId){
+        new UpdateDeletedNotebookAsyncTask(notebookDao).execute(notebookId);
+    }
+
     public void delete(Notebook notebook) {
         new DeleteNotebookAsyncTask(notebookDao).execute(notebook);
+    }
+
+    public void deleteAllNotebooksMarkedForDelete() {
+        new DeleteAllNotebooksMarkedForDeleteAsyncTask(notebookDao).execute();
     }
 
     public void deleteAllNotebooks() {
@@ -70,6 +78,20 @@ public class NotebookRepository {
         }
     }
 
+    private static class UpdateDeletedNotebookAsyncTask extends AsyncTask<Long, Void, Void> {
+        private NotebookDao notebookDao;
+
+        private UpdateDeletedNotebookAsyncTask(NotebookDao notebookDao) {
+            this.notebookDao = notebookDao;
+        }
+
+        @Override
+        protected Void doInBackground(Long... longs) {
+            notebookDao.updateDeletedNotebook(longs[0]);
+            return null;
+        }
+    }
+
     private static class DeleteNotebookAsyncTask extends AsyncTask<Notebook, Void, Void> {
         private NotebookDao notebookDao;
 
@@ -94,6 +116,20 @@ public class NotebookRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             notebookDao.deleteAllNotebooks();
+            return null;
+        }
+    }
+
+    private static class DeleteAllNotebooksMarkedForDeleteAsyncTask extends AsyncTask<Void, Void, Void> {
+        private NotebookDao notebookDao;
+
+        private DeleteAllNotebooksMarkedForDeleteAsyncTask(NotebookDao notebookDao) {
+            this.notebookDao = notebookDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            notebookDao.deleteAllNotebooksMarkedForDelete();
             return null;
         }
     }

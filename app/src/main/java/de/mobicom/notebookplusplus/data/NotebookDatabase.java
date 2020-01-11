@@ -14,7 +14,7 @@ import de.mobicom.notebookplusplus.data.model.NoteListItem;
 import de.mobicom.notebookplusplus.data.model.Notebook;
 import de.mobicom.notebookplusplus.utils.LocalDateTimeConverter;
 
-@Database(entities = {Notebook.class, Note.class, NoteListItem.class}, version = 6, exportSchema = false)
+@Database(entities = {Notebook.class, Note.class, NoteListItem.class}, version = 7, exportSchema = false)
 @TypeConverters(LocalDateTimeConverter.class)
 public abstract class NotebookDatabase extends RoomDatabase {
 

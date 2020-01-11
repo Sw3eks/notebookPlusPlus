@@ -47,10 +47,6 @@ public class DeletedNotesFragment extends Fragment implements NoteRecyclerViewAd
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-//        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-//        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
-//        mItemTouchHelper.attachToRecyclerView(recyclerView);
-
         return fragmentArchiveBinding.getRoot();
     }
 
@@ -61,7 +57,7 @@ public class DeletedNotesFragment extends Fragment implements NoteRecyclerViewAd
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
         notebookViewModel.getAllNotesWithDeletedTrue()
                 .observe(this, notes -> {
-                    if (notes != null) {
+                    if (!notes.isEmpty()) {
                         adapter.submitList(notes);
                         fragmentArchiveBinding.setIsEmpty(false);
                     } else {
@@ -105,8 +101,8 @@ public class DeletedNotesFragment extends Fragment implements NoteRecyclerViewAd
             case R.id.moveNote:
                 tmpNote.setArchived(false);
                 tmpNote.setMarkedForDelete(false);
+                notebookViewModel.updateDeletedNotebook(tmpNote.getNotebookParentId());
                 notebookViewModel.update(tmpNote);
-                adapter.notifyItemRemoved(position);
                 Toast.makeText(getContext(), R.string.moved_note_to_notebook, Toast.LENGTH_LONG).show();
                 break;
             case R.id.archiveNote:
@@ -114,11 +110,11 @@ public class DeletedNotesFragment extends Fragment implements NoteRecyclerViewAd
                 tmpNote.setMarkedForDelete(false);
                 notebookViewModel.update(tmpNote);
                 Toast.makeText(getContext(), R.string.moved_note_to_archive, Toast.LENGTH_LONG).show();
-                adapter.notifyItemChanged(position);
+                break;
             case R.id.deleteNote:
                 notebookViewModel.delete(adapter.getNoteAt(position));
+                notebookViewModel.deleteAllNotebooksMarkedForDelete();
                 Toast.makeText(getContext(), R.string.note_deleted, Toast.LENGTH_LONG).show();
-                adapter.notifyItemRemoved(position);
                 break;
 
         }

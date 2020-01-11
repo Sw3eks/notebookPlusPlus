@@ -28,8 +28,8 @@
             visibleGone="@{isEmpty}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:text="@string/no_data_available"
+            android:gravity="center"
+            android:text="@string/no_data_available_archive"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
