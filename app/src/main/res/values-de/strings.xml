@@ -77,6 +77,12 @@
     </array>
     <string name="note_events_title">Ereignisse</string>
 
+    <!-- Notification stuff -->
+    <string name="build_notification_title">Morgige Veranstaltungen:</string>
+    <string name="notification_channel_name">Veranstaltungserinnerungen</string>
+    <string name="build_notification_content">Du hast morgen die folgenden Veranstaltungen:</string>
+    <string name="build_notification_summary">Veranstaltungen</string>
+
     <!-- Preference Titles -->
     <string name="settings_calendar_header">Kalendar Benachrichtigungseinstellungen</string>
     <string name="settings_theme_header">Theme Einstellungen</string>

@@ -57,10 +57,10 @@
                     android:layout_height="wrap_content"
                     android:calendarViewShown="false"
                     android:datePickerMode="spinner"
+                    android:theme="@style/AppTheme.DatePicker"
                     app:layout_constraintEnd_toStartOf="@id/enableNotification"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:theme="@style/AppTheme.DatePicker" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <CheckBox
                     android:id="@+id/enableNotification"

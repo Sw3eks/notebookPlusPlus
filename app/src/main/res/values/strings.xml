@@ -81,6 +81,12 @@
     </array>
     <string name="note_events_title">Events</string>
 
+    <!-- Notification stuff -->
+    <string name="build_notification_title">Tomorrows events:</string>
+    <string name="notification_channel_name">Events Reminder</string>
+    <string name="build_notification_content">You have the following events planned tomorrow:</string>
+    <string name="build_notification_summary">Events</string>
+
     <!-- Preference Titles -->
     <string name="settings_calendar_header">Calendar Notification Settings</string>
     <string name="settings_theme_header">Theme Setting</string>

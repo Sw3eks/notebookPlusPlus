@@ -6,6 +6,7 @@
     <color name="colorAccent">#1abc9c</color>
     <color name="colorClouds">#ecf0f1</color>
     <color name="colorAsbestos">#7f8c8d</color>
+    <color name="colorSplashScreen">#121212</color>
 
     <!-- Dark Basic App Colors    -->
     <color name="darkColorPrimary">#17191D</color>
