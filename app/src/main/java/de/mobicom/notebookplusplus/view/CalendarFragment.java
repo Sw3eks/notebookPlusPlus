@@ -43,6 +43,7 @@ import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
  * Fragment with a calendar widget, where saved notification dates for specific notes are highlighted
  */
 public class CalendarFragment extends Fragment {
+    public static final String CALENDAR_FRAGMENT = CalendarFragment.class.getSimpleName();
 
     private FragmentCalendarBinding fragmentCalendarBinding;
     private NotebookViewModel notebookViewModel;

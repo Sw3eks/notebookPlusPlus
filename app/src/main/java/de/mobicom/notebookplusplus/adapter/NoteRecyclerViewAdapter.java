@@ -1,6 +1,5 @@
 package de.mobicom.notebookplusplus.adapter;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,12 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.data.model.Note;
 import de.mobicom.notebookplusplus.databinding.RecyclerviewNoteItemBinding;
-import de.mobicom.notebookplusplus.utils.ItemTouchHelperAdapter;
-import de.mobicom.notebookplusplus.utils.ItemTouchHelperViewHolder;
 import de.mobicom.notebookplusplus.view.ArchiveFragment;
 import de.mobicom.notebookplusplus.view.DeletedNotesFragment;
 
-public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewAdapter.NoteViewHolder> implements ItemTouchHelperAdapter, Filterable {
+public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewAdapter.NoteViewHolder> implements Filterable {
 
     private RecyclerviewNoteItemBinding recyclerviewNoteItemBinding;
     private List<Note> noteListAll;
@@ -78,15 +75,6 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
         if (this.type.equals(DeletedNotesFragment.DELETED_NOTES_FRAGMENT) || this.type.equals(ArchiveFragment.ARCHIVE_FRAGMENT)) {
             holder.recyclerviewNoteItemBinding.noteCalendarIcon.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onItemMove(int fromPosition, int toPosition) {
-    }
-
-    @Override
-    public void onItemDismiss(int position) {
-
     }
 
     public Note getNoteAt(int id) {
@@ -161,7 +149,7 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
         }
     };
 
-    public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ItemTouchHelperViewHolder, PopupMenu.OnMenuItemClickListener, NoteRecyclerViewAdapter.ButtonClickListeners {
+    public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, NoteRecyclerViewAdapter.ButtonClickListeners {
         private RecyclerviewNoteItemBinding recyclerviewNoteItemBinding;
         private String type;
 
@@ -177,17 +165,6 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
-
-        @Override
-        public void onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY);
-        }
-
-        @Override
-        public void onItemClear() {
-            itemView.setBackgroundColor(0);
-        }
-
         @Override
         public void onBookmark(View view) {
             if (mBookmarkClickListener != null) {

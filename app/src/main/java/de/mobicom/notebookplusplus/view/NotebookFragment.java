@@ -24,7 +24,6 @@ import de.mobicom.notebookplusplus.data.model.Notebook;
 import de.mobicom.notebookplusplus.databinding.FragmentNotebooksBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
-
 /**
  * Fragment to display a grid with notebooks
  */

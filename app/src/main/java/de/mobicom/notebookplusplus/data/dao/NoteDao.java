@@ -1,5 +1,6 @@
 package de.mobicom.notebookplusplus.data.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -40,4 +41,7 @@ public interface NoteDao {
 
     @Query("UPDATE note_table SET is_marked_for_delete = 1 WHERE notebook_parent_id = :notebookParentId")
     void updateNotesWithNotebookId(long notebookParentId);
+
+    @Query("SELECT * FROM note_table WHERE is_notification_enabled = 1 AND notification_date = :notificationDate")
+    List<Note> getAllNotesForNotification(LocalDate notificationDate);
 }

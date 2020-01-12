@@ -60,10 +60,6 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-//        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-//        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
-//        mItemTouchHelper.attachToRecyclerView(recyclerView);
-
         return fragmentNoteBinding.getRoot();
     }
 

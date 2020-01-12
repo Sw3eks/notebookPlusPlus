@@ -1,9 +1,17 @@
 package de.mobicom.notebookplusplus;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Calendar;
+import java.util.logging.Logger;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -16,8 +24,11 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
 import de.mobicom.notebookplusplus.databinding.ActivityMainBinding;
+import de.mobicom.notebookplusplus.utils.AlertReceiver;
+import de.mobicom.notebookplusplus.view.CalendarFragment;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int NOTIFICATION_REQUEST_CODE = 1;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -30,13 +41,14 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean("darkMode", true)) {
+        if (prefs.getBoolean("darkMode", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setupNavigation();
+        setupNotification();
     }
 
     /**
@@ -71,6 +83,51 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if (intent != null) {
+            Bundle extras = intent.getExtras();
+            if (extras.getString("dest").equals(CalendarFragment.CALENDAR_FRAGMENT)) {
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.calendarFragment);
+            }
+        }
+    }
+
+    /**
+     * creates pendingIntent for alarm manager to send a notification on a specific time
+     */
+    private void setupNotification() {
+        Intent myIntent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_REQUEST_CODE, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        Calendar fireCal = Calendar.getInstance();
+        Calendar currentCal = Calendar.getInstance();
+
+        fireCal.set(Calendar.HOUR_OF_DAY, 20);
+        fireCal.set(Calendar.MINUTE, 0);
+        fireCal.set(Calendar.SECOND, 0);
+
+        long intendedTime = fireCal.getTimeInMillis();
+        long currentTime = currentCal.getTimeInMillis();
+
+        if (alarmManager != null) {
+            if (intendedTime >= currentTime) {
+
+                alarmManager.setRepeating(AlarmManager.RTC, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+
+            } else {
+
+                fireCal.add(Calendar.DAY_OF_MONTH, 1);
+                intendedTime = fireCal.getTimeInMillis();
+
+                alarmManager.setRepeating(AlarmManager.RTC, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+            }
         }
     }
 }

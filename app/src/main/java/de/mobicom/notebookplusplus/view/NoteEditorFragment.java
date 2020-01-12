@@ -151,7 +151,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         });
 
         // set min Date to Today (cause notification has to be in future
-        fragmentNoteEditorBinding.datePicker.setMinDate(System.currentTimeMillis() - 1000);
+        //fragmentNoteEditorBinding.datePicker.setMinDate(System.currentTimeMillis() - 1000);
         fragmentNoteEditorBinding.datePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> selectedDate = LocalDate.of(year, monthOfYear + 1, dayOfMonth));
     }
 
@@ -254,6 +254,15 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         currentList.get(position).setChecked(isChecked);
     }
 
+    /**
+     * inserts a new row if user clicks "done" in soft keyboard
+     *
+     * @param view     current view
+     * @param actionId id for the keyboard action
+     * @param event    event fired by user input
+     * @param position position in the list, clicked by user
+     * @return boolean value whether action got handled
+     */
     @Override
     public boolean onEnterClicked(TextView view, int actionId, KeyEvent event, int position) {
         if (event == null) {
@@ -270,6 +279,16 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
     }
 
+    /**
+     * deletes a row if its empty and the user clicked backspace
+     *
+     * @param s        current value of the edit text
+     * @param start    position of current string in the sequence
+     * @param before   old position
+     * @param count    steps from start
+     * @param position current position in the list, clicked by user
+     */
+    //TODO: delete only if row is empty.. not when it gets empty
     @Override
     public void onBackSpace(CharSequence s, int start, int before, int count, int position) {
         System.out.println("START " + start + " BEFORE " + before + " COUNT " + count);
