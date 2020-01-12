@@ -256,7 +256,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
     @Override
     public boolean onEnterClicked(TextView view, int actionId, KeyEvent event, int position) {
-        System.out.println("Called enter clicked, event " + event);
         if (event == null) {
             if (actionId == EditorInfo.IME_ACTION_DONE &&
                     view.getText().toString().trim().length() > 0) {
@@ -273,13 +272,11 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
     @Override
     public void onBackSpace(CharSequence s, int start, int before, int count, int position) {
-        if (count < before) {
-            System.out.println("counter < before");
-            if (s.toString().trim().equals("") && currentList.size() > 1) {
-                notebookViewModel.delete(adapter.getNoteItemAt(position).getNoteListItemId());
-                currentList.remove(adapter.getNoteItemAt(position));
-                adapter.notifyItemRemoved(position);
-            }
+        System.out.println("START " + start + " BEFORE " + before + " COUNT " + count);
+        if (s.toString().trim().equals("") && currentList.size() > 1 && count < before) {
+            notebookViewModel.delete(adapter.getNoteItemAt(position).getNoteListItemId());
+            currentList.remove(adapter.getNoteItemAt(position));
+            adapter.notifyItemRemoved(position);
         }
     }
 

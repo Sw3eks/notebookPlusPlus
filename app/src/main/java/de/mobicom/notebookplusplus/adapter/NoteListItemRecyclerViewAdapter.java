@@ -29,7 +29,6 @@ public class NoteListItemRecyclerViewAdapter extends ListAdapter<NoteListItem, N
 
     public NoteListItemRecyclerViewAdapter() {
         super(DIFF_CALLBACK);
-
     }
 
     private static final DiffUtil.ItemCallback<NoteListItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<NoteListItem>() {
