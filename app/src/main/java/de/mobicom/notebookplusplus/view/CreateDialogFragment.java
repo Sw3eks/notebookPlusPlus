@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -38,12 +37,6 @@ public class CreateDialogFragment extends DialogFragment {
     private Spinner spinner;
     private Button positiveButton;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_create, container);
-    }
-
     /**
      * initially disables the create button in the create new notebook/note dialog
      */
@@ -58,15 +51,7 @@ public class CreateDialogFragment extends DialogFragment {
                 positiveButton.setEnabled(false);
             }
         }
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         editText.requestFocus();
-        getDialog().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     /**
@@ -89,6 +74,9 @@ public class CreateDialogFragment extends DialogFragment {
         } else {
             dialog = createNoteEditorDialog();
         }
+
+        dialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         return dialog;
     }

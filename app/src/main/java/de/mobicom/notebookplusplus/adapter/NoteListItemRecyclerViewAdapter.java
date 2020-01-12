@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -25,6 +26,7 @@ public class NoteListItemRecyclerViewAdapter extends ListAdapter<NoteListItem, N
     private ItemClickListener mCheckBoxListener;
     private ItemClickListener mEnterListener;
     private ItemClickListener mTextChangeListener;
+    private ItemClickListener mBackSpaceListener;
 
     public NoteListItemRecyclerViewAdapter() {
         super(DIFF_CALLBACK);
@@ -83,25 +85,31 @@ public class NoteListItemRecyclerViewAdapter extends ListAdapter<NoteListItem, N
         this.mTextChangeListener = changeListener;
     }
 
+    public void setBackSpaceListener(ItemClickListener backSpaceListener) {
+        this.mBackSpaceListener = backSpaceListener;
+    }
+
     public interface ItemClickListener {
 
         void onCheckBoxClick(View view, boolean isChecked, int position);
 
-        void onEnterClicked(int actionId, KeyEvent event, String content, int position);
+        boolean onEnterClicked(TextView view, int actionId, KeyEvent event, int position);
+
+        void onBackSpace(CharSequence s, int start, int before, int count, int position);
 
         void onTextChange(CharSequence s, int position);
 
     }
 
-    public class NoteListItemViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, EditText.OnKeyListener, TextWatcher {
+    public class NoteListItemViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, TextView.OnEditorActionListener, TextWatcher {
         private RecyclerviewNoteListItemBinding binding;
 
         NoteListItemViewHolder(RecyclerviewNoteListItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             this.binding.itemCheckbox.setOnCheckedChangeListener(this);
-            this.binding.contentLine.setOnKeyListener(this);
             this.binding.contentLine.addTextChangedListener(this);
+            this.binding.contentLine.setOnEditorActionListener(this);
         }
 
         @Override
@@ -112,17 +120,7 @@ public class NoteListItemRecyclerViewAdapter extends ListAdapter<NoteListItem, N
         }
 
         @Override
-        public boolean onKey(View v, int keyCode, KeyEvent event) {
-            String content = binding.contentLine.getText().toString();
-            if (mEnterListener != null) {
-                mEnterListener.onEnterClicked(keyCode, event, content, getAdapterPosition());
-            }
-            return true;
-        }
-
-        @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         @Override
@@ -130,10 +128,23 @@ public class NoteListItemRecyclerViewAdapter extends ListAdapter<NoteListItem, N
             if (mTextChangeListener != null) {
                 mTextChangeListener.onTextChange(s, getAdapterPosition());
             }
+
+            if (mBackSpaceListener != null) {
+                mBackSpaceListener.onBackSpace(s, start, before, count, getAdapterPosition());
+            }
+
         }
 
         @Override
         public void afterTextChanged(Editable s) {
+        }
+
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (mEnterListener != null) {
+                return mEnterListener.onEnterClicked(v, actionId, event, getAdapterPosition());
+            }
+            return false;
         }
     }
 }

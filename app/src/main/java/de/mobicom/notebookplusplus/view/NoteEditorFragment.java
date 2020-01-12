@@ -11,7 +11,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.time.LocalDate;
@@ -122,6 +124,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         adapter.setCheckBoxListener(this);
         adapter.setEnterKeyListener(this);
         adapter.setTextChangeListener(this);
+        adapter.setBackSpaceListener(this);
         recyclerView.setAdapter(adapter);
 
         NoteListItem defaultItem = new NoteListItem(notebookViewModel.getNote().getNoteId(), "", false);
@@ -252,28 +255,31 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     }
 
     @Override
-    public void onEnterClicked(int actionId, KeyEvent event, String content, int position) {
-        if (event.getAction() != KeyEvent.ACTION_DOWN) {
-            return;
-        }
+    public boolean onEnterClicked(TextView view, int actionId, KeyEvent event, int position) {
+        System.out.println("Called enter clicked, event " + event);
+        if (event == null) {
+            if (actionId == EditorInfo.IME_ACTION_DONE &&
+                    view.getText().toString().trim().length() > 0) {
+                NoteListItem item = new NoteListItem(notebookViewModel.getNote().getNoteId(), "", false);
+                currentList.add(item);
+                adapter.notifyItemInserted(position + 1);
+                recyclerView.smoothScrollToPosition(position + 1);
+                return true;
+            }
+        } else if (actionId == EditorInfo.IME_ACTION_NEXT) ;
+        return false;
 
-        if (currentList.indexOf(adapter.getNoteItemAt(position)) == currentList.size() - 1 && content.trim().length() > 0 && actionId == KeyEvent.KEYCODE_ENTER) {
-            NoteListItem item = new NoteListItem(notebookViewModel.getNote().getNoteId(), "", false);
-            currentList.add(item);
-            adapter.notifyItemInserted(position + 1);
-            recyclerView.smoothScrollToPosition(position + 1);
-            return;
-        }
-        if (content.equals("") && actionId == KeyEvent.KEYCODE_DEL) {
-            notebookViewModel.delete(adapter.getNoteItemAt(position).getNoteListItemId());
-            currentList.remove(adapter.getNoteItemAt(position));
-            adapter.notifyItemRemoved(position);
-            return;
-        }
+    }
 
-        // to keep back button working
-        if (actionId == KeyEvent.KEYCODE_BACK) {
-            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
+    @Override
+    public void onBackSpace(CharSequence s, int start, int before, int count, int position) {
+        if (count < before) {
+            System.out.println("counter < before");
+            if (s.toString().trim().equals("") && currentList.size() > 1) {
+                notebookViewModel.delete(adapter.getNoteItemAt(position).getNoteListItemId());
+                currentList.remove(adapter.getNoteItemAt(position));
+                adapter.notifyItemRemoved(position);
+            }
         }
     }
 
