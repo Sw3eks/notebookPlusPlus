@@ -32,6 +32,14 @@
             android:text="@string/dialog_color_label"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
+        <ImageView
+            android:id="@+id/dialogDropdownColor"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/color_circle"
+            android:contentDescription="@string/spinner_color"
+            android:visibility="gone" />
+
         <Spinner
             android:id="@+id/dialogDropdown"
             android:layout_width="wrap_content"

@@ -27,7 +27,6 @@ import de.mobicom.notebookplusplus.view.CalendarFragment;
 
 public class MainActivity extends AppCompatActivity {
     public static final int NOTIFICATION_DAILY_REQUEST_CODE = 1;
-    public static final int NOTIFICATION_WEEKLY_REQUEST_CODE = 2;
 
     private ActivityMainBinding binding;
     private SharedPreferences prefs;

@@ -1,6 +1,9 @@
 package de.mobicom.notebookplusplus.view;
 
 import android.app.Dialog;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -8,9 +11,11 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +31,8 @@ import de.mobicom.notebookplusplus.R;
 import de.mobicom.notebookplusplus.data.model.Note;
 import de.mobicom.notebookplusplus.data.model.Notebook;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
+
+import static android.graphics.Color.parseColor;
 
 /**
  * Dialog Fragment for different use cases to create/edit notebooks and notes
@@ -246,36 +253,13 @@ public class CreateDialogFragment extends DialogFragment {
                 .setTitle(title)
                 .setPositiveButton(buttonLabel,
                         (dialog, whichButton) -> {
-                            String color;
-                            switch (spinner.getSelectedItem().toString()) {
-                                case "Blue":
-                                    color = "#3498db";
-                                    break;
-                                case "Red":
-                                    color = "#e74c3c";
-                                    break;
-                                case "Purple":
-                                    color = "#9b59b6";
-                                    break;
-                                case "Green":
-                                    color = "#2ecc71";
-                                    break;
-                                case "Dark Grey":
-                                    color = "#34495e";
-                                    break;
-                                case "Yellow":
-                                    color = "#f1c40f";
-                                    break;
-                                default:
-                                    color = "#f39c12";
-                            }
                             if (type.equals(NotebookFragment.NOTEBOOK_FRAGMENT)) {
                                 notebookViewModel.insert(
-                                        new Notebook(editText.getText().toString(), color));
+                                        new Notebook(editText.getText().toString(), getColor(spinner.getSelectedItem().toString())));
                             } else {
                                 Notebook notebook = notebookViewModel.getNotebook();
                                 notebook.setName(editText.getText().toString());
-                                notebook.setColor(color);
+                                notebook.setColor(getColor(spinner.getSelectedItem().toString()));
                                 notebookViewModel.update(notebook);
                             }
                         }
@@ -323,7 +307,52 @@ public class CreateDialogFragment extends DialogFragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        ImageView selectedColor = view.findViewById(R.id.dialogDropdownColor);
+        selectedColor.setVisibility(View.VISIBLE);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Drawable drawable = selectedColor.getDrawable();
+                drawable.setColorFilter(parseColor(getColor(parent.getItemAtPosition(position).toString())), PorterDuff.Mode.SRC_ATOP);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         b.setView(view);
         return b.create();
+    }
+
+    private String getColor(String colorName) {
+        String colorValue;
+        switch (colorName) {
+            case "Blue":
+                colorValue = "#3498db";
+                break;
+            case "Red":
+                colorValue = "#e74c3c";
+                break;
+            case "Purple":
+                colorValue = "#9b59b6";
+                break;
+            case "Green":
+                colorValue = "#2ecc71";
+                break;
+            case "Dark Grey":
+                colorValue = "#34495e";
+                break;
+            case "Yellow":
+                colorValue = "#f1c40f";
+                break;
+            case "Orange":
+                colorValue = "#f39c12";
+                break;
+            default:
+                colorValue = "#3498db";
+                break;
+        }
+        return colorValue;
     }
 }

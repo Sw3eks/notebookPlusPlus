@@ -111,6 +111,7 @@
     </string-array>
 
     <string name="type_label">Typ</string>
+    <string name="spinner_color">color</string>
     <string-array name="note_type_array">
         <item>Text</item>
         <item>Liste</item>

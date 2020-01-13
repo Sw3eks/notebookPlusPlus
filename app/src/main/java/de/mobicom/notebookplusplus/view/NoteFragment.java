@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -147,6 +148,9 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
         View view = getLayoutInflater().inflate(R.layout.dialog_list, null, false);
 
         List<Notebook> notebookList = notebookViewModel.getAllNotebooks().getValue();
+        if (notebookList != null) {
+            notebookList = notebookList.stream().filter(notebook -> notebook.getNotebookId() != notebookViewModel.getNotebook().getNotebookId()).collect(Collectors.toList());
+        }
 
         NotebookListAdapter adapter = new NotebookListAdapter(notebookList,
                 getContext());
