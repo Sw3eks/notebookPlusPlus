@@ -23,30 +23,31 @@ import de.mobicom.notebookplusplus.view.CalendarFragment;
 
 public class NotificationHelper extends ContextWrapper {
 
-    public static final String CHANNEL_ID = "SEND_EVENT_REMINDER";
-    public static final String CHANNEL_NAME = "Events Reminder";
-    public static final int CONTENT_INTENT_REQUEST_CODE = 2;
+    public static final String CHANNEL_DAY_ID = "SEND_DAILY_REMINDER";
+    public static final String CHANNEL_WEEK_ID = "SEND_WEEKLY_REMINDER";
+    public static final String CHANNEL_DAY_NAME = "Daily Reminder";
+    public static final String CHANNEL_WEEK_NAME = "Weekly Reminder";
+    public static final int CONTENT_INTENT_REQUEST_CODE = 3;
 
     private NotificationManager mManager;
     private List<Note> noteList;
+    private Context context;
 
     public NotificationHelper(Context base) {
         super(base);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel();
         }
-        try {
-            noteList = new NotifyAsyncTask(base).execute().get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        this.context = base;
     }
 
     @TargetApi(Build.VERSION_CODES.O)
     private void createChannel() {
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel channelDay = new NotificationChannel(CHANNEL_DAY_ID, CHANNEL_DAY_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel channelWeek = new NotificationChannel(CHANNEL_WEEK_ID, CHANNEL_WEEK_NAME, NotificationManager.IMPORTANCE_DEFAULT);
 
-        getManager().createNotificationChannel(channel);
+        getManager().createNotificationChannel(channelDay);
+        getManager().createNotificationChannel(channelWeek);
     }
 
     public NotificationManager getManager() {
@@ -61,11 +62,17 @@ public class NotificationHelper extends ContextWrapper {
         return noteList.size() != 0;
     }
 
-    public NotificationCompat.Builder getChannelNotification() {
+    public NotificationCompat.Builder getChannelDayNotification() {
         Intent activityIntent = new Intent(getApplicationContext(), MainActivity.class);
         activityIntent.putExtra("dest", CalendarFragment.CALENDAR_FRAGMENT);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(),
                 CONTENT_INTENT_REQUEST_CODE, activityIntent, 0);
+
+        try {
+            noteList = new NotifyDayAsyncTask(context).execute().get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
         NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
         for (int i = 0; i < noteList.size(); i++) {
@@ -73,10 +80,10 @@ public class NotificationHelper extends ContextWrapper {
         }
         style.setSummaryText(getResources().getString(R.string.build_notification_summary));
 
-        return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+        return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_DAY_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(getResources().getString(R.string.build_notification_title))
-                .setContentText(getResources().getString(R.string.build_notification_content))
+                .setContentTitle(getResources().getString(R.string.build_notification_title_day))
+                .setContentText(getResources().getString(R.string.build_notification_content_day))
                 .setCategory(NotificationCompat.CATEGORY_REMINDER)
                 .setStyle(style)
                 .setContentIntent(contentIntent)
@@ -85,19 +92,60 @@ public class NotificationHelper extends ContextWrapper {
                 .setOnlyAlertOnce(true);
     }
 
+    public NotificationCompat.Builder getChannelWeekNotification() {
+        Intent activityIntent = new Intent(getApplicationContext(), MainActivity.class);
+        activityIntent.putExtra("dest", CalendarFragment.CALENDAR_FRAGMENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(),
+                CONTENT_INTENT_REQUEST_CODE, activityIntent, 0);
 
-    private static class NotifyAsyncTask extends AsyncTask<Context, Void, List<Note>> {
+        try {
+            noteList = new NotifyWeekAsyncTask(context).execute().get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
+        for (int i = 0; i < noteList.size(); i++) {
+            style.addLine(noteList.get(i).getName());
+        }
+        style.setSummaryText(getResources().getString(R.string.build_notification_summary));
+
+        return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_DAY_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(getResources().getString(R.string.build_notification_title_week))
+                .setContentText(getResources().getString(R.string.build_notification_content_week))
+                .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                .setStyle(style)
+                .setContentIntent(contentIntent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true);
+    }
+
+    private static class NotifyDayAsyncTask extends AsyncTask<Context, Void, List<Note>> {
         private NotebookDatabase notebookDatabase;
 
-        NotifyAsyncTask(Context context) {
+        NotifyDayAsyncTask(Context context) {
             notebookDatabase = NotebookDatabase.getInstance(context);
         }
 
         @Override
         protected List<Note> doInBackground(Context... params) {
-            return notebookDatabase.noteDao().getAllNotesForNotification(LocalDate.now().plusDays(1));
+            return notebookDatabase.noteDao().getAllNotesForNotificationDay(LocalDate.now().plusDays(1));
         }
     }
 
+    private static class NotifyWeekAsyncTask extends AsyncTask<Context, Void, List<Note>> {
+        private NotebookDatabase notebookDatabase;
+
+        NotifyWeekAsyncTask(Context context) {
+            notebookDatabase = NotebookDatabase.getInstance(context);
+        }
+
+        @Override
+        protected List<Note> doInBackground(Context... params) {
+            return notebookDatabase.noteDao().getAllNotesForNotificationWeek(LocalDate.now().plusDays(1), LocalDate.now().plusDays(7));
+        }
+    }
 
 }

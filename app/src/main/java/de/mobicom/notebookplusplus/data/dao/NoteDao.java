@@ -43,5 +43,8 @@ public interface NoteDao {
     void updateNotesWithNotebookId(long notebookParentId);
 
     @Query("SELECT * FROM note_table WHERE is_notification_enabled = 1 AND notification_date = :notificationDate")
-    List<Note> getAllNotesForNotification(LocalDate notificationDate);
+    List<Note> getAllNotesForNotificationDay(LocalDate notificationDate);
+
+    @Query("SELECT * FROM note_table WHERE is_notification_enabled = 1 AND notification_date >= :notificationDateStart && notification_date <= :notificationDateEnd")
+    List<Note> getAllNotesForNotificationWeek(LocalDate notificationDateStart, LocalDate notificationDateEnd);
 }

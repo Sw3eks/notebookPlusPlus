@@ -78,9 +78,11 @@
     <string name="note_events_title">Ereignisse</string>
 
     <!-- Notification stuff -->
-    <string name="build_notification_title">Morgige Veranstaltungen:</string>
+    <string name="build_notification_title_day">Morgige Veranstaltungen:</string>
     <string name="notification_channel_name">Veranstaltungserinnerungen</string>
-    <string name="build_notification_content">Du hast morgen die folgenden Veranstaltungen:</string>
+    <string name="build_notification_content_day">Du hast morgen die folgenden Veranstaltungen:</string>
+    <string name="build_notification_title_week">Geplante Veranstaltungen:</string>
+    <string name="build_notification_content_week">Diese woche sind folgende Veranstaltungen geplant:</string>
     <string name="build_notification_summary">Veranstaltungen</string>
 
     <!-- Preference Titles -->

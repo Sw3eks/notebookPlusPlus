@@ -6,12 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Calendar;
-import java.util.logging.Logger;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -28,9 +26,11 @@ import de.mobicom.notebookplusplus.utils.AlertReceiver;
 import de.mobicom.notebookplusplus.view.CalendarFragment;
 
 public class MainActivity extends AppCompatActivity {
-    public static final int NOTIFICATION_REQUEST_CODE = 1;
+    public static final int NOTIFICATION_DAILY_REQUEST_CODE = 1;
+    public static final int NOTIFICATION_WEEKLY_REQUEST_CODE = 2;
 
     private ActivityMainBinding binding;
+    private SharedPreferences prefs;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean("darkMode", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
@@ -102,31 +102,38 @@ public class MainActivity extends AppCompatActivity {
      * creates pendingIntent for alarm manager to send a notification on a specific time
      */
     private void setupNotification() {
-        Intent myIntent = new Intent(this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_REQUEST_CODE, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent notificationIntent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_DAILY_REQUEST_CODE, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        Calendar fireCal = Calendar.getInstance();
-        Calendar currentCal = Calendar.getInstance();
+        if (prefs.getBoolean("calendar_notifications", false) &&
+                (prefs.getBoolean("tomorrow_reminder", false) || prefs.getBoolean("week_reminder", false))) {
+            Calendar fireCal = Calendar.getInstance();
+            Calendar currentCal = Calendar.getInstance();
 
-        fireCal.set(Calendar.HOUR_OF_DAY, 20);
-        fireCal.set(Calendar.MINUTE, 0);
-        fireCal.set(Calendar.SECOND, 0);
+            fireCal.set(Calendar.HOUR_OF_DAY, 20);
+            fireCal.set(Calendar.MINUTE, 0);
+            fireCal.set(Calendar.SECOND, 0);
 
-        long intendedTime = fireCal.getTimeInMillis();
-        long currentTime = currentCal.getTimeInMillis();
+            long intendedTime = fireCal.getTimeInMillis();
+            long currentTime = currentCal.getTimeInMillis();
 
-        if (alarmManager != null) {
-            if (intendedTime >= currentTime) {
+            if (alarmManager != null) {
+                if (intendedTime >= currentTime) {
 
-                alarmManager.setRepeating(AlarmManager.RTC, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+                    alarmManager.setRepeating(AlarmManager.RTC, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
 
-            } else {
+                } else {
 
-                fireCal.add(Calendar.DAY_OF_MONTH, 1);
-                intendedTime = fireCal.getTimeInMillis();
+                    fireCal.add(Calendar.DAY_OF_MONTH, 1);
+                    intendedTime = fireCal.getTimeInMillis();
 
-                alarmManager.setRepeating(AlarmManager.RTC, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+                }
+            }
+        } else if (!(prefs.getBoolean("tomorrow_reminder", false) && prefs.getBoolean("week_reminder", false))) {
+            if (alarmManager != null) {
+                alarmManager.cancel(pendingIntent);
             }
         }
     }
