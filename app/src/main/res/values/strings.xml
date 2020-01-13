@@ -104,6 +104,7 @@
 
     <string name="dialog_hint">Name</string>
     <string name="dialog_color_label">Color</string>
+    <string name="spinner_color">color</string>
     <string-array name="color_Array">
         <item>Blue</item>
         <item>Red</item>
@@ -115,10 +116,9 @@
     </string-array>
 
     <string name="type_label">Type</string>
-    <string name="spinner_color">color</string>
     <string-array name="note_type_array">
         <item>Text</item>
         <item>List</item>
-        <item>Speech</item>
+        <item>Voice</item>
     </string-array>
 </resources>

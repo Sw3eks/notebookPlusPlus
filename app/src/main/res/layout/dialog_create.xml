@@ -34,8 +34,8 @@
 
         <ImageView
             android:id="@+id/dialogDropdownColor"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/color_circle"
             android:contentDescription="@string/spinner_color"
             android:visibility="gone" />
