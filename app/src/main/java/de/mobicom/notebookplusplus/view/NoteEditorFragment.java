@@ -1,18 +1,16 @@
 package de.mobicom.notebookplusplus.view;
 
-import android.Manifest;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,16 +24,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,7 +54,6 @@ import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.graphics.Color.parseColor;
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * Note editor to change content and title of notes
@@ -74,6 +71,18 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     private LocalDate selectedDate;
     private boolean isChanged;
     private String message;
+
+    // Attribute for type "Voice"
+    private static final String LOG_TAG = "AudioRecord";
+    private static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
+    private Handler recordHandler = new Handler();
+    private Handler playHandler = new Handler();
+    private MediaRecorder recorder = null;
+    private MediaPlayer player = null;
+    private double finalTime = 0;
+    private double startTime = 0;
+    private int forwardTime = 5000;
+    private int backwardTime = 5000;
 
     @Nullable
     @Override
@@ -162,100 +171,202 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         adapter.submitList(currentList);
     }
 
-    private static final String AUDIO_RECORDER_FILE_EXT_3GP = ".3gp";
-    private static final String AUDIO_RECORDER_FILE_EXT_MP4 = ".mp4";
-    private static final String AUDIO_RECORDER_FOLDER = "AudioRecorder";
-    public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
-
-    private MediaRecorder recorder = null;
-    private int currentFormat = 0;
-    private int output_formats[] = {MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.OutputFormat.THREE_GPP};
-    private String file_exts[] = {AUDIO_RECORDER_FILE_EXT_MP4, AUDIO_RECORDER_FILE_EXT_3GP};
-
     /**
      * inits the setup for a note with type "voice"
      */
     @SuppressLint("ClickableViewAccessibility")
     private void setupVoiceLayout() {
-        fragmentNoteEditorBinding.editNote.setVisibility(View.GONE);
-        //fragmentNoteEditorBinding.setHandler(this);
+        fragmentNoteEditorBinding.divider.setVisibility(View.VISIBLE);
+        fragmentNoteEditorBinding.voiceView.setVisibility(View.VISIBLE);
+        fragmentNoteEditorBinding.setHandler(this);
         fragmentNoteEditorBinding.startRecording.setOnTouchListener((v, event) -> {
+            long startTime = System.currentTimeMillis();
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+
+                    ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(fragmentNoteEditorBinding.startRecording,
+                            "scaleX", 1.5f);
+                    ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(fragmentNoteEditorBinding.startRecording,
+                            "scaleY", 1.5f);
+                    scaleDownX.setDuration(200);
+                    scaleDownY.setDuration(200);
+
+                    AnimatorSet scaleDown = new AnimatorSet();
+                    scaleDown.play(scaleDownX).with(scaleDownY);
+
+                    scaleDown.start();
+
                     System.out.println("start");
                     startRecording();
                     return true;
                 case MotionEvent.ACTION_UP:
+                    ObjectAnimator scaleDownX2 = ObjectAnimator.ofFloat(
+                            fragmentNoteEditorBinding.startRecording, "scaleX", 1f);
+                    ObjectAnimator scaleDownY2 = ObjectAnimator.ofFloat(
+                            fragmentNoteEditorBinding.startRecording, "scaleY", 1f);
+                    scaleDownX2.setDuration(200);
+                    scaleDownY2.setDuration(200);
+
+                    AnimatorSet scaleDown2 = new AnimatorSet();
+                    scaleDown2.play(scaleDownX2).with(scaleDownY2);
+
+                    scaleDown2.start();
+
                     System.out.println("stop");
                     stopRecording();
+
+                    System.out.println(System.currentTimeMillis() - startTime);
+                    if (System.currentTimeMillis() - startTime <= 1000) {
+                        Toast.makeText(getContext(), "Hold to record", Toast.LENGTH_LONG).show();
+                    }
                     break;
             }
             return false;
         });
     }
 
-    private String getFilename() {
-        String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/AudioRecording.3gp";
-        return mFileName;
-    }
-
-    public void startRecording() {
+    private void startRecording() {
         if (CheckPermissions()) {
             recorder = new MediaRecorder();
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             recorder.setOutputFile(getFilename());
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
             try {
                 recorder.prepare();
-                recorder.start();
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(LOG_TAG, "prepare() failed");
             }
+            recorder.start();
+            startHTime = SystemClock.uptimeMillis();
+            fragmentNoteEditorBinding.recordTime.setText(R.string.voice_note_record_time_default);
+            recordHandler.postDelayed(UpdateRecordingTime, 100);
         } else {
             RequestPermissions();
         }
     }
 
-    public void stopRecording() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+    private void stopRecording() {
+        recorder.stop();
+        timeSwapBuff = 0;
+        recordHandler.removeCallbacks(UpdateRecordingTime);
+        recorder.reset();
+        recorder.release();
+        recorder = null;
+    }
 
-            ActivityCompat.requestPermissions(getActivity(), new String[]{RECORD_AUDIO},
-                    0);
+    public void onMediaBack() {
+        int temp = (int) startTime;
 
+        if ((temp - backwardTime) > 0) {
+            startTime = startTime - backwardTime;
+            player.seekTo((int) startTime);
+            Toast.makeText(getContext(), "You have Jumped backward 5 seconds", Toast.LENGTH_SHORT).show();
         } else {
-            if (null != recorder) {
-                recorder.stop();
-                recorder.reset();
-                recorder.release();
+            player.seekTo(0);
+        }
+    }
 
-                recorder = null;
+    private boolean playing = false;
+
+    public void onMediaPlay() {
+        playing = !playing;
+        if (playing) {
+            player = new MediaPlayer();
+            try {
+                player.setDataSource(getFilename());
+                player.prepare();
+                player.start();
+
+                double finalTime = player.getDuration();
+                double startTime = player.getCurrentPosition();
+
+                fragmentNoteEditorBinding.voiceSeekbar.setMax((int) finalTime);
+
+                fragmentNoteEditorBinding.recordTime.setText(String.format(Locale.GERMAN, "%d min, %d sec",
+                        TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
+                        TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                        finalTime)))
+                );
+                fragmentNoteEditorBinding.voiceSeekbar.setProgress((int) startTime);
+                playHandler.postDelayed(UpdateSongTime, 100);
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "prepare() failed");
+            }
+        } else {
+            player.pause();
+        }
+    }
+
+    public void onMediaForward() {
+        int temp = (int) startTime;
+
+        if ((temp + forwardTime) <= finalTime) {
+            startTime = startTime + forwardTime;
+            player.seekTo((int) startTime);
+            Toast.makeText(getContext(), "You have Jumped forward 5 seconds", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Cannot jump forward 5 seconds", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getFilename() {
+        String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+        mFileName += "/" + notebookViewModel.getNote().getName() + notebookViewModel.getNote().getNoteId() + "Recording.3gp";
+        return mFileName;
+    }
+
+    private Runnable UpdateSongTime = new Runnable() {
+        public void run() {
+            startTime = player.getCurrentPosition();
+            fragmentNoteEditorBinding.recordTime.setText(String.format(Locale.GERMAN, "%d min, %d sec",
+                    TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                    TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                    toMinutes((long) startTime)))
+            );
+            fragmentNoteEditorBinding.voiceSeekbar.setProgress((int) startTime);
+            playHandler.postDelayed(this, 100);
+        }
+    };
+
+    private long startHTime = 0L;
+    private long timeSwapBuff = 0L;
+    private long updatedTime = 0L;
+    private Runnable UpdateRecordingTime = new Runnable() {
+        public void run() {
+            long timeInMilliseconds = SystemClock.uptimeMillis() - startHTime;
+
+            updatedTime = timeSwapBuff + timeInMilliseconds;
+            fragmentNoteEditorBinding.recordTime.setText(String.format(Locale.GERMAN, "%d min, %d sec",
+                    TimeUnit.MILLISECONDS.toMinutes(updatedTime),
+                    TimeUnit.MILLISECONDS.toSeconds(updatedTime) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                    toMinutes(updatedTime)))
+            );
+            recordHandler.postDelayed(this, 100);
+        }
+    };
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_AUDIO_PERMISSION_CODE) {
+            if (grantResults.length > 0) {
+                boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                boolean permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                if (permissionToRecord && permissionToStore) {
+                    Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_AUDIO_PERMISSION_CODE:
-                if (grantResults.length > 0) {
-                    boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if (permissionToRecord && permissionToStore) {
-                        Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_LONG).show();
-                    }
-                }
-                break;
-        }
-    }
-
-    public boolean CheckPermissions() {
+    private boolean CheckPermissions() {
         int result = ContextCompat.checkSelfPermission(getContext(), WRITE_EXTERNAL_STORAGE);
         int result1 = ContextCompat.checkSelfPermission(getContext(), RECORD_AUDIO);
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
@@ -432,9 +543,28 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         currentList.get(position).setContent(s.toString().trim());
     }
 
+    /**
+     * Remove binding, player, recorder and handlers before destroying the view
+     * because fragment can outlive their view
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         fragmentNoteEditorBinding = null;
+
+        if (player != null) {
+            if (player.isPlaying())
+                player.stop();
+            player.reset();
+            player.release();
+            player = null;
+        }
+        if (recorder != null) {
+            recorder.reset();
+            recorder.release();
+            recorder = null;
+        }
+        playHandler.removeCallbacks(UpdateSongTime);
+        recordHandler.removeCallbacks(UpdateRecordingTime);
     }
 }
