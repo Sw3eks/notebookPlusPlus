@@ -72,17 +72,17 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     private boolean isChanged;
     private String message;
 
-    // Attribute for type "Voice"
+    // Attributes for type "Voice"
     private static final String LOG_TAG = "AudioRecord";
     private static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
     private Handler recordHandler = new Handler();
     private Handler playHandler = new Handler();
     private MediaRecorder recorder = null;
     private MediaPlayer player = null;
+    private boolean playing = false;
+    private int currentPlayerPosition = 0;
     private double finalTime = 0;
     private double startTime = 0;
-    private int forwardTime = 5000;
-    private int backwardTime = 5000;
 
     @Nullable
     @Override
@@ -180,7 +180,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         fragmentNoteEditorBinding.voiceView.setVisibility(View.VISIBLE);
         fragmentNoteEditorBinding.setHandler(this);
         fragmentNoteEditorBinding.startRecording.setOnTouchListener((v, event) -> {
-            long startTime = System.currentTimeMillis();
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
 
@@ -214,15 +213,20 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
                     System.out.println("stop");
                     stopRecording();
-
-                    System.out.println(System.currentTimeMillis() - startTime);
-                    if (System.currentTimeMillis() - startTime <= 1000) {
-                        Toast.makeText(getContext(), "Hold to record", Toast.LENGTH_LONG).show();
-                    }
                     break;
             }
             return false;
         });
+    }
+
+    private String getFilename() {
+        String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+        mFileName += "/" + notebookViewModel.getNote().getName() + notebookViewModel.getNote().getNoteId() + "Recording.3gp";
+        return mFileName;
+    }
+
+    public void onRecord() {
+        Toast.makeText(getContext(), "Hold to record", Toast.LENGTH_LONG).show();
     }
 
     private void startRecording() {
@@ -241,6 +245,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
             recorder.start();
             startHTime = SystemClock.uptimeMillis();
             fragmentNoteEditorBinding.recordTime.setText(R.string.voice_note_record_time_default);
+            playHandler.removeCallbacks(UpdateSongTime);
             recordHandler.postDelayed(UpdateRecordingTime, 100);
         } else {
             RequestPermissions();
@@ -256,9 +261,14 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         recorder = null;
     }
 
+    public void onDeleteRecord() {
+
+    }
+
     public void onMediaBack() {
         int temp = (int) startTime;
 
+        int backwardTime = 5000;
         if ((temp - backwardTime) > 0) {
             startTime = startTime - backwardTime;
             player.seekTo((int) startTime);
@@ -268,41 +278,62 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         }
     }
 
-    private boolean playing = false;
-
     public void onMediaPlay() {
         playing = !playing;
         if (playing) {
-            player = new MediaPlayer();
-            try {
-                player.setDataSource(getFilename());
-                player.prepare();
+            if (player != null) {
+                fragmentNoteEditorBinding.mediaPlay.setImageResource(R.drawable.ic_play_arrow);
+                player.seekTo(currentPlayerPosition);
                 player.start();
-
-                double finalTime = player.getDuration();
-                double startTime = player.getCurrentPosition();
-
-                fragmentNoteEditorBinding.voiceSeekbar.setMax((int) finalTime);
-
-                fragmentNoteEditorBinding.recordTime.setText(String.format(Locale.GERMAN, "%d min, %d sec",
-                        TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
-                        TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                        finalTime)))
-                );
-                fragmentNoteEditorBinding.voiceSeekbar.setProgress((int) startTime);
                 playHandler.postDelayed(UpdateSongTime, 100);
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "prepare() failed");
+            } else {
+                setupMediaPlayer();
             }
         } else {
             player.pause();
+            currentPlayerPosition = player.getCurrentPosition();
+            fragmentNoteEditorBinding.mediaPlay.setImageResource(R.drawable.ic_pause);
+        }
+    }
+
+    private void setupMediaPlayer() {
+        player = new MediaPlayer();
+        try {
+            player.setDataSource(getFilename());
+            player.prepare();
+            player.start();
+
+            double finalTime = player.getDuration();
+            double startTime = player.getCurrentPosition();
+
+            fragmentNoteEditorBinding.voiceSeekbar.setMax((int) finalTime);
+
+            fragmentNoteEditorBinding.recordTime.setText(String.format(Locale.GERMAN, "%d min, %d sec",
+                    TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
+                    TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                    finalTime)))
+            );
+            fragmentNoteEditorBinding.voiceSeekbar.setProgress((int) startTime);
+            playHandler.postDelayed(UpdateSongTime, 100);
+            player.setOnCompletionListener(mp -> {
+                fragmentNoteEditorBinding.voiceSeekbar.setProgress(0);
+                currentPlayerPosition = 0;
+                player.reset();
+                player.release();
+                player = null;
+                playing = false;
+                playHandler.removeCallbacks(UpdateSongTime);
+            });
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
         }
     }
 
     public void onMediaForward() {
         int temp = (int) startTime;
 
+        int forwardTime = 5000;
         if ((temp + forwardTime) <= finalTime) {
             startTime = startTime + forwardTime;
             player.seekTo((int) startTime);
@@ -310,12 +341,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         } else {
             Toast.makeText(getContext(), "Cannot jump forward 5 seconds", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private String getFilename() {
-        String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/" + notebookViewModel.getNote().getName() + notebookViewModel.getNote().getNoteId() + "Recording.3gp";
-        return mFileName;
     }
 
     private Runnable UpdateSongTime = new Runnable() {
