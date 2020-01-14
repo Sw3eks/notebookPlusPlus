@@ -184,4 +184,10 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
     public void onAddNote() {
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(NoteFragmentDirections.actionNoteFragmentToCreateNotebookDialogFragment().setDialogType(NOTE_FRAGMENT));
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        fragmentNoteBinding = null;
+    }
 }

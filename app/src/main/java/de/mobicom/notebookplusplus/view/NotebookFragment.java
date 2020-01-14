@@ -173,4 +173,11 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(
                 NotebookFragmentDirections.actionNotebooksFragmentToCreateNotebookDialogFragment().setDialogType(NOTEBOOK_FRAGMENT));
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        fragmentNotebooksBinding = null;
+    }
+
 }

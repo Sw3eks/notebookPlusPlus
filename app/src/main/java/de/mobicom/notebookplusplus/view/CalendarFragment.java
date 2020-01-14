@@ -140,6 +140,12 @@ public class CalendarFragment extends Fragment {
         return true;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        fragmentCalendarBinding = null;
+    }
+
     private static class EventDaysAsyncTask extends AsyncTask<Void, Void, List<CalendarDay>> {
         private List<Note> noteList;
 

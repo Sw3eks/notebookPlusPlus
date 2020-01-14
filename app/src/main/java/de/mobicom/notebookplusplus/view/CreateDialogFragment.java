@@ -3,7 +3,6 @@ package de.mobicom.notebookplusplus.view;
 import android.app.Dialog;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -169,8 +168,8 @@ public class CreateDialogFragment extends DialogFragment {
                                 case "List":
                                     type = R.drawable.ic_note_type_todo;
                                     break;
-                                case "Speech":
-                                    type = R.drawable.ic_note_type_speech;
+                                case "Voice":
+                                    type = R.drawable.ic_note_type_voice;
                                     break;
                                 default:
                                     type = R.drawable.ic_note_type_text;

@@ -1,21 +1,37 @@
 package de.mobicom.notebookplusplus.view;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,6 +40,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -35,7 +53,10 @@ import de.mobicom.notebookplusplus.data.model.NoteListItem;
 import de.mobicom.notebookplusplus.databinding.FragmentNoteEditorBinding;
 import de.mobicom.notebookplusplus.viewmodel.NotebookViewModel;
 
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.graphics.Color.parseColor;
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * Note editor to change content and title of notes
@@ -78,6 +99,10 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
         if (notebookViewModel.getNote().getType() == R.drawable.ic_note_type_todo) {
             setupListLayout();
+        }
+
+        if (notebookViewModel.getNote().getType() == R.drawable.ic_note_type_voice) {
+            setupVoiceLayout();
         }
         setupDatePicker();
 
@@ -137,6 +162,109 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         adapter.submitList(currentList);
     }
 
+    private static final String AUDIO_RECORDER_FILE_EXT_3GP = ".3gp";
+    private static final String AUDIO_RECORDER_FILE_EXT_MP4 = ".mp4";
+    private static final String AUDIO_RECORDER_FOLDER = "AudioRecorder";
+    public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
+
+    private MediaRecorder recorder = null;
+    private int currentFormat = 0;
+    private int output_formats[] = {MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.OutputFormat.THREE_GPP};
+    private String file_exts[] = {AUDIO_RECORDER_FILE_EXT_MP4, AUDIO_RECORDER_FILE_EXT_3GP};
+
+    /**
+     * inits the setup for a note with type "voice"
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private void setupVoiceLayout() {
+        fragmentNoteEditorBinding.editNote.setVisibility(View.GONE);
+        //fragmentNoteEditorBinding.setHandler(this);
+        fragmentNoteEditorBinding.startRecording.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    System.out.println("start");
+                    startRecording();
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    System.out.println("stop");
+                    stopRecording();
+                    break;
+            }
+            return false;
+        });
+    }
+
+    private String getFilename() {
+        String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+        mFileName += "/AudioRecording.3gp";
+        return mFileName;
+    }
+
+    public void startRecording() {
+        if (CheckPermissions()) {
+            recorder = new MediaRecorder();
+            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            recorder.setOutputFile(getFilename());
+
+            try {
+                recorder.prepare();
+                recorder.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            RequestPermissions();
+        }
+    }
+
+    public void stopRecording() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{RECORD_AUDIO},
+                    0);
+
+        } else {
+            if (null != recorder) {
+                recorder.stop();
+                recorder.reset();
+                recorder.release();
+
+                recorder = null;
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_AUDIO_PERMISSION_CODE:
+                if (grantResults.length > 0) {
+                    boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    if (permissionToRecord && permissionToStore) {
+                        Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+        }
+    }
+
+    public boolean CheckPermissions() {
+        int result = ContextCompat.checkSelfPermission(getContext(), WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(getContext(), RECORD_AUDIO);
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void RequestPermissions() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
+    }
+
     /**
      * datepicker to set and enable/disable a date to send notifications
      */
@@ -151,7 +279,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         });
 
         // set min Date to Today (cause notification has to be in future
-        //fragmentNoteEditorBinding.datePicker.setMinDate(System.currentTimeMillis() - 1000);
+        fragmentNoteEditorBinding.datePicker.setMinDate(System.currentTimeMillis() - 1000);
         fragmentNoteEditorBinding.datePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> selectedDate = LocalDate.of(year, monthOfYear + 1, dayOfMonth));
     }
 
@@ -302,5 +430,11 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     @Override
     public void onTextChange(CharSequence s, int position) {
         currentList.get(position).setContent(s.toString().trim());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        fragmentNoteEditorBinding = null;
     }
 }

@@ -148,4 +148,10 @@ public class DeletedNotesFragment extends Fragment implements NoteRecyclerViewAd
         notebookViewModel.update(tmpNote);
         adapter.notifyItemChanged(position);
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        fragmentArchiveBinding = null;
+    }
 }
