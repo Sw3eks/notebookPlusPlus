@@ -30,5 +30,9 @@
     <color name="colorHint">#bdc3c7</color>
     <color name="calendarBlack">#000000</color>
 
+    <color name="seek_bar_background">#ababab</color>
+    <color name="seek_bar_progress">@color/colorAccent</color>
+    <color name="seek_bar_secondary_progress">#3399CC</color>
+
 
 </resources>

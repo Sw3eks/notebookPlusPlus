@@ -75,6 +75,108 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/voiceView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/default_margin_start"
+            android:layout_marginTop="@dimen/default_margin_top"
+            android:layout_marginBottom="@dimen/default_margin_bottom"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/cardView">
+
+            <SeekBar
+                android:id="@+id/voiceSeekbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_bottom"
+                android:progressDrawable="@drawable/seek_bar"
+                android:thumb="@drawable/seek_thumb"
+                app:layout_constraintEnd_toStartOf="@+id/deleteRecord"
+                app:layout_constraintStart_toStartOf="@id/voiceView"
+                app:layout_constraintTop_toTopOf="@id/voiceView" />
+
+            <ImageView
+                android:id="@+id/mediaBack"
+                android:layout_width="@dimen/default_image_width"
+                android:layout_height="@dimen/default_image_height"
+                android:layout_marginStart="@dimen/default_margin_start"
+                android:contentDescription="@string/voice_note_record"
+                android:onClick="@{() -> handler.onMediaBack()}"
+                android:src="@drawable/ic_skip_previous"
+                android:tint="?attr/colorControlNormal"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlay"
+                app:layout_constraintStart_toStartOf="@id/voiceSeekbar"
+                app:layout_constraintTop_toTopOf="@id/mediaPlay" />
+
+            <ImageView
+                android:id="@+id/mediaPlay"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/voice_note_record"
+                android:onClick="@{() -> handler.onMediaPlay()}"
+                android:src="@drawable/ic_play_arrow"
+                android:tint="?attr/colorControlNormal"
+                app:layout_constraintStart_toEndOf="@id/mediaBack"
+                app:layout_constraintTop_toBottomOf="@id/voiceSeekbar" />
+
+            <ImageView
+                android:id="@+id/mediaForward"
+                android:layout_width="@dimen/default_image_width"
+                android:layout_height="@dimen/default_image_height"
+                android:contentDescription="@string/voice_note_record"
+                android:onClick="@{() -> handler.onMediaForward()}"
+                android:src="@drawable/ic_skip_next"
+                android:tint="?attr/colorControlNormal"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlay"
+                app:layout_constraintStart_toEndOf="@id/mediaPlay"
+                app:layout_constraintTop_toTopOf="@id/mediaPlay" />
+
+            <TextView
+                android:id="@+id/recordTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/voice_note_record_time_default"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlay"
+                app:layout_constraintEnd_toStartOf="@id/startRecording"
+                app:layout_constraintStart_toEndOf="@id/mediaForward"
+                app:layout_constraintTop_toTopOf="@id/mediaPlay" />
+
+            <ImageView
+                android:id="@+id/startRecording"
+                android:layout_width="@dimen/default_image_width"
+                android:layout_height="@dimen/default_image_height"
+                android:layout_marginEnd="32dp"
+                android:contentDescription="@string/voice_note_record"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:src="@drawable/ic_note_type_voice"
+                android:tint="?attr/colorControlNormal"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlay"
+                app:layout_constraintEnd_toEndOf="@id/voiceSeekbar"
+                app:layout_constraintTop_toTopOf="@id/mediaPlay" />
+
+            <ImageView
+                android:id="@+id/deleteRecord"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="@dimen/default_margin_end"
+                android:contentDescription="@string/voice_note_record"
+                android:src="@drawable/ic_close"
+                app:layout_constraintBottom_toBottomOf="@id/voiceView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/voiceSeekbar"
+                app:layout_constraintTop_toTopOf="@id/voiceView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/voiceView" />
+
         <EditText
             android:id="@+id/editNote"
             android:layout_width="match_parent"
@@ -92,7 +194,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardView" />
+            app:layout_constraintTop_toBottomOf="@id/divider" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvNoteListItem"
@@ -104,17 +206,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cardView"
             tools:listitem="@layout/recyclerview_note_item" />
-
-        <Button
-            android:id="@+id/startRecording"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardView"
-            android:text="Recording"
-            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

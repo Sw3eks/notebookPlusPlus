@@ -116,6 +116,8 @@
     </string-array>
 
     <string name="type_label">Type</string>
+    <string name="voice_note_record">Record</string>
+    <string name="voice_note_record_time_default">0 min, 0 sec</string>
     <string-array name="note_type_array">
         <item>Text</item>
         <item>List</item>
