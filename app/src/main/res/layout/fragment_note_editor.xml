@@ -105,6 +105,16 @@
             app:layout_constraintTop_toBottomOf="@id/cardView"
             tools:listitem="@layout/recyclerview_note_item" />
 
+        <Button
+            android:id="@+id/startRecording"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardView"
+            android:text="Recording"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
