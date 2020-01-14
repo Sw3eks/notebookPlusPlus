@@ -27,6 +27,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -220,8 +221,15 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     }
 
     private String getFilename() {
-        String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/" + notebookViewModel.getNote().getName() + notebookViewModel.getNote().getNoteId() + "Recording.3gp";
+        String mFilePath = getActivity().getFilesDir().getPath();
+
+        File file = new File(mFilePath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        String mFileName;
+        mFileName = file + "/" + notebookViewModel.getNote().getName() + notebookViewModel.getNote().getNoteId() + "Recording.3gp";
         return mFileName;
     }
 
@@ -234,13 +242,14 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
             recorder = new MediaRecorder();
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            recorder.setOutputFile(getFilename());
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
+            recorder.setOutputFile(getFilename());
             try {
                 recorder.prepare();
             } catch (IOException e) {
                 Log.e(LOG_TAG, "prepare() failed");
+                Toast.makeText(getContext(), "Sorry! file creation failed!" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
             recorder.start();
             startHTime = SystemClock.uptimeMillis();
@@ -262,7 +271,14 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     }
 
     public void onDeleteRecord() {
-
+        File file = new File(getFilename());
+        boolean deleted = file.delete();
+        if (deleted) {
+            fragmentNoteEditorBinding.recordTime.setText(R.string.voice_note_record_time_default);
+            Toast.makeText(getContext(), "Recording deleted!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getContext(), "Deletion failed!", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void onMediaBack() {
