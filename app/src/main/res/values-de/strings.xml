@@ -61,6 +61,8 @@
     <string name="mediaplayer_time_format">%d min, %d sek</string>
     <string name="recorder_recording_deleted">Aufnahme gelöscht</string>
     <string name="recorder_recording_delete_failed">Löschen fehlgeschlagen!</string>
+    <string name="mediaplayer_permissions_denied">Du musst die Berechtigungen akzepieren!</string>
+    <string name="mediaplayer_no_recording">Starte zunächst eine Aufnahme</string>
 
     <!-- Calendar stuff -->
     <string name="calendar_no_events">Keine Veranstaltungen</string>
@@ -112,6 +114,7 @@
 
     <string name="dialog_hint">Name</string>
     <string name="dialog_color_label">Farbe</string>
+    <string name="spinner_color">farbe</string>
     <string-array name="color_Array">
         <item>Blau</item>
         <item>Rot</item>
@@ -123,8 +126,6 @@
     </string-array>
 
     <string name="type_label">Typ</string>
-    <string name="mediaplayer_permissions_denied">You have to accept permissions to use this feature!</string>
-    <string name="mediaplayer_no_recording">Record something first</string>
     <string-array name="note_type_array">
         <item>Text</item>
         <item>Liste</item>

@@ -64,9 +64,11 @@
     <string name="mediaplayer_time_format">%d min, %d sec</string>
     <string name="recorder_recording_deleted">Recording deleted</string>
     <string name="recorder_recording_delete_failed">Deletion failed!</string>
+    <string name="mediaplayer_permissions_denied">You have to accept permissions to use this feature!</string>
+    <string name="mediaplayer_no_recording">Record something first</string>
 
     <!-- Calendar stuff -->
-    <string name="calendar_no_events">Keine Ereignisse an diesem Tag</string>
+    <string name="calendar_no_events">No events on this date</string>
     <array name="material_calendar_months_array">
         <item>January</item>
         <item>February</item>
@@ -127,8 +129,6 @@
     </string-array>
 
     <string name="type_label">Type</string>
-    <string name="mediaplayer_permissions_denied">You have to accept permissions to use this feature!</string>
-    <string name="mediaplayer_no_recording">Record something first</string>
     <string-array name="note_type_array">
         <item>Text</item>
         <item>List</item>
