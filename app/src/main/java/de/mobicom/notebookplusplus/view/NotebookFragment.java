@@ -169,7 +169,6 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
      * navigates to notebook create dialog, fired by user click on fab
      */
     public void onAddNotebook() {
-        System.out.println(NOTEBOOK_FRAGMENT);
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(
                 NotebookFragmentDirections.actionNotebooksFragmentToCreateNotebookDialogFragment().setDialogType(NOTEBOOK_FRAGMENT));
     }
