@@ -127,6 +127,8 @@
     </string-array>
 
     <string name="type_label">Type</string>
+    <string name="mediaplayer_permissions_denied">You have to accept permissions to use this feature!</string>
+    <string name="mediaplayer_no_recording">Record something first</string>
     <string-array name="note_type_array">
         <item>Text</item>
         <item>List</item>

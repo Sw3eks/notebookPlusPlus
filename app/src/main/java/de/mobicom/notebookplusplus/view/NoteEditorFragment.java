@@ -182,6 +182,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     private void setupVoiceLayout() {
         fragmentNoteEditorBinding.divider.setVisibility(View.VISIBLE);
         fragmentNoteEditorBinding.voiceView.setVisibility(View.VISIBLE);
+        RequestPermissions();
         fragmentNoteEditorBinding.setHandler(this);
         fragmentNoteEditorBinding.startRecording.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
@@ -199,7 +200,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
                     scaleDown.start();
 
-                    System.out.println("start");
                     startRecording();
                     return true;
                 case MotionEvent.ACTION_UP:
@@ -215,7 +215,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
 
                     scaleDown2.start();
 
-                    System.out.println("stop");
                     stopRecording();
                     break;
             }
@@ -227,6 +226,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (player != null && fromUser) {
                     player.seekTo(progress);
+                    jumped = true;
                 }
             }
 
@@ -276,7 +276,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
                 recorder.prepare();
             } catch (IOException e) {
                 Log.e(LOG_TAG, "prepare() failed");
-                Toast.makeText(getContext(), "Sorry! file creation failed!" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
             recorder.start();
             startHTime = SystemClock.uptimeMillis();
@@ -358,6 +357,11 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     }
 
     public void onMediaPlay() {
+        File file = new File(getFilename());
+        if (!file.exists()) {
+            Toast.makeText(getContext(), R.string.mediaplayer_no_recording, Toast.LENGTH_SHORT).show();
+            return;
+        }
         playing = !playing;
         if (playing) {
             if (player != null) {
@@ -432,10 +436,9 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
             if (grantResults.length > 0) {
                 boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 boolean permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                if (permissionToRecord && permissionToStore) {
-                    Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_LONG).show();
+                if (!(permissionToRecord && permissionToStore)) {
+                    Toast.makeText(getActivity(), R.string.mediaplayer_permissions_denied, Toast.LENGTH_LONG).show();
+                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
                 }
             }
         }
