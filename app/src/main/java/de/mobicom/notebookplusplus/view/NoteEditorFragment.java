@@ -106,7 +106,8 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         currentTitle = notebookViewModel.getNote().getName();
         currentNotificationStatus = notebookViewModel.getNote().isNotificationEnabled();
 
-        if (notebookViewModel.getNote().getType() == R.drawable.ic_note_type_text) {
+        if (notebookViewModel.getNote().getType() == R.drawable.ic_note_type_text ||
+                notebookViewModel.getNote().getType() == R.drawable.ic_note_type_voice) {
             setupTextLayout();
         }
 
