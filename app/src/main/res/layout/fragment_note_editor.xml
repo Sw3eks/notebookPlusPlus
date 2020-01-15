@@ -116,7 +116,7 @@
                 android:contentDescription="@string/voice_note_record"
                 android:onClick="@{() -> handler.onMediaPlay()}"
                 android:src="@drawable/ic_play_arrow"
-                android:tint="?attr/colorControlNormal"
+                android:tint="@color/colorAccent"
                 app:layout_constraintStart_toEndOf="@id/mediaBack"
                 app:layout_constraintTop_toBottomOf="@id/voiceSeekbar" />
 
@@ -148,7 +148,6 @@
                 android:layout_height="@dimen/default_image_height"
                 android:layout_marginEnd="32dp"
                 android:contentDescription="@string/voice_note_record"
-                android:onClick="@{() -> handler.onRecord()}"
                 android:scaleX="1"
                 android:scaleY="1"
                 android:src="@drawable/ic_note_type_voice"

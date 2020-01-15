@@ -187,11 +187,11 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         fragmentNoteEditorBinding.startRecording.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-
+                    startTime = System.currentTimeMillis();
                     ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(fragmentNoteEditorBinding.startRecording,
-                            "scaleX", 1.5f);
+                            "scaleX", 1.8f);
                     ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(fragmentNoteEditorBinding.startRecording,
-                            "scaleY", 1.5f);
+                            "scaleY", 1.8f);
                     scaleDownX.setDuration(200);
                     scaleDownY.setDuration(200);
 
@@ -214,7 +214,14 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
                     scaleDown2.play(scaleDownX2).with(scaleDownY2);
 
                     scaleDown2.start();
-
+                    if (System.currentTimeMillis() - startTime < 1000) {
+                        timeSwapBuff = 0;
+                        recordHandler.removeCallbacks(UpdateRecordingTime);
+                        recorder.reset();
+                        recorder = null;
+                        Toast.makeText(getContext(), "Hold to record", Toast.LENGTH_LONG).show();
+                        break;
+                    }
                     stopRecording();
                     break;
             }
@@ -260,10 +267,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         return mFileName;
     }
 
-    public void onRecord() {
-        Toast.makeText(getContext(), "Hold to record", Toast.LENGTH_LONG).show();
-    }
-
     private void startRecording() {
         if (CheckPermissions()) {
             recorder = new MediaRecorder();
@@ -282,18 +285,24 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
             fragmentNoteEditorBinding.recordTime.setText(R.string.voice_note_record_time_default);
             playHandler.removeCallbacks(UpdateSongTime);
             recordHandler.postDelayed(UpdateRecordingTime, 100);
+            if (player != null) {
+                player.release();
+                player = null;
+            }
         } else {
             RequestPermissions();
         }
     }
 
     private void stopRecording() {
-        recorder.stop();
-        timeSwapBuff = 0;
-        recordHandler.removeCallbacks(UpdateRecordingTime);
-        recorder.reset();
-        recorder.release();
-        recorder = null;
+        if (recorder != null) {
+            recorder.stop();
+            timeSwapBuff = 0;
+            recordHandler.removeCallbacks(UpdateRecordingTime);
+            recorder.reset();
+            recorder.release();
+            recorder = null;
+        }
     }
 
     public void onDeleteRecord() {
