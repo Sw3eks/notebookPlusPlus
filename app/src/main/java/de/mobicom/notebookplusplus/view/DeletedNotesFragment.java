@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.File;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
@@ -127,9 +129,27 @@ public class DeletedNotesFragment extends Fragment implements NoteRecyclerViewAd
                 Toast.makeText(getContext(), R.string.moved_note_to_archive, Toast.LENGTH_LONG).show();
                 break;
             case R.id.deleteNote:
+                boolean deleted = false;
+                if (notebookViewModel.getNote().getType() == R.drawable.ic_note_type_voice) {
+                    String mFilePath = getActivity().getFilesDir().getPath();
+                    File file = new File(mFilePath);
+
+                    if (file.exists()) {
+                        String mFileName;
+                        mFileName = file + "/" + notebookViewModel.getNote().getName() + notebookViewModel.getNote().getNoteId() + "Recording.3gp";
+                        File shouldBeDeleted = new File(mFileName);
+                        if (shouldBeDeleted.exists()) {
+                            deleted = shouldBeDeleted.delete();
+                        }
+                    }
+                }
                 notebookViewModel.delete(adapter.getNoteAt(position));
                 notebookViewModel.deleteAllNotebooksMarkedForDelete();
-                Toast.makeText(getContext(), R.string.note_deleted, Toast.LENGTH_LONG).show();
+                if (deleted) {
+                    Toast.makeText(getContext(), R.string.note_and_recording_deleted, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), R.string.note_deleted, Toast.LENGTH_LONG).show();
+                }
                 break;
 
         }

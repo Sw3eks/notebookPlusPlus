@@ -50,8 +50,20 @@
     <string name="notification_disabled">Benachrichtigung deaktiviert</string>
     <string name="note_list_item_hint">Tippe um eine Zeile hinzuzufügen</string>
     <string name="select_notebook_to_move">Wähle ein Notizbuch</string>
+
+    <!-- Recorder & Mediaplayer -->
+    <string name="voice_note_record">Aufnehmen</string>
+    <string name="voice_note_record_time_default">0 min, 0 sek</string>
+    <string name="note_and_recording_deleted">Notiz und Aufnahme gelöscht</string>
+    <string name="mediaplayer_no_jump">Nur während der Wiedergabe</string>
+    <string name="mediaplayer_jumped_backwards">5 Sekunden zurückgespult</string>
+    <string name="mediaplayer_jumped_forwards">5 Sekunden vorgespult</string>
+    <string name="mediaplayer_time_format">%d min, %d sek</string>
+    <string name="recorder_recording_deleted">Aufnahme gelöscht</string>
+    <string name="recorder_recording_delete_failed">Löschen fehlgeschlagen!</string>
+
     <!-- Calendar stuff -->
-    <string name="calendar_no_events">No events on this day</string>
+    <string name="calendar_no_events">Keine Veranstaltungen</string>
     <array name="material_calendar_months_array">
         <item>Januar</item>
         <item>Februar</item>
@@ -111,9 +123,6 @@
     </string-array>
 
     <string name="type_label">Typ</string>
-    <string name="spinner_color">color</string>
-    <string name="voice_note_record">Record</string>
-    <string name="voice_note_record_time_default">0 min, 0 sec</string>
     <string-array name="note_type_array">
         <item>Text</item>
         <item>Liste</item>

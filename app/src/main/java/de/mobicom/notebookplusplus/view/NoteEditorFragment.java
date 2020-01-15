@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.Editable;
@@ -24,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,9 +81,12 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
     private MediaRecorder recorder = null;
     private MediaPlayer player = null;
     private boolean playing = false;
+    private boolean jumped = false;
     private int currentPlayerPosition = 0;
-    private double finalTime = 0;
     private double startTime = 0;
+    private double finalTime = 0;
+    private long startHTime = 0L;
+    private long timeSwapBuff = 0L;
 
     @Nullable
     @Override
@@ -218,6 +221,30 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
             }
             return false;
         });
+
+        fragmentNoteEditorBinding.voiceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (player != null && fromUser) {
+                    player.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        File isFile = new File(getFilename());
+        if (isFile.exists()) {
+            setupMediaPlayer();
+        }
     }
 
     private String getFilename() {
@@ -275,40 +302,9 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         boolean deleted = file.delete();
         if (deleted) {
             fragmentNoteEditorBinding.recordTime.setText(R.string.voice_note_record_time_default);
-            Toast.makeText(getContext(), "Recording deleted!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.recorder_recording_deleted, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getContext(), "Deletion failed!", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void onMediaBack() {
-        int temp = (int) startTime;
-
-        int backwardTime = 5000;
-        if ((temp - backwardTime) > 0) {
-            startTime = startTime - backwardTime;
-            player.seekTo((int) startTime);
-            Toast.makeText(getContext(), "You have Jumped backward 5 seconds", Toast.LENGTH_SHORT).show();
-        } else {
-            player.seekTo(0);
-        }
-    }
-
-    public void onMediaPlay() {
-        playing = !playing;
-        if (playing) {
-            if (player != null) {
-                fragmentNoteEditorBinding.mediaPlay.setImageResource(R.drawable.ic_play_arrow);
-                player.seekTo(currentPlayerPosition);
-                player.start();
-                playHandler.postDelayed(UpdateSongTime, 100);
-            } else {
-                setupMediaPlayer();
-            }
-        } else {
-            player.pause();
-            currentPlayerPosition = player.getCurrentPosition();
-            fragmentNoteEditorBinding.mediaPlay.setImageResource(R.drawable.ic_pause);
+            Toast.makeText(getContext(), R.string.recorder_recording_delete_failed, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -317,52 +313,93 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         try {
             player.setDataSource(getFilename());
             player.prepare();
-            player.start();
 
-            double finalTime = player.getDuration();
-            double startTime = player.getCurrentPosition();
+            finalTime = player.getDuration();
+            startTime = player.getCurrentPosition();
 
             fragmentNoteEditorBinding.voiceSeekbar.setMax((int) finalTime);
 
-            fragmentNoteEditorBinding.recordTime.setText(String.format(Locale.GERMAN, "%d min, %d sec",
+            fragmentNoteEditorBinding.recordTime.setText(String.format(Locale.GERMAN, getResources().getString(R.string.mediaplayer_time_format),
                     TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
                     TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
                                     finalTime)))
             );
             fragmentNoteEditorBinding.voiceSeekbar.setProgress((int) startTime);
-            playHandler.postDelayed(UpdateSongTime, 100);
             player.setOnCompletionListener(mp -> {
                 fragmentNoteEditorBinding.voiceSeekbar.setProgress(0);
+                fragmentNoteEditorBinding.mediaPlay.setImageResource(R.drawable.ic_play_arrow);
                 currentPlayerPosition = 0;
-                player.reset();
-                player.release();
-                player = null;
+                player.seekTo(0);
                 playing = false;
                 playHandler.removeCallbacks(UpdateSongTime);
             });
         } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
+            Log.e(LOG_TAG, "Datasource not found!");
+        }
+    }
+
+    public void onMediaBack() {
+        if (!player.isPlaying()) {
+            Toast.makeText(getContext(), R.string.mediaplayer_no_jump, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int temp = (int) startTime;
+
+        int backwardTime = 5000;
+        if ((temp - backwardTime) > 0) {
+            startTime = startTime - backwardTime;
+            player.seekTo((int) startTime);
+            Toast.makeText(getContext(), R.string.mediaplayer_jumped_backwards, Toast.LENGTH_SHORT).show();
+        } else {
+            player.seekTo(0);
+        }
+        jumped = true;
+    }
+
+    public void onMediaPlay() {
+        playing = !playing;
+        if (playing) {
+            if (player != null) {
+                fragmentNoteEditorBinding.mediaPlay.setImageResource(R.drawable.ic_pause);
+                if (!jumped) {
+                    player.seekTo(currentPlayerPosition);
+                }
+                jumped = false;
+            } else {
+                setupMediaPlayer();
+            }
+            player.start();
+            playHandler.postDelayed(UpdateSongTime, 100);
+        } else {
+            player.pause();
+            currentPlayerPosition = player.getCurrentPosition();
+            fragmentNoteEditorBinding.mediaPlay.setImageResource(R.drawable.ic_play_arrow);
         }
     }
 
     public void onMediaForward() {
+        if (!player.isPlaying()) {
+            Toast.makeText(getContext(), R.string.mediaplayer_no_jump, Toast.LENGTH_LONG).show();
+            return;
+        }
         int temp = (int) startTime;
 
         int forwardTime = 5000;
         if ((temp + forwardTime) <= finalTime) {
             startTime = startTime + forwardTime;
             player.seekTo((int) startTime);
-            Toast.makeText(getContext(), "You have Jumped forward 5 seconds", Toast.LENGTH_SHORT).show();
+            jumped = true;
+            Toast.makeText(getContext(), R.string.mediaplayer_jumped_forwards, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getContext(), "Cannot jump forward 5 seconds", Toast.LENGTH_SHORT).show();
+            player.seekTo((int) finalTime);
         }
     }
 
     private Runnable UpdateSongTime = new Runnable() {
         public void run() {
             startTime = player.getCurrentPosition();
-            fragmentNoteEditorBinding.recordTime.setText(String.format(Locale.GERMAN, "%d min, %d sec",
+            fragmentNoteEditorBinding.recordTime.setText(String.format(Locale.GERMAN, getResources().getString(R.string.mediaplayer_time_format),
                     TimeUnit.MILLISECONDS.toMinutes((long) startTime),
                     TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
@@ -373,15 +410,12 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         }
     };
 
-    private long startHTime = 0L;
-    private long timeSwapBuff = 0L;
-    private long updatedTime = 0L;
     private Runnable UpdateRecordingTime = new Runnable() {
         public void run() {
             long timeInMilliseconds = SystemClock.uptimeMillis() - startHTime;
 
-            updatedTime = timeSwapBuff + timeInMilliseconds;
-            fragmentNoteEditorBinding.recordTime.setText(String.format(Locale.GERMAN, "%d min, %d sec",
+            long updatedTime = timeSwapBuff + timeInMilliseconds;
+            fragmentNoteEditorBinding.recordTime.setText(String.format(Locale.GERMAN, getResources().getString(R.string.mediaplayer_time_format),
                     TimeUnit.MILLISECONDS.toMinutes(updatedTime),
                     TimeUnit.MILLISECONDS.toSeconds(updatedTime) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
