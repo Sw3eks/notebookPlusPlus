@@ -1,6 +1,7 @@
 package de.mobicom.notebookplusplus.view;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -70,6 +72,7 @@ public class CreateDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog dialog;
+        setRetainInstance(true);
         notebookViewModel = ViewModelProviders.of(requireActivity()).get(NotebookViewModel.class);
 
         if (CreateDialogFragmentArgs.fromBundle(getArguments()).getDialogType().equals(NotebookFragment.NOTEBOOK_FRAGMENT) ||
@@ -260,6 +263,7 @@ public class CreateDialogFragment extends DialogFragment {
                                 notebook.setName(editText.getText().toString());
                                 notebook.setColor(getColor(spinner.getSelectedItem().toString()));
                                 notebookViewModel.update(notebook);
+                                notebookViewModel.setNotebookChanged(true);
                             }
                         }
                 )

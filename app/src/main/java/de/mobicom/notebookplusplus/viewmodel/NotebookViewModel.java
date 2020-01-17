@@ -7,6 +7,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import de.mobicom.notebookplusplus.data.model.Note;
 import de.mobicom.notebookplusplus.data.model.NoteListItem;
 import de.mobicom.notebookplusplus.data.repository.NoteListItemRepository;
@@ -22,6 +23,7 @@ public class NotebookViewModel extends AndroidViewModel {
 
     private Notebook selectedNotebook;
     private Note selectedNote;
+    private MutableLiveData<Boolean> notebookChanged = new MutableLiveData<>();
 
     public NotebookViewModel(@NonNull Application application) {
         super(application);
@@ -29,6 +31,7 @@ public class NotebookViewModel extends AndroidViewModel {
         noteRepository = new NoteRepository(application);
         noteListItemRepository = new NoteListItemRepository(application);
         allNotebooks = notebookRepository.getAllNotebooks();
+        this.notebookChanged.setValue(false);
     }
 
     public void insert(Notebook notebook) {
@@ -125,5 +128,13 @@ public class NotebookViewModel extends AndroidViewModel {
 
     public List<NoteListItem> getAllNoteListItemsAsync(long noteId) {
         return noteListItemRepository.getAllNoteListItems(noteId);
+    }
+
+    public void setNotebookChanged(boolean notebookChanged) {
+        this.notebookChanged.setValue(notebookChanged);
+    }
+
+    public MutableLiveData<Boolean> getNotebookChanged() {
+        return notebookChanged;
     }
 }

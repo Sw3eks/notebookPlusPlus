@@ -133,7 +133,8 @@ public class NoteFragment extends Fragment implements NoteRecyclerViewAdapter.It
                         tmpNote.getDescription(),
                         tmpNote.isBookmarked(),
                         tmpNote.getNotificationDate(),
-                        tmpNote.isNotificationEnabled()));
+                        tmpNote.isNotificationEnabled(),
+                        tmpNote.getLastModifiedAt()));
                 break;
             case R.id.deleteNote:
                 tmpNote.setMarkedForDelete(true);

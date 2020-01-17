@@ -154,6 +154,7 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
             case R.string.edit_notebook:
                 Navigation.findNavController(
                         getActivity(), R.id.nav_host_fragment).navigate(NotebookFragmentDirections.actionNotebooksFragmentToCreateNotebookDialogFragment().setDialogType(NOTEBOOK_FRAGMENT_EDIT));
+                notebookViewModel.getNotebookChanged().observe(this, aBoolean -> adapter.notifyDataSetChanged());
                 break;
             case R.string.notebook_delete:
                 notebookViewModel.updateNotesOfDeletedNotebook(adapter.getNotebookAt(position).getNotebookId());
@@ -178,5 +179,4 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
         super.onDestroyView();
         fragmentNotebooksBinding = null;
     }
-
 }

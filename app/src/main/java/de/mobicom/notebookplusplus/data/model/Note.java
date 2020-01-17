@@ -13,7 +13,6 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-// TODO: keep notes in Trash if notebook is deleted!!
 @Entity(tableName = "note_table",
         foreignKeys = {
                 @ForeignKey(entity = Notebook.class,
@@ -78,7 +77,8 @@ public class Note {
 
     // Constructor for cloning notes
     @Ignore
-    public Note(long notebookParentId, @NonNull String name, int type, String description, boolean isBookmarked, LocalDate notificationDate, boolean isNotificationEnabled) {
+    public Note(long notebookParentId, @NonNull String name, int type, String description, boolean isBookmarked,
+                LocalDate notificationDate, boolean isNotificationEnabled, LocalDateTime lastModifiedAt) {
         this.notebookParentId = notebookParentId;
         this.name = name;
         this.type = type;
@@ -87,7 +87,7 @@ public class Note {
         this.notificationDate = notificationDate;
         this.isNotificationEnabled = isNotificationEnabled;
         this.createdAt = LocalDateTime.now();
-        this.lastModifiedAt = LocalDateTime.now();
+        this.lastModifiedAt = lastModifiedAt;
         this.isArchived = false;
         this.isMarkedForDelete = false;
     }
