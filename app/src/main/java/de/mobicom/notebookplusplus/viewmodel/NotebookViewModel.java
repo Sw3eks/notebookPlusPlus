@@ -2,6 +2,7 @@ package de.mobicom.notebookplusplus.viewmodel;
 
 import android.app.Application;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -94,8 +95,8 @@ public class NotebookViewModel extends AndroidViewModel {
         return noteRepository.getAllNotesDeleted();
     }
 
-    public List<Note> getAllNotesNotificationEnabled() {
-        return noteRepository.getAllNotesNotificationEnabled();
+    public List<Note> getAllNotesNotificationEnabled(LocalDate date) {
+        return noteRepository.getAllNotesNotificationEnabled(date);
     }
 
     public void updateNotesOfDeletedNotebook(long notebookId) {

@@ -58,21 +58,28 @@ public class NotificationHelper extends ContextWrapper {
         return mManager;
     }
 
-    public boolean shouldCreateNotification() {
-        return noteList.size() != 0;
+    public boolean shouldCreateNotification(boolean isSunday) {
+        if (isSunday) {
+            try {
+                noteList = new NotifyWeekAsyncTask(context).execute().get();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                noteList = new NotifyDayAsyncTask(context).execute().get();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return noteList != null && noteList.size() > 0;
     }
 
     public NotificationCompat.Builder getChannelDayNotification() {
         Intent activityIntent = new Intent(getApplicationContext(), MainActivity.class);
         activityIntent.putExtra("dest", CalendarFragment.CALENDAR_FRAGMENT);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(),
-                CONTENT_INTENT_REQUEST_CODE, activityIntent, 0);
-
-        try {
-            noteList = new NotifyDayAsyncTask(context).execute().get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+                CONTENT_INTENT_REQUEST_CODE, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
         for (int i = 0; i < noteList.size(); i++) {
@@ -97,12 +104,6 @@ public class NotificationHelper extends ContextWrapper {
         activityIntent.putExtra("dest", CalendarFragment.CALENDAR_FRAGMENT);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(),
                 CONTENT_INTENT_REQUEST_CODE, activityIntent, 0);
-
-        try {
-            noteList = new NotifyWeekAsyncTask(context).execute().get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
 
         NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
         for (int i = 0; i < noteList.size(); i++) {

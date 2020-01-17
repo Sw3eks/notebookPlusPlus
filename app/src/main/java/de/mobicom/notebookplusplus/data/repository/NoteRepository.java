@@ -3,6 +3,7 @@ package de.mobicom.notebookplusplus.data.repository;
 import android.app.Application;
 import android.os.AsyncTask;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -54,9 +55,9 @@ public class NoteRepository {
         return noteDao.getAllNotesDeleted();
     }
 
-    public List<Note> getAllNotesNotificationEnabled() {
+    public List<Note> getAllNotesNotificationEnabled(LocalDate date) {
         try {
-            return new SelectNotesAsyncTask(noteDao).execute().get();
+            return new SelectNotesAsyncTask(noteDao).execute(date).get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -135,7 +136,7 @@ public class NoteRepository {
         }
     }
 
-    private static class SelectNotesAsyncTask extends AsyncTask<Void, Void, List<Note>> {
+    private static class SelectNotesAsyncTask extends AsyncTask<LocalDate, Void, List<Note>> {
         private NoteDao noteDao;
 
         private SelectNotesAsyncTask(NoteDao noteDao) {
@@ -143,8 +144,8 @@ public class NoteRepository {
         }
 
         @Override
-        protected List<Note> doInBackground(Void... voids) {
-            return noteDao.getAllNotesNotificationEnabled();
+        protected List<Note> doInBackground(LocalDate... localDates) {
+            return noteDao.getAllNotesNotificationEnabled(localDates[0]);
         }
     }
 }

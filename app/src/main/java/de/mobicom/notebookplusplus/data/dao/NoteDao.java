@@ -36,15 +36,15 @@ public interface NoteDao {
     @Query("SELECT * FROM note_table WHERE is_marked_for_delete = 1 ORDER BY last_modified_date DESC")
     LiveData<List<Note>> getAllNotesDeleted();
 
-    @Query("SELECT * FROM note_table WHERE is_notification_enabled = 1")
-    List<Note> getAllNotesNotificationEnabled();
+    @Query("SELECT * FROM note_table WHERE is_notification_enabled = 1 AND notification_date >= :date AND is_marked_for_delete = 0 AND is_archived = 0")
+    List<Note> getAllNotesNotificationEnabled(LocalDate date);
 
     @Query("UPDATE note_table SET is_marked_for_delete = 1 WHERE notebook_parent_id = :notebookParentId")
     void updateNotesWithNotebookId(long notebookParentId);
 
-    @Query("SELECT * FROM note_table WHERE is_notification_enabled = 1 AND notification_date = :notificationDate")
+    @Query("SELECT * FROM note_table WHERE is_notification_enabled = 1 AND notification_date = :notificationDate AND is_marked_for_delete = 0 AND is_archived = 0")
     List<Note> getAllNotesForNotificationDay(LocalDate notificationDate);
 
-    @Query("SELECT * FROM note_table WHERE is_notification_enabled = 1 AND notification_date >= :notificationDateStart AND notification_date <= :notificationDateEnd")
+    @Query("SELECT * FROM note_table WHERE is_notification_enabled = 1 AND notification_date >= :notificationDateStart AND notification_date <= :notificationDateEnd AND is_marked_for_delete = 0 AND is_archived = 0")
     List<Note> getAllNotesForNotificationWeek(LocalDate notificationDateStart, LocalDate notificationDateEnd);
 }

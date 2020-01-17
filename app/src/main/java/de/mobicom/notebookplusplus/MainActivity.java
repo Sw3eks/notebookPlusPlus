@@ -90,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
 
         if (intent != null) {
-            Bundle extras = intent.getExtras();
-            if (extras.getString("dest").equals(CalendarFragment.CALENDAR_FRAGMENT)) {
+            String extra = intent.getStringExtra("dest");
+            if (extra != null && extra.equals(CalendarFragment.CALENDAR_FRAGMENT)) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.calendarFragment);
             }
         }
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             if (alarmManager != null) {
                 if (intendedTime >= currentTime) {
 
-                    alarmManager.setRepeating(AlarmManager.RTC, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
 
                 } else {
 

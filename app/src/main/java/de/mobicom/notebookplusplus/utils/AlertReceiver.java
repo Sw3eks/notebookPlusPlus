@@ -37,12 +37,12 @@ public class AlertReceiver extends BroadcastReceiver {
             NotificationHelper notificationHelper = new NotificationHelper(context);
             if (dayOfWeek != DayOfWeek.SUNDAY) {
                 // check if notification should be created
-                if (notificationHelper.shouldCreateNotification()) {
+                if (notificationHelper.shouldCreateNotification(false)) {
                     NotificationCompat.Builder nb = notificationHelper.getChannelDayNotification();
                     notificationHelper.getManager().notify(NOTIFICATION_DAY_ID, nb.build());
                 }
             } else {
-                if (notificationHelper.shouldCreateNotification()) {
+                if (notificationHelper.shouldCreateNotification(true)) {
                     NotificationCompat.Builder nb = notificationHelper.getChannelWeekNotification();
                     notificationHelper.getManager().notify(NOTIFICATION_WEEK_ID, nb.build());
                 }
