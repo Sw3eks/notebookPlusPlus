@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -476,7 +477,8 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
                             : getResources().getString(R.string.notification_disabled), Toast.LENGTH_LONG)
                     .show();
         });
-
+        
+        notebookViewModel.getNote().setNotificationDate(LocalDate.now());
         // set min Date to Today (cause notification has to be in future
         fragmentNoteEditorBinding.datePicker.setMinDate(System.currentTimeMillis() - 1000);
         fragmentNoteEditorBinding.datePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> selectedDate = LocalDate.of(year, monthOfYear + 1, dayOfMonth));
@@ -539,7 +541,9 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         shouldSave();
 
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        }
         super.onPause();
     }
 
@@ -552,7 +556,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
             }
             // save only entries with content
             if (!currentList.get(i).getContent().equals("")) {
-                System.out.println("SAVED");
                 notebookViewModel.insert(currentList.get(i));
             }
         }
@@ -601,7 +604,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
                 recyclerView.smoothScrollToPosition(position + 1);
                 return true;
             }
-        } else if (actionId == EditorInfo.IME_ACTION_NEXT) ;
+        }
         return false;
 
     }
@@ -615,7 +618,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
      * @param count    steps from start
      * @param position current position in the list, clicked by user
      */
-    //TODO: delete only if row is empty.. not when it gets empty
     @Override
     public void onBackSpace(CharSequence s, int start, int before, int count, int position) {
         System.out.println("START " + start + " BEFORE " + before + " COUNT " + count);

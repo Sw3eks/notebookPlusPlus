@@ -112,7 +112,7 @@
     <string name="change_theme">Nachtmodus</string>
     <string name="theme_summary">Ändert das aussehen</string>
 
-    <string name="dialog_hint">Name</string>
+    <string name="dialog_hint">Name (Pflichtfeld)</string>
     <string name="dialog_color_label">Farbe</string>
     <string name="spinner_color">farbe</string>
     <string-array name="color_Array">
