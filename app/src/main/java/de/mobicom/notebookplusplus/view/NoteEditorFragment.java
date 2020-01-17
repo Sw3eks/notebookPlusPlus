@@ -477,7 +477,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
                             : getResources().getString(R.string.notification_disabled), Toast.LENGTH_LONG)
                     .show();
         });
-        
+
         notebookViewModel.getNote().setNotificationDate(LocalDate.now());
         // set min Date to Today (cause notification has to be in future
         fragmentNoteEditorBinding.datePicker.setMinDate(System.currentTimeMillis() - 1000);
