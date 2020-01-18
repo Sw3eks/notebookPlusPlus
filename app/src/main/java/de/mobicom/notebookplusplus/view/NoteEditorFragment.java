@@ -478,7 +478,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
                     .show();
         });
 
-        notebookViewModel.getNote().setNotificationDate(LocalDate.now());
         // set min Date to Today (cause notification has to be in future
         fragmentNoteEditorBinding.datePicker.setMinDate(System.currentTimeMillis() - 1000);
         fragmentNoteEditorBinding.datePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> selectedDate = LocalDate.of(year, monthOfYear + 1, dayOfMonth));
@@ -568,7 +567,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
                 notebookViewModel.getNote().isNotificationEnabled() != currentNotificationStatus) {
             isChanged = true;
         }
-        if (selectedDate != null && !notebookViewModel.getNote().getNotificationDate().isEqual(selectedDate)) {
+        if (selectedDate != null && !notebookViewModel.getNote().getNotificationDate().isEqual(selectedDate) && !selectedDate.isEqual(LocalDate.now())) {
             notebookViewModel.getNote().setNotificationDate(selectedDate);
             isChanged = true;
         }
