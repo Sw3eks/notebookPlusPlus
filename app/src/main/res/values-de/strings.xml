@@ -61,7 +61,7 @@
     <string name="mediaplayer_no_jump">Nur während der Wiedergabe</string>
     <string name="mediaplayer_jumped_backwards">5 Sekunden zurückgespult</string>
     <string name="mediaplayer_jumped_forwards">5 Sekunden vorgespult</string>
-    <string name="mediaplayer_time_format">%d min, %d sek</string>
+    <string name="mediaplayer_time_format" formatted="false">%d min, %d sek</string>
     <string name="recorder_recording_deleted">Aufnahme gelöscht</string>
     <string name="recorder_recording_delete_failed">Löschen fehlgeschlagen!</string>
     <string name="mediaplayer_permissions_denied">Du musst die Berechtigungen akzepieren!</string>
