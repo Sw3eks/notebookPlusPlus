@@ -221,7 +221,7 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
                         recordHandler.removeCallbacks(UpdateRecordingTime);
                         recorder.reset();
                         recorder = null;
-                        Toast.makeText(getContext(), "Hold to record", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), R.string.mediaplayer_hold_to_record, Toast.LENGTH_LONG).show();
                         break;
                     }
                     stopRecording();
@@ -542,6 +542,11 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        }
+
+        if (player != null && player.isPlaying()) {
+            player.pause();
+            currentPlayerPosition = player.getCurrentPosition();
         }
         super.onPause();
     }

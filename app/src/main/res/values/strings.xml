@@ -70,6 +70,7 @@
     <string name="recorder_recording_delete_failed">Deletion failed!</string>
     <string name="mediaplayer_permissions_denied">You have to accept permissions to use this feature!</string>
     <string name="mediaplayer_no_recording">Record something first</string>
+    <string name="mediaplayer_hold_to_record">Hold to record</string>
 
     <!-- Calendar stuff -->
     <string name="calendar_no_events">No events on this date</string>

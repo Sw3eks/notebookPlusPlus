@@ -45,7 +45,7 @@
     <string name="notebook_delete">Löschen</string>
     <string name="notebook_deleted">Notizbuch gelöscht</string>
     <string name="note_deleted">Notiz gelöscht</string>
-    <string name="note_set_notification_title">Benachrichtigun einstellen</string>
+    <string name="note_set_notification_title">Benachrichtigung einstellen</string>
     <string name="notification_enabled">Benachrichtigung aktiviert</string>
     <string name="notification_disabled">Benachrichtigung deaktiviert</string>
     <string name="note_list_item_hint">Tippe um eine Zeile hinzuzufügen</string>
@@ -66,6 +66,7 @@
     <string name="recorder_recording_delete_failed">Löschen fehlgeschlagen!</string>
     <string name="mediaplayer_permissions_denied">Du musst die Berechtigungen akzepieren!</string>
     <string name="mediaplayer_no_recording">Starte zunächst eine Aufnahme</string>
+    <string name="mediaplayer_hold_to_record">Zum Aufnehmen drücken</string>
 
     <!-- Calendar stuff -->
     <string name="calendar_no_events">Keine Veranstaltungen</string>
