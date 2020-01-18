@@ -619,7 +619,6 @@ public class NoteEditorFragment extends Fragment implements NoteListItemRecycler
      */
     @Override
     public void onBackSpace(CharSequence s, int start, int before, int count, int position) {
-        System.out.println("START " + start + " BEFORE " + before + " COUNT " + count);
         if (s.toString().trim().equals("") && currentList.size() > 1 && count < before) {
             notebookViewModel.delete(adapter.getNoteItemAt(position).getNoteListItemId());
             currentList.remove(adapter.getNoteItemAt(position));

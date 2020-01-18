@@ -166,16 +166,12 @@ public class CreateDialogFragment extends DialogFragment {
                 .setTitle(R.string.create_new_note)
                 .setPositiveButton(R.string.create_button,
                         (dialog, arg1) -> {
-                            int type;
-                            switch (spinner.getSelectedItem().toString()) {
-                                case "List":
-                                    type = R.drawable.ic_note_type_todo;
-                                    break;
-                                case "Voice":
-                                    type = R.drawable.ic_note_type_voice;
-                                    break;
-                                default:
-                                    type = R.drawable.ic_note_type_text;
+                            int type = R.drawable.ic_note_type_text;
+                            if (spinner.getSelectedItem().toString().equals(getResources().getString(R.string.note_type_list))) {
+                                type = R.drawable.ic_note_type_todo;
+                            }
+                            if (spinner.getSelectedItem().toString().equals(getResources().getString(R.string.note_type_voice))) {
+                                type = R.drawable.ic_note_type_voice;
                             }
                             notebookViewModel.insert(
                                     new Note(notebookViewModel.getNotebook().getNotebookId(),
@@ -330,31 +326,23 @@ public class CreateDialogFragment extends DialogFragment {
 
     private String getColor(String colorName) {
         String colorValue;
-        switch (colorName) {
-            case "Blue":
-                colorValue = "#3498db";
-                break;
-            case "Red":
-                colorValue = "#e74c3c";
-                break;
-            case "Purple":
-                colorValue = "#9b59b6";
-                break;
-            case "Green":
-                colorValue = "#2ecc71";
-                break;
-            case "Dark Grey":
-                colorValue = "#34495e";
-                break;
-            case "Yellow":
-                colorValue = "#f1c40f";
-                break;
-            case "Orange":
-                colorValue = "#f39c12";
-                break;
-            default:
-                colorValue = "#3498db";
-                break;
+        final String[] test = getResources().getStringArray(R.array.color_Array);
+        if (test[0].equals(colorName)) {
+            colorValue = "#3498db";
+        } else if (test[1].equals(colorName)) {
+            colorValue = "#e74c3c";
+        } else if (test[2].equals(colorName)) {
+            colorValue = "#9b59b6";
+        } else if (test[3].equals(colorName)) {
+            colorValue = "#2ecc71";
+        } else if (test[4].equals(colorName)) {
+            colorValue = "#34495e";
+        } else if (test[5].equals(colorName)) {
+            colorValue = "#f1c40f";
+        } else if (test[6].equals(colorName)) {
+            colorValue = "#f39c12";
+        } else {
+            colorValue = "#3498db";
         }
         return colorValue;
     }

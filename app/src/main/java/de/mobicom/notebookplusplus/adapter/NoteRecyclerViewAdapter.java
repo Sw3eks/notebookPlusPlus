@@ -61,6 +61,12 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
     }
 
     @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        recyclerviewNoteItemBinding = null;
+    }
+
+    @Override
     @NonNull
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         recyclerviewNoteItemBinding =
@@ -165,6 +171,7 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
+
         @Override
         public void onBookmark(View view) {
             if (mBookmarkClickListener != null) {
@@ -174,7 +181,6 @@ public class NoteRecyclerViewAdapter extends ListAdapter<Note, NoteRecyclerViewA
 
         @Override
         public void onOpenPopupMenu(View view) {
-            System.out.println("Context");
             androidx.appcompat.widget.PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
             if (this.type.equals(ArchiveFragment.ARCHIVE_FRAGMENT)) {
                 popupMenu.inflate(R.menu.popup_menu_archive);

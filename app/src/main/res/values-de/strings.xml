@@ -50,6 +50,9 @@
     <string name="notification_disabled">Benachrichtigung deaktiviert</string>
     <string name="note_list_item_hint">Tippe um eine Zeile hinzuzufügen</string>
     <string name="select_notebook_to_move">Wähle ein Notizbuch</string>
+    <string name="note_type_text">Text</string>
+    <string name="note_type_list">Liste</string>
+    <string name="note_type_voice">Sprachnotiz</string>
 
     <!-- Recorder & Mediaplayer -->
     <string name="voice_note_record">Aufnehmen</string>
@@ -127,8 +130,8 @@
 
     <string name="type_label">Typ</string>
     <string-array name="note_type_array">
-        <item>Text</item>
-        <item>Liste</item>
-        <item>Sprachnotiz</item>
+        <item>@string/note_type_text</item>
+        <item>@string/note_type_list</item>
+        <item>@string/note_type_voice</item>
     </string-array>
 </resources>

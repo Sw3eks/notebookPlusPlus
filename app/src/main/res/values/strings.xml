@@ -53,6 +53,10 @@
     <string name="notification_disabled">Notification disabled</string>
     <string name="note_list_item_hint">Type to add items</string>
     <string name="select_notebook_to_move">Select notebook</string>
+    <string name="note_type_text">Text</string>
+    <string name="note_type_list">List</string>
+    <string name="note_type_voice">Voice</string>
+
 
     <!-- Recorder & Mediaplayer -->
     <string name="voice_note_record">Record</string>
@@ -130,8 +134,8 @@
 
     <string name="type_label">Type</string>
     <string-array name="note_type_array">
-        <item>Text</item>
-        <item>List</item>
-        <item>Voice</item>
+        <item>@string/note_type_text</item>
+        <item>@string/note_type_list</item>
+        <item>@string/note_type_voice</item>
     </string-array>
 </resources>
