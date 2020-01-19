@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, pendingIntent);
                 }
             }
-        } else if (!(prefs.getBoolean("tomorrow_reminder", false) && prefs.getBoolean("week_reminder", false))) {
+        } else if (prefs.getBoolean("tomorrow_reminder", false) && prefs.getBoolean("week_reminder", false)) {
             if (alarmManager != null) {
                 alarmManager.cancel(pendingIntent);
             }
