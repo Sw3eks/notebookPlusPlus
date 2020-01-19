@@ -1,5 +1,6 @@
 package de.mobicom.notebookplusplus.view;
 
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.mobicom.notebookplusplus.R;
@@ -186,20 +188,24 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
      * test notification for showcase
      */
     public void testNotification() {
-        LocalDate today = LocalDate.now();
-        DayOfWeek dayOfWeek = today.getDayOfWeek();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (prefs.getBoolean("calendar_notifications", false) &&
+                prefs.getBoolean("tomorrow_reminder", false)) {
+            LocalDate today = LocalDate.now();
+            DayOfWeek dayOfWeek = today.getDayOfWeek();
 
-        NotificationHelper notificationHelper = new NotificationHelper(getContext());
-        if (dayOfWeek != DayOfWeek.SUNDAY) {
-            // check if notification should be created
-            if (notificationHelper.shouldCreateNotification(false)) {
-                NotificationCompat.Builder nb = notificationHelper.getChannelDayNotification();
-                notificationHelper.getManager().notify(NOTIFICATION_DAY_ID, nb.build());
-            }
-        } else {
-            if (notificationHelper.shouldCreateNotification(true)) {
-                NotificationCompat.Builder nb = notificationHelper.getChannelWeekNotification();
-                notificationHelper.getManager().notify(NOTIFICATION_WEEK_ID, nb.build());
+            NotificationHelper notificationHelper = new NotificationHelper(getContext());
+            if (dayOfWeek != DayOfWeek.SUNDAY) {
+                // check if notification should be created
+                if (notificationHelper.shouldCreateNotification(false)) {
+                    NotificationCompat.Builder nb = notificationHelper.getChannelDayNotification();
+                    notificationHelper.getManager().notify(NOTIFICATION_DAY_ID, nb.build());
+                }
+            } else {
+                if (notificationHelper.shouldCreateNotification(true)) {
+                    NotificationCompat.Builder nb = notificationHelper.getChannelWeekNotification();
+                    notificationHelper.getManager().notify(NOTIFICATION_WEEK_ID, nb.build());
+                }
             }
         }
     }
