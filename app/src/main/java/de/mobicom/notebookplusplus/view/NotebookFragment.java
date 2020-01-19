@@ -184,32 +184,6 @@ public class NotebookFragment extends Fragment implements NotebookRecyclerViewAd
                 NotebookFragmentDirections.actionNotebooksFragmentToCreateNotebookDialogFragment().setDialogType(NOTEBOOK_FRAGMENT));
     }
 
-    /**
-     * test notification for showcase
-     */
-    public void testNotification() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        if (prefs.getBoolean("calendar_notifications", false) &&
-                prefs.getBoolean("tomorrow_reminder", false)) {
-            LocalDate today = LocalDate.now();
-            DayOfWeek dayOfWeek = today.getDayOfWeek();
-
-            NotificationHelper notificationHelper = new NotificationHelper(getContext());
-            if (dayOfWeek != DayOfWeek.SUNDAY) {
-                // check if notification should be created
-                if (notificationHelper.shouldCreateNotification(false)) {
-                    NotificationCompat.Builder nb = notificationHelper.getChannelDayNotification();
-                    notificationHelper.getManager().notify(NOTIFICATION_DAY_ID, nb.build());
-                }
-            } else {
-                if (notificationHelper.shouldCreateNotification(true)) {
-                    NotificationCompat.Builder nb = notificationHelper.getChannelWeekNotification();
-                    notificationHelper.getManager().notify(NOTIFICATION_WEEK_ID, nb.build());
-                }
-            }
-        }
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

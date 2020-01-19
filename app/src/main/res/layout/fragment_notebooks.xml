@@ -48,18 +48,5 @@
             android:onClick="@{() -> handler.onAddNotebook()}"
             app:fabSize="auto"
             app:srcCompat="@drawable/ic_add" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/testNotification"
-            style="@style/Widget.MaterialComponents.FloatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|bottom"
-            android:layout_margin="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="@{() -> handler.testNotification()}"
-            app:fabSize="auto"
-            app:srcCompat="@drawable/ic_add" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
