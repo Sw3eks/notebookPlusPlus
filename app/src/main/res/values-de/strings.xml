@@ -43,7 +43,7 @@
     <string name="delete_note_forever">Endgültig löschen</string>
     <string name="edit_notebook">Notizbuch bearbeiten</string>
     <string name="notebook_delete">Löschen</string>
-    <string name="notebook_deleted">Notizbuch gelöscht</string>
+    <string name="notebook_deleted"><![CDATA[Notizbuch gelöscht & Notizen in den Papierkorb verschoben]]></string>
     <string name="note_deleted">Notiz gelöscht</string>
     <string name="note_set_notification_title">Benachrichtigung einstellen</string>
     <string name="notification_enabled">Benachrichtigung aktiviert</string>

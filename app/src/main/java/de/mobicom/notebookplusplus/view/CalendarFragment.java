@@ -65,7 +65,7 @@ public class CalendarFragment extends Fragment {
     }
 
     private void setup() {
-        noteList = notebookViewModel.getAllNotesNotificationEnabled(java.time.LocalDate.now().minusDays(1));
+        noteList = notebookViewModel.getAllNotesNotificationEnabled(java.time.LocalDate.now().minusDays(2));
         calendarView.addDecorators(
                 new HighlightWeekendsDecorator(this),
                 new TodayDecorator(),
