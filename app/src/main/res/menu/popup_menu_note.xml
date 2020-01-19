@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/moveNote"
+        android:title="@string/move_note_to_notebook" />
+    <item
+        android:id="@+id/archiveNote"
+        android:title="@string/archive_note" />
+    <item
+        android:id="@+id/cloneNote"
+        android:title="@string/clone_note" />
+    <item
+        android:id="@+id/deleteNote"
+        android:title="@string/delete_note" />
+</menu>

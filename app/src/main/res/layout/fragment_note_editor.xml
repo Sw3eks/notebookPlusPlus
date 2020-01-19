@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="de.mobicom.notebookplusplus.view.NoteEditorFragment" />
+
+        <variable
+            name="note"
+            type="de.mobicom.notebookplusplus.data.model.Note" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorClouds"
+        android:transitionGroup="true"
+        tools:context=".view.NoteEditorFragment">
+
+        <View
+            android:id="@+id/colorBar"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/colorBar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/default_padding_start"
+                android:paddingTop="@dimen/default_padding_top"
+                android:paddingEnd="@dimen/default_padding_end">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/note_set_notification_title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <DatePicker
+                    android:id="@+id/datePicker"
+                    bindDatePicker="@{note.notificationDate}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:calendarViewShown="false"
+                    android:datePickerMode="spinner"
+                    android:theme="@style/AppTheme.DatePicker"
+                    app:layout_constraintEnd_toStartOf="@id/enableNotification"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <CheckBox
+                    android:id="@+id/enableNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:checked="@{note.notificationEnabled}"
+                    app:layout_constraintBottom_toBottomOf="@id/datePicker"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/datePicker" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/voiceView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/default_margin_start"
+            android:layout_marginTop="@dimen/default_margin_top"
+            android:layout_marginBottom="@dimen/default_margin_bottom"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/cardView">
+
+            <SeekBar
+                android:id="@+id/voiceSeekbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_bottom"
+                android:progressDrawable="@drawable/seek_bar"
+                android:thumb="@drawable/seek_thumb"
+                app:layout_constraintEnd_toStartOf="@+id/deleteRecord"
+                app:layout_constraintStart_toStartOf="@id/voiceView"
+                app:layout_constraintTop_toTopOf="@id/voiceView" />
+
+            <ImageView
+                android:id="@+id/mediaBack"
+                android:layout_width="@dimen/default_image_width"
+                android:layout_height="@dimen/default_image_height"
+                android:layout_marginStart="@dimen/default_margin_start"
+                android:contentDescription="@string/voice_note_record"
+                android:onClick="@{() -> handler.onMediaBack()}"
+                android:src="@drawable/ic_skip_previous"
+                android:tint="?attr/colorControlNormal"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlay"
+                app:layout_constraintStart_toStartOf="@id/voiceSeekbar"
+                app:layout_constraintTop_toTopOf="@id/mediaPlay" />
+
+            <ImageView
+                android:id="@+id/mediaPlay"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/voice_note_record"
+                android:onClick="@{() -> handler.onMediaPlay()}"
+                android:src="@drawable/ic_play_arrow"
+                android:tint="@color/colorAccent"
+                app:layout_constraintStart_toEndOf="@id/mediaBack"
+                app:layout_constraintTop_toBottomOf="@id/voiceSeekbar" />
+
+            <ImageView
+                android:id="@+id/mediaForward"
+                android:layout_width="@dimen/default_image_width"
+                android:layout_height="@dimen/default_image_height"
+                android:contentDescription="@string/voice_note_record"
+                android:onClick="@{() -> handler.onMediaForward()}"
+                android:src="@drawable/ic_skip_next"
+                android:tint="?attr/colorControlNormal"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlay"
+                app:layout_constraintStart_toEndOf="@id/mediaPlay"
+                app:layout_constraintTop_toTopOf="@id/mediaPlay" />
+
+            <TextView
+                android:id="@+id/recordTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/voice_note_record_time_default"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlay"
+                app:layout_constraintEnd_toStartOf="@id/startRecording"
+                app:layout_constraintStart_toEndOf="@id/mediaForward"
+                app:layout_constraintTop_toTopOf="@id/mediaPlay" />
+
+            <ImageView
+                android:id="@+id/startRecording"
+                android:layout_width="@dimen/default_image_width"
+                android:layout_height="@dimen/default_image_height"
+                android:layout_marginEnd="32dp"
+                android:contentDescription="@string/voice_note_record"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:src="@drawable/ic_note_type_voice"
+                android:tint="?attr/colorControlNormal"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlay"
+                app:layout_constraintEnd_toEndOf="@id/voiceSeekbar"
+                app:layout_constraintTop_toTopOf="@id/mediaPlay" />
+
+            <ImageView
+                android:id="@+id/deleteRecord"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="@dimen/default_margin_end"
+                android:contentDescription="@string/voice_note_record"
+                android:onClick="@{() -> handler.onDeleteRecord()}"
+                android:src="@drawable/ic_close"
+                app:layout_constraintBottom_toBottomOf="@id/voiceView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/voiceSeekbar"
+                app:layout_constraintTop_toTopOf="@id/voiceView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/voiceView" />
+
+        <EditText
+            android:id="@+id/editNote"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/default_margin_start"
+            android:layout_marginTop="@dimen/default_margin_top"
+            android:layout_marginEnd="@dimen/default_margin_end"
+            android:layout_marginBottom="@dimen/default_margin_bottom"
+            android:focusable="true"
+            android:gravity="top"
+            android:hint="@string/note_content_hint"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:text="@{note.description}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvNoteListItem"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardView"
+            tools:listitem="@layout/recyclerview_note_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

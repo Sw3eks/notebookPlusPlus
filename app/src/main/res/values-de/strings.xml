@@ -1,0 +1,138 @@
+<resources>
+    <!-- Base Strings  -->
+    <string name="drawer_menu_notebooks">Notizbücher</string>
+    <string name="drawer_menu_calendar">Kalendar</string>
+    <string name="drawer_menu_archive">Archiv</string>
+    <string name="drawer_menu_deleted_notes">Gelöschte Notizen</string>
+    <string name="drawer_menu_settings">Einstellungen</string>
+
+    <!-- Icon Strings  -->
+    <string name="notebook_icon">Notizbuch Icon</string>
+    <string name="note_bookmark_icon">Bookmark</string>
+    <string name="note_context_menu_icon">Context Menu</string>
+    <string name="reset_calendar_icon">Kalendar zurücksetzen</string>
+    <string name="to_notebook_icon">Zu den Notizbüchern</string>
+
+    <string name="search">Suchen</string>
+    <string name="to_calendar">zum Kalendar</string>
+    <string name="create_button">Erstellen</string>
+    <string name="cancel_button">Abbrechen</string>
+    <string name="save_button">Speichern</string>
+    <string name="close_button">Schließen</string>
+    <string name="no_data_available">Keine Notizbücher vorhanden, erstelle welche…</string>
+    <string name="no_data_available_notes">Keine Notizen vorhanden, erstelle welche…</string>
+    <string name="no_data_available_archive">Nichts vorhanden</string>
+    <string name="note_content_hint">Tippe etwas…</string>
+    <string name="changes_saved">Änderungen wurden gespeichert</string>
+
+    <!-- Notebook/Note Strings  -->
+    <string name="create_a_new_notebook">Neues Notizbuch erstellen</string>
+    <string name="create_new_note">Neue Notiz erstellen</string>
+    <string name="move_note_to_archive">Archivieren</string>
+    <string name="delete_note">Löschen</string>
+    <string name="created_note_default_text">Neu erstellte Notiz, hier bearbeiten</string>
+    <string name="note_created">Notiz erstellt!</string>
+    <string name="move_note_to_notebook">In anderes Notizbuch verschieben</string>
+    <string name="clone_note">Kopieren</string>
+    <string name="edit_note_title">Titel bearbeiten</string>
+    <string name="moved_note_to_deleted">In den Papierkorb</string>
+    <string name="moved_note_to_archive">Ins Archiv</string>
+    <string name="moved_note_to_notebook">Zurück ins Notizbuch verschoben</string>
+    <string name="back_to_notebook">Zurück zum Notizbuch verschieben</string>
+    <string name="archive_note">Archivieren</string>
+    <string name="delete_note_forever">Endgültig löschen</string>
+    <string name="edit_notebook">Notizbuch bearbeiten</string>
+    <string name="notebook_delete">Löschen</string>
+    <string name="notebook_deleted"><![CDATA[Notizbuch gelöscht & Notizen in den Papierkorb verschoben]]></string>
+    <string name="note_deleted">Notiz gelöscht</string>
+    <string name="note_set_notification_title">Benachrichtigung einstellen</string>
+    <string name="notification_enabled">Benachrichtigung aktiviert</string>
+    <string name="notification_disabled">Benachrichtigung deaktiviert</string>
+    <string name="note_list_item_hint">Tippe um eine Zeile hinzuzufügen</string>
+    <string name="select_notebook_to_move">Wähle ein Notizbuch</string>
+    <string name="note_type_text">Text</string>
+    <string name="note_type_list">Liste</string>
+    <string name="note_type_voice">Sprachnotiz</string>
+
+    <!-- Recorder & Mediaplayer -->
+    <string name="voice_note_record">Aufnehmen</string>
+    <string name="voice_note_record_time_default">0 min, 0 sek</string>
+    <string name="note_and_recording_deleted">Notiz und Aufnahme gelöscht</string>
+    <string name="mediaplayer_no_jump">Nur während der Wiedergabe</string>
+    <string name="mediaplayer_jumped_backwards">5 Sekunden zurückgespult</string>
+    <string name="mediaplayer_jumped_forwards">5 Sekunden vorgespult</string>
+    <string name="mediaplayer_time_format" formatted="false">%d min, %d sek</string>
+    <string name="recorder_recording_deleted">Aufnahme gelöscht</string>
+    <string name="recorder_recording_delete_failed">Löschen fehlgeschlagen!</string>
+    <string name="mediaplayer_permissions_denied">Du musst die Berechtigungen akzepieren!</string>
+    <string name="mediaplayer_no_recording">Starte zunächst eine Aufnahme</string>
+    <string name="mediaplayer_hold_to_record">Zum Aufnehmen drücken</string>
+
+    <!-- Calendar stuff -->
+    <string name="calendar_no_events">Keine Veranstaltungen</string>
+    <array name="material_calendar_months_array">
+        <item>Januar</item>
+        <item>Februar</item>
+        <item>März</item>
+        <item>April</item>
+        <item>Mai</item>
+        <item>Juni</item>
+        <item>Juli</item>
+        <item>August</item>
+        <item>September</item>
+        <item>Oktober</item>
+        <item>November</item>
+        <item>Dezember</item>
+    </array>
+    <array name="material_calendar_weekdays_array">
+        <item>Mo.</item>
+        <item>Di.</item>
+        <item>Mi.</item>
+        <item>Do.</item>
+        <item>Fr.</item>
+        <item>Sa.</item>
+        <item>So.</item>
+    </array>
+    <string name="note_events_title">Ereignisse</string>
+
+    <!-- Notification stuff -->
+    <string name="build_notification_title_day">Morgige Veranstaltungen:</string>
+    <string name="notification_channel_name">Veranstaltungserinnerungen</string>
+    <string name="build_notification_content_day">Du hast morgen die folgenden Veranstaltungen:</string>
+    <string name="build_notification_title_week">Geplante Veranstaltungen:</string>
+    <string name="build_notification_content_week">Diese woche sind folgende Veranstaltungen geplant:</string>
+    <string name="build_notification_summary">Veranstaltungen</string>
+
+    <!-- Preference Titles -->
+    <string name="settings_calendar_header">Kalendar Benachrichtigungseinstellungen</string>
+    <string name="settings_theme_header">Theme Einstellungen</string>
+
+    <string name="calendar_notifications">Kalendar Benachrichtigungen</string>
+    <string name="tomorrow_reminder">Täglich</string>
+    <string name="next_week_reminder">Wöchentlich</string>
+    <string name="calendar_notification_summary">Kalendar Benachrichitungen aktivieren</string>
+    <string name="tomorrow_reminder_summary">Sendet eine Benachrichtigung, wenn am nächsten Tag ein Termin vorliegt</string>
+    <string name="week_reminder_summary">Sendet eine Benachrichtigung, wenn für die nächste Woche ein Termin vorliegt (nur an Sonntagen)</string>
+    <string name="change_theme">Nachtmodus</string>
+    <string name="theme_summary">Ändert das aussehen</string>
+
+    <string name="dialog_hint">Name (Pflichtfeld)</string>
+    <string name="dialog_color_label">Farbe</string>
+    <string name="spinner_color">farbe</string>
+    <string-array name="color_Array">
+        <item>Blau</item>
+        <item>Rot</item>
+        <item>Lila</item>
+        <item>Grün</item>
+        <item>Dunkelgrau</item>
+        <item>Gelb</item>
+        <item>Orange</item>
+    </string-array>
+
+    <string name="type_label">Typ</string>
+    <string-array name="note_type_array">
+        <item>@string/note_type_text</item>
+        <item>@string/note_type_list</item>
+        <item>@string/note_type_voice</item>
+    </string-array>
+</resources>

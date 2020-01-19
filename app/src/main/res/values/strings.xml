@@ -1,3 +1,142 @@
 <resources>
-    <string name="app_name">NotebookPlusPlus</string>
+    <!-- Base Strings  -->
+    <string name="app_name" translatable="false">Notebook++</string>
+    <string name="drawer_menu_notebooks">Notebooks</string>
+    <string name="drawer_menu_calendar">Calendar</string>
+    <string name="drawer_menu_archive">Archive</string>
+    <string name="drawer_menu_deleted_notes">Deleted Notes</string>
+    <string name="drawer_menu_settings">Settings</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+
+    <!-- Icon Strings  -->
+    <string name="notebook_icon">Notebook Icon</string>
+    <string name="note_bookmark_icon">Bookmark</string>
+    <string name="note_context_menu_icon">Context Menu</string>
+    <string name="reset_calendar_icon">Reset Calendar</string>
+    <string name="to_notebook_icon">To Notebooks</string>
+
+    <string name="search">Search</string>
+    <string name="to_calendar">to Calendar</string>
+    <string name="create_button">Create</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="save_button">Save</string>
+    <string name="close_button">Close</string>
+    <string name="no_data_available">No Notebooks available, start creating one…</string>
+    <string name="no_data_available_notes">No notes available, start creating one…</string>
+    <string name="no_data_available_archive">Nothing here</string>
+    <string name="note_content_hint">Type something…</string>
+    <string name="changes_saved">Changes saved</string>
+
+    <!-- Notebook/Note Strings  -->
+    <string name="create_a_new_notebook">Create a new Notebook</string>
+    <string name="create_new_note">Create a new Note</string>
+    <string name="move_note_to_archive">Archive</string>
+    <string name="delete_note">Delete</string>
+    <string name="created_note_default_text">Newly created Note, write something</string>
+    <string name="note_created">Note created!</string>
+    <string name="move_note_to_notebook">Move to another Notebook</string>
+    <string name="clone_note">Clone</string>
+    <string name="edit_note_title">Edit title</string>
+    <string name="moved_note_to_deleted">Moved to trash</string>
+    <string name="moved_note_to_archive">Moved to archive</string>
+    <string name="moved_note_to_notebook">Moved back to Notebook</string>
+    <string name="back_to_notebook">Move to notebook</string>
+    <string name="archive_note">Archive</string>
+    <string name="delete_note_forever">Delete forever</string>
+    <string name="edit_notebook">Edit notebook</string>
+    <string name="notebook_delete">Delete</string>
+    <string name="notebook_deleted"><![CDATA[Notebook deleted & Notes moved to trash]]></string>
+    <string name="note_deleted">Note deleted</string>
+    <string name="note_set_notification_title">Setup Notification</string>
+    <string name="notification_enabled">Notification enabled</string>
+    <string name="notification_disabled">Notification disabled</string>
+    <string name="note_list_item_hint">Type to add items</string>
+    <string name="select_notebook_to_move">Select notebook</string>
+    <string name="note_type_text">Text</string>
+    <string name="note_type_list">List</string>
+    <string name="note_type_voice">Voice</string>
+
+
+    <!-- Recorder & Mediaplayer -->
+    <string name="voice_note_record">Record</string>
+    <string name="voice_note_record_time_default">0 min, 0 sec</string>
+    <string name="note_and_recording_deleted">Note and recording deleted</string>
+    <string name="mediaplayer_no_jump">Can only jump while playing!</string>
+    <string name="mediaplayer_jumped_backwards">You have Jumped backward 5 seconds</string>
+    <string name="mediaplayer_jumped_forwards">You have jumped forward 5 seconds</string>
+    <string name="mediaplayer_time_format" formatted="false">%d min, %d sec</string>
+    <string name="recorder_recording_deleted">Recording deleted</string>
+    <string name="recorder_recording_delete_failed">Deletion failed!</string>
+    <string name="mediaplayer_permissions_denied">You have to accept permissions to use this feature!</string>
+    <string name="mediaplayer_no_recording">Record something first</string>
+    <string name="mediaplayer_hold_to_record">Hold to record</string>
+
+    <!-- Calendar stuff -->
+    <string name="calendar_no_events">No events on this date</string>
+    <array name="material_calendar_months_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </array>
+    <array name="material_calendar_weekdays_array">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </array>
+    <string name="note_events_title">Events</string>
+
+    <!-- Notification stuff -->
+    <string name="notification_channel_name">Events Reminder</string>
+    <string name="build_notification_title_day">Tomorrows events:</string>
+    <string name="build_notification_content_day">You have the following events planned tomorrow:</string>
+    <string name="build_notification_title_week">Upcoming events:</string>
+    <string name="build_notification_content_week">This week the following events are planned:</string>
+    <string name="build_notification_summary">Events</string>
+
+    <!-- Preference Titles -->
+    <string name="settings_calendar_header">Calendar Notification Settings</string>
+    <string name="settings_theme_header">Theme Setting</string>
+
+    <string name="calendar_notifications">Calendar Notifications</string>
+    <string name="tomorrow_reminder">Tomorrow Reminder</string>
+    <string name="next_week_reminder">Next Week Reminder</string>
+    <string name="calendar_notification_summary">Enable Notifications for Calendar</string>
+    <string name="tomorrow_reminder_summary">Notifies when a calendar entry is present for the next day</string>
+    <string name="week_reminder_summary">Notifies when a calendar entry is present for the next week (only on Sundays)</string>
+    <string name="change_theme">Dark Mode</string>
+    <string name="theme_summary">Change the look and feel</string>
+
+    <string name="dialog_hint">Name (required)</string>
+    <string name="dialog_color_label">Color</string>
+    <string name="spinner_color">color</string>
+    <string-array name="color_Array">
+        <item>Blue</item>
+        <item>Red</item>
+        <item>Purple</item>
+        <item>Green</item>
+        <item>Dark Grey</item>
+        <item>Yellow</item>
+        <item>Orange</item>
+    </string-array>
+
+    <string name="type_label">Type</string>
+    <string-array name="note_type_array">
+        <item>@string/note_type_text</item>
+        <item>@string/note_type_list</item>
+        <item>@string/note_type_voice</item>
+    </string-array>
 </resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/notebooksFragment"
+            android:icon="@drawable/ic_notebook"
+            android:title="@string/drawer_menu_notebooks" />
+        <item
+            android:id="@+id/calendarFragment"
+            android:icon="@drawable/ic_calendar"
+            android:title="@string/drawer_menu_calendar" />
+        <item
+            android:id="@+id/archiveFragment"
+            android:icon="@drawable/ic_folder_archive"
+            android:title="@string/drawer_menu_archive" />
+        <item
+            android:id="@+id/deletedNotesFragment"
+            android:icon="@drawable/ic_delete"
+            android:title="@string/drawer_menu_deleted_notes" />
+    </group>
+
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/settingsFragment"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/drawer_menu_settings" />
+    </group>
+</menu>

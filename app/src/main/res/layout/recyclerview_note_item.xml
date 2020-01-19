@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="position"
+            type="java.lang.Integer" />
+
+        <variable
+            name="handler"
+            type="de.mobicom.notebookplusplus.adapter.NoteRecyclerViewAdapter.NoteViewHolder" />
+
+        <variable
+            name="note"
+            type="de.mobicom.notebookplusplus.data.model.Note" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingStart="@dimen/default_padding_start"
+        android:paddingTop="@dimen/default_padding_top"
+        android:paddingEnd="@dimen/default_padding_end">
+
+        <ImageView
+            android:id="@+id/noteType"
+            imageResource="@{note.type}"
+            android:layout_width="@dimen/default_image_width"
+            android:layout_height="@dimen/default_image_height"
+            android:contentDescription="@string/type_label"
+            android:tint="?attr/colorControlNormal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/noteTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin_start"
+            android:ellipsize="end"
+            android:text="@{note.name}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintBottom_toBottomOf="@+id/noteType"
+            app:layout_constraintStart_toEndOf="@+id/noteType"
+            app:layout_constraintTop_toTopOf="@+id/noteType" />
+
+        <TextView
+            android:id="@+id/noteModifiedDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            app:bindDate="@{note.lastModifiedAt}"
+            app:layout_constraintBottom_toBottomOf="@+id/noteType"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/noteType" />
+
+        <TextView
+            android:id="@+id/noteContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{note.description}"
+            app:layout_constraintEnd_toStartOf="@+id/noteCalendarIcon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/noteType" />
+
+        <ImageView
+            android:id="@+id/noteCalendarIcon"
+            android:layout_width="@dimen/default_image_width"
+            android:layout_height="@dimen/default_image_height"
+            android:layout_marginTop="@dimen/default_margin_top"
+            android:layout_marginEnd="@dimen/default_margin_end"
+            android:contentDescription="@string/note_context_menu_icon"
+            android:src="@drawable/ic_calendar"
+            android:tint="@{note.notificationEnabled ? @color/colorPeterRiver : @color/calendarBlack}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/noteBookmarkIcon"
+            app:layout_constraintTop_toBottomOf="@+id/noteModifiedDate" />
+
+        <ImageView
+            android:id="@+id/noteBookmarkIcon"
+            bookmarkIcon="@{note.isBookmarked}"
+            android:layout_width="@dimen/default_image_width"
+            android:layout_height="@dimen/default_image_height"
+            android:layout_marginTop="@dimen/default_margin_top"
+            android:layout_marginEnd="@dimen/default_margin_end"
+            android:contentDescription="@string/note_context_menu_icon"
+            android:onClick="@{(view) -> handler.onBookmark(view)}"
+            android:tint="?attr/colorControlNormal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/noteContextMenuItem"
+            app:layout_constraintTop_toBottomOf="@+id/noteModifiedDate" />
+
+        <ImageView
+            android:id="@+id/noteContextMenuItem"
+            android:layout_width="@dimen/default_image_width"
+            android:layout_height="@dimen/default_image_height"
+            android:layout_marginTop="@dimen/default_margin_top"
+            android:contentDescription="@string/note_context_menu_icon"
+            android:onClick="@{(view) -> handler.onOpenPopupMenu(view)}"
+            android:src="@drawable/ic_note_context_menu"
+            android:tint="?attr/colorControlNormal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/noteModifiedDate" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

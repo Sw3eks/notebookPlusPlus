@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="position"
+            type="java.lang.Integer" />
+
+        <variable
+            name="item"
+            type="de.mobicom.notebookplusplus.data.model.NoteListItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingStart="@dimen/default_padding_start"
+        android:paddingTop="@dimen/default_padding_top"
+        android:paddingEnd="@dimen/default_padding_end">
+
+        <CheckBox
+            android:id="@+id/itemCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="@{item.checked}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/contentLine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin_start"
+            android:background="@android:color/transparent"
+            android:hint="@string/note_list_item_hint"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLength="25"
+            android:text="@{item.content}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toBottomOf="@id/itemCheckbox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/itemCheckbox"
+            app:layout_constraintTop_toTopOf="@id/itemCheckbox"
+            tools:ignore="LabelFor" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
