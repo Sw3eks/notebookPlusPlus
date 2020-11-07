@@ -1,6 +1,6 @@
 # Android Notebook++ Application
 
-This is an Android App call Notebook++, developed for the course Mobile Computing.
+This is an Android App called Notebook++, developed for the course Mobile Computing.
 
 ## Installation
 Clone this repository and import into **Android Studio**
