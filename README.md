@@ -5,7 +5,7 @@ This is an Android App call Notebook++, developed for the course Mobile Computin
 ## Installation
 Clone this repository and import into **Android Studio**
 ```bash
-git clone https://gitlab.com/fabiansaacke/notebookplusplus.git
+https://github.com/Sw3eks/notebookPlusPlus.git
 ```
 ## Maintainers
 This project is mantained by:
