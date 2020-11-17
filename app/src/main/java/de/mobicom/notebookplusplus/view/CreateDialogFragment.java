@@ -176,7 +176,7 @@ public class CreateDialogFragment extends DialogFragment {
                             notebookViewModel.insert(
                                     new Note(notebookViewModel.getNotebook().getNotebookId(),
                                             editText.getText().toString(),
-                                            type, getResources().getString(R.string.created_note_default_text)));
+                                            type, ""));
                             Toast.makeText(getContext(), R.string.note_created, Toast.LENGTH_LONG).show();
                         })
                 .setNegativeButton(R.string.cancel_button,
